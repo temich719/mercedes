@@ -8,4 +8,23 @@ public class Truck extends AbstractCar {
         this.price = price;
         this.imagePath = imagePath;
     }
+
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "nameOfMark='" + nameOfMark + '\'' +
+                ", price='" + price + '\'' +
+                ", power='" + power + '\'' +
+                ", accelerationTillHundred='" + accelerationTillHundred + '\'' +
+                ", consumption='" + consumption + '\'' +
+                ", engineVolume='" + engineVolume + '\'' +
+                ", tankVolume='" + tankVolume + '\'' +
+                ", trunkVolume='" + trunkVolume + '\'' +
+                ", maxSpeed='" + maxSpeed + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", type='" + type + '\'' +
+                ", fullLoad='" + fullLoad + '\'' +
+                ", curbWeight='" + curbWeight + '\'' +
+                '}';
+    }
 }

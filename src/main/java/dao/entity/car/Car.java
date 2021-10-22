@@ -18,4 +18,22 @@ public class Car extends AbstractCar {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "Car{" +
+                "nameOfMark='" + nameOfMark + '\'' +
+                ", price='" + price + '\'' +
+                ", power='" + power + '\'' +
+                ", accelerationTillHundred='" + accelerationTillHundred + '\'' +
+                ", consumption='" + consumption + '\'' +
+                ", engineVolume='" + engineVolume + '\'' +
+                ", tankVolume='" + tankVolume + '\'' +
+                ", trunkVolume='" + trunkVolume + '\'' +
+                ", maxSpeed='" + maxSpeed + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", type='" + type + '\'' +
+                ", fullLoad='" + fullLoad + '\'' +
+                ", curbWeight='" + curbWeight + '\'' +
+                '}';
+    }
 }

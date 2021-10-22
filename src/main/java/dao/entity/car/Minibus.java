@@ -12,4 +12,22 @@ public class Minibus extends AbstractCar {
         this.curbWeight = curbWeight;
     }
 
+    @Override
+    public String toString() {
+        return "Minibus{" +
+                "nameOfMark='" + nameOfMark + '\'' +
+                ", price='" + price + '\'' +
+                ", power='" + power + '\'' +
+                ", accelerationTillHundred='" + accelerationTillHundred + '\'' +
+                ", consumption='" + consumption + '\'' +
+                ", engineVolume='" + engineVolume + '\'' +
+                ", tankVolume='" + tankVolume + '\'' +
+                ", trunkVolume='" + trunkVolume + '\'' +
+                ", maxSpeed='" + maxSpeed + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", type='" + type + '\'' +
+                ", fullLoad='" + fullLoad + '\'' +
+                ", curbWeight='" + curbWeight + '\'' +
+                '}';
+    }
 }
