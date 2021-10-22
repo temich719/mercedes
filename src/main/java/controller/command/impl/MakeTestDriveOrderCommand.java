@@ -39,7 +39,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
         else mark = req.getParameter("selectName");
         new DataBaseImpl().addOrder(userName, userSurname, email, "test-drive", mark, "20$", phone, date);
         try {
-            Mail.sendTestDriveOrder(email, mark, "20$");
+            Mail.sendTestDriveOrder(email, mark, date, "20$");
         } catch (IOException e) {
             System.out.println("IOException");
         } catch (MessagingException e) {

@@ -31,7 +31,7 @@ public class MakeServiceOrderCommand implements ICommand {
         else mark = req.getParameter("selectName");
         new DataBaseImpl().addOrder(userName, userSurname, email, "service", mark, "После осмотра", phone, date);
         try {
-            Mail.sendServiceOrder(email, mark, "После осмотра");
+            Mail.sendServiceOrder(email, mark, date, "После осмотра");
         } catch (IOException e) {
             System.out.println("IOException");
         } catch (MessagingException e) {
