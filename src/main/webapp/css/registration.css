@@ -1,0 +1,47 @@
+#mainDiv{
+    background-color:white;
+    color: black;
+    margin-top: 7%;
+    margin-left: 37%;
+    margin-right: 35%;
+    width: 350px;
+    height: 500px;
+    text-align: center;
+    border-radius: 25px;
+}
+
+#firstInput{
+    outline: none;
+    background-image: url(img/person.jpg);
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: 4px;
+    padding-left: 20px;
+    border: none;
+    border-bottom: 1px solid;
+}
+
+#secondInput{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid;
+    background-image: url(img/password.jpg);
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: 4px;
+    padding-left: 20px;
+}
+
+#button{
+    height: 30px;
+    width: 200px;
+    background: linear-gradient(80deg,#7B68EE, #9932CC);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+#hre{
+    cursor:pointer;
+}

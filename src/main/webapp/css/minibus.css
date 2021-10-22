@@ -1,0 +1,105 @@
+#mainDiv {
+  background: black;
+  width: 100%;
+  height: 74px;
+  padding: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+#icon {
+  width: 267.12px;
+  height: 72.36px;
+}
+
+a {
+  text-decoration: none;
+}
+
+#backButton {
+  background: black;
+}
+
+#divBackButton {
+  margin-left: 60%;
+  font-size: 20px;
+  padding-top: 1.7%;
+  width: 200px;
+  height: 45px;
+  text-align: center;
+}
+
+#divBackButton:hover #backButton {
+  background: grey;
+}
+
+#divBackButton:hover {
+  background: grey;
+  border-top: 4px solid blue;
+}
+
+#divImage {
+  margin-left: 20%;
+  float: left;
+}
+
+#minibusImage {
+  padding: 0;
+  left: 0;
+  position: absolute;
+  top: 9.5%;
+  width: 100%;
+  height: 492.8px;
+}
+
+#overImage{
+  position: absolute;
+  margin-top: 16%;
+  margin-left: 28%;
+}
+
+form{
+  border: none;
+}
+
+button{
+  background: none;
+  padding-right: 20%;
+  text-align: center;
+  border: none;
+}
+
+.forms{
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 2%;
+  transition: 0.4s linear;
+  width:270px;
+  height:170px;
+}
+
+.im{
+  width: 241px;
+  height: 141px;
+}
+
+.forms:hover{
+  background-color: #0000CD;
+}
+
+.forms:hover .im{
+  cursor: pointer;
+}
+
+.forms:hover button{
+  cursor: pointer;
+}
+
+.forms:hover span{
+  color: white;
+}

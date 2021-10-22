@@ -1,0 +1,32 @@
+#mainDiv{
+    background-color:white;
+    color: black;
+    margin-top: 7%;
+    margin-left: 37%;
+    margin-right: 35%;
+    width: 350px;
+    height: 500px;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.input{
+    outline: none;
+    background-size: 15px;
+    border: none;
+    border-bottom: 1px solid;
+}
+
+#button{
+    height: 30px;
+    width: 200px;
+    background: linear-gradient(80deg,#7B68EE, #9932CC);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+#hre{
+    cursor:pointer;
+}

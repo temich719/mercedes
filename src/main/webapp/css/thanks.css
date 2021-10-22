@@ -1,0 +1,42 @@
+body{
+    background-image: url(img/back.jpg);
+}
+
+#mainDiv{
+    background: white;
+    position: absolute;
+    width: 60%;
+    height: 70%;
+    margin-left: 18%;
+    margin-top: 7%;
+}
+
+#thk{
+    font-size: 52px;
+    color: black;
+    position: absolute;
+    margin-left: 24%;
+    margin-top: 10%;
+}
+
+#mail{
+    font-size: 30px;
+    color: black;
+    position:absolute;
+    margin-left: 7%;
+    margin-top: 30%;
+}
+
+button{
+    color: white;
+    background-color: orange;
+    border: none;
+    width: 200px;
+    height: 50px;
+    margin-top: 48%;
+    margin-left: 37%;
+}
+
+button:hover{
+    cursor: pointer;
+}

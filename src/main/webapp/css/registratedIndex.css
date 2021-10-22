@@ -1,0 +1,167 @@
+#body {
+  background-color: black;
+  margin: 0px;
+  padding: 0px;
+  font: 14px "Verdana";
+}
+
+#maindiv {
+  color: white;
+}
+
+#logo {
+  z-index: 1;
+  width: 267.12px;
+  height: 72.36px;
+  position: absolute;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  margin-left: 18%;
+  padding-left: 0;
+  background: black;
+  height: 72.36px;
+}
+
+ul > li > a {
+  text-decoration: none;
+  background: black;
+  color: white;
+  padding: 0px 15px;
+  line-height: 70px;
+  display: block;
+  border: black solid 1px;
+  border-right: 1px solid black;
+  height: 72.36px;
+  text-align: center;
+  -moz-transition: all 0.3s 0.01s ease;
+  -o-transition: all 0.3s 0.01s ease;
+  -webkit-transition: all 0.3s 0.01s ease;
+  font-size: 14px;
+}
+
+ul > li > a:hover {
+  background: #dcdcdc;
+  color: #1e90ff;
+}
+
+li {
+  float: left;
+  margin-right: 5px;
+  width: 255px;
+}
+
+li > ul {
+  position: absolute;
+  top: 72px;
+  left: 0px;
+  display: none;
+}
+
+.menu li:hover > ul {
+  display: block;
+  width: 194px;
+  margin-left: 18%;
+  z-index: 1;
+}
+li:hover > ul > li {
+  float: none;
+}
+
+#gt63 {
+  z-index: 10;
+  position: absolute;
+  width: 440px;
+  height: 28px;
+  left: 35px;
+  top: 300px;
+  font-family: Noto Serif Telugu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 32px;
+  color: white;
+}
+
+#future {
+  z-index: 10;
+  position: absolute;
+  width: 902px;
+  height: 246px;
+  left: 30px;
+  top: 320px;
+  font-family: Noto Serif Telugu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 64px;
+  line-height: 87px;
+  color: white;
+  mix-blend-mode: normal;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#arrow {
+  text-decoration: none;
+  width: 50px;
+  height: 70px;
+  background-color: none;
+  border: solid 1px;
+  border-color: black;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#arrow:hover {
+  height: 73px;
+  width: 100px;
+  box-shadow: black;
+  align-content: auto;
+  color: #1e90ff;
+}
+
+#images {
+  align-content: center;
+  margin-left: 16%;
+}
+
+#images > p > span {
+  color: white;
+  margin-left: 16%;
+}
+
+.legk {
+  align-content: center;
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 24px;
+}
+
+.tabl {
+  border-bottom: white;
+  border-top: white;
+  margin-left: 6%;
+  border-collapse: separate;
+  border-spacing: 70px 0px;
+  font-size: 22px;
+}
+
+.ref {
+  text-decoration: none;
+  color: white;
+}
+
+.ref:hover {
+  font-size: 18px;
+}
+
+#account {
+  width: 35%;
+  margin-right: 0px;
+}
+
+#account:hover {
+  font-size: 18px;
+}
