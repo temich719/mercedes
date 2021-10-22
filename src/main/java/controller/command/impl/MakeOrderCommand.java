@@ -31,7 +31,7 @@ public class MakeOrderCommand implements ICommand {//проверки и пер�
         String mark = null;
         String price = null;
         Car car = null;
-        for (Car i : new DataBaseImpl().getCars()) {
+        for (Car i : DataBaseImpl.getCars()) {
             if (i.getImagePath().equals(imagePath)) {
                 car = i;
                 break;
@@ -43,7 +43,7 @@ public class MakeOrderCommand implements ICommand {//проверки и пер�
         }
         Minibus minibus = null;
         if (Objects.isNull(car)){
-            for (Minibus i:new DataBaseImpl().getMinibuses()) {
+            for (Minibus i:DataBaseImpl.getMinibuses()) {
                 if (i.getImagePath().equals(imagePath)){
                     minibus = i;
                     break;

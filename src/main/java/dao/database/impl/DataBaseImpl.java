@@ -1,6 +1,5 @@
 package dao.database.impl;
 
-import dao.database.CarsDAO;
 import dao.database.OrderDAO;
 import dao.database.UserDAO;
 import dao.entity.AbstractCar;
@@ -8,6 +7,7 @@ import dao.entity.Pair;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class DataBaseImpl implements UserDAO, CarsDAO, OrderDAO {
+public class DataBaseImpl implements UserDAO, OrderDAO {
 
     private static final String SELECT_FROM_USERS = "select * from users";
     private static final String SELECT_FROM_MINIBUSES = "select * from minibuses";
@@ -60,8 +60,7 @@ public class DataBaseImpl implements UserDAO, CarsDAO, OrderDAO {
         }
     }
 
-    @Override
-    public ArrayList<Minibus> getMinibuses() throws SQLException {
+    public static ArrayList<Minibus> getMinibuses() throws SQLException {
         ArrayList<Minibus> minibuses = new ArrayList<>();
         ResultSet resultSet = statement.executeQuery(SELECT_FROM_MINIBUSES);
         while (resultSet.next()){
@@ -71,8 +70,7 @@ public class DataBaseImpl implements UserDAO, CarsDAO, OrderDAO {
         return minibuses;
     }
 
-    @Override
-    public ArrayList<Car> getCars() throws SQLException {
+    public static ArrayList<Car> getCars() throws SQLException {
         ArrayList<Car> cars = new ArrayList<>();
         ResultSet resultSet = statement.executeQuery(SELECT_FROM_CARS);
         while (resultSet.next()){
@@ -84,8 +82,7 @@ public class DataBaseImpl implements UserDAO, CarsDAO, OrderDAO {
         return cars;
     }
 
-    @Override
-    public ArrayList<Truck> getTrucks()throws SQLException{
+    public static ArrayList<Truck> getTrucks()throws SQLException{
         ArrayList<Truck> trucks = new ArrayList<>();
         ResultSet resultSet = statement.executeQuery(SELECT_FROM_TRUCKS);
         while (resultSet.next()){
@@ -94,8 +91,7 @@ public class DataBaseImpl implements UserDAO, CarsDAO, OrderDAO {
         return trucks;
     }
 
-    @Override
-    public ArrayList<AbstractCar> getAllCars()throws SQLException{
+    public static ArrayList<AbstractCar> getAllCars()throws SQLException{
         ArrayList<AbstractCar> allCars = new ArrayList<>();
         allCars.addAll(getCars());
         allCars.addAll(getMinibuses());

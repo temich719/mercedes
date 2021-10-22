@@ -13,7 +13,7 @@ public class MinibusOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String imagePath = req.getParameter("img");
         Minibus minibus = null;
-        for (Minibus i: new DataBaseImpl().getMinibuses()) {
+        for (Minibus i: DataBaseImpl.getMinibuses()) {
             if (i.getImagePath().equals(imagePath)){
                 minibus = i;
                 break;

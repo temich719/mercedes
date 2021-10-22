@@ -25,15 +25,15 @@ public class FilterAllCarsCommand implements ICommand {
         final String carType = req.getParameter("type");
         pressedButton(carType, req);
         if (carType.equals("car")){
-            ArrayList<Car> cars = new DataBaseImpl().getCars();
+            ArrayList<Car> cars = DataBaseImpl.getCars();
             req.setAttribute("filtered", cars);
         }
         else if(carType.equals("minibus")){
-            ArrayList<Minibus> minibuses = new DataBaseImpl().getMinibuses();
+            ArrayList<Minibus> minibuses = DataBaseImpl.getMinibuses();
             req.setAttribute("filtered", minibuses);
         }
         else {
-            ArrayList<Truck> trucks = new DataBaseImpl().getTrucks();
+            ArrayList<Truck> trucks = DataBaseImpl.getTrucks();
             req.setAttribute("filtered", trucks);
         }
         req.setAttribute("flag", "true");
