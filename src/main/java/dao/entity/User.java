@@ -1,5 +1,6 @@
 package dao.entity;
 
+//изменить password на char[], добавить equals hashCode toString
 public class User {
 
     private static int id = 0;
