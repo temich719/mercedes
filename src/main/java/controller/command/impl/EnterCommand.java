@@ -14,10 +14,10 @@ public class EnterCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         Pair pair = new Pair(req.getParameter("email"), req.getParameter("password"));
-        ArrayList<Pair> arrayList = DataBaseImpl.select();
+        ArrayList<Pair> arrayList = new DataBaseImpl().selectDataForEnter();
         for (Pair value : arrayList) {
             if (value.getFirst().equals(pair.getFirst()) && value.getSecond().equals(pair.getSecond())){
-                Pair names = DataBaseImpl.getName(pair.getFirst());
+                Pair names = new DataBaseImpl().getName(pair.getFirst());
                 HttpSession session = req.getSession(true);
                 session.setAttribute("nameAccount", names.getFirst() + " " +names.getSecond());
                 session.setAttribute("accountName", names.getFirst());

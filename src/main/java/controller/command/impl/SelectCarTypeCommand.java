@@ -22,7 +22,7 @@ public class SelectCarTypeCommand implements ICommand {//во фронте кн�
         final String carType = req.getParameter("carButton");
         pressedButton(carType, req);
         ArrayList<Car> cars = new ArrayList<>();
-        for (Car car: DataBaseImpl.getCars()) {
+        for (Car car: new DataBaseImpl().getCars()) {
             if (car.getType().equals(carType))cars.add(car);
         }
         req.setAttribute("cars", cars);

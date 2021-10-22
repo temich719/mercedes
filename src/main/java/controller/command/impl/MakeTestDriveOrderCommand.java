@@ -29,7 +29,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
         String image;
         if (Objects.isNull(req.getParameter("selectName"))){
             image = req.getParameter("mark");
-            for (Car car: DataBaseImpl.getCars()) {
+            for (Car car: new DataBaseImpl().getCars()) {
                 if (car.getImagePath().equals(image)){
                     mark = car.getNameOfMark();
                     break;

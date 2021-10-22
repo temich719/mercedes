@@ -25,8 +25,8 @@ public class ForgetPasswordCommand implements ICommand {
             req.setAttribute("error","Пароль введен неверно!");
             return "forgetPassword";
         }
-        DataBaseImpl.updatePassword(email, newPassword);
-        Pair pair = DataBaseImpl.getName(email);
+        new DataBaseImpl().updatePassword(email, newPassword);
+        Pair pair = new DataBaseImpl().getName(email);
         HttpSession session = req.getSession(true);
         session.setAttribute("nameAccount", pair.getFirst() + " " + pair.getSecond());
         session.setAttribute("emailAccount", email);

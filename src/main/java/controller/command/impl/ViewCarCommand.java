@@ -13,7 +13,7 @@ public class ViewCarCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String nameOfMark = req.getParameter("nameOfMark");
         Car car = null;
-        for (Car i: DataBaseImpl.getCars()) {
+        for (Car i: new DataBaseImpl().getCars()) {
             if (i.getNameOfMark().equals(nameOfMark)){
                 car = i;
                 break;

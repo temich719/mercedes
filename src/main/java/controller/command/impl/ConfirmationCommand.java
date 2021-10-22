@@ -20,7 +20,7 @@ public class ConfirmationCommand implements ICommand {
         final String password = req.getParameter("password");
         final String name = req.getParameter("name");
         final String surname = req.getParameter("surname");
-        new DataBaseImpl().insert(email, password, name, surname);
+        new DataBaseImpl().insertUser(email, password, name, surname);
         req.getSession().setAttribute("nameAccount",name + " " + surname);
         req.getSession().setAttribute("emailAccount", email);
         return "registratedIndex";

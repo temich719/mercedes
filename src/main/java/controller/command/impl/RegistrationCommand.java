@@ -17,7 +17,7 @@ public class RegistrationCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String email = req.getParameter("email");
-        if (DataBaseImpl.isExistingEmail(email.trim())){
+        if (new DataBaseImpl().isExistingEmail(email.trim())){
             req.setAttribute("error", "Данная электронная почта уже зарегистрирована!");
             return "registration";
         }

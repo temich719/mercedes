@@ -13,7 +13,7 @@ public class DefiniteTestDriveCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String img = req.getParameter("markToList");
         String mark = null;
-        for (Car i: DataBaseImpl.getCars()) {
+        for (Car i: new DataBaseImpl().getCars()) {
             if (i.getImagePath().equals(img)){
                 mark = i.getNameOfMark();
                 break;

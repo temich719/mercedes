@@ -4,7 +4,7 @@
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
      <%@ page import="dao.database.impl.DataBaseImpl" %>
 
-     <c:set var="com" scope="request" value="<%=DataBaseImpl.getAllCars()%>" />
+     <c:set var="com" scope="request" value="<%=new DataBaseImpl.getAllCars()%>" />
      <c:set var="filter" scope="request" value="${requestScope.filtered}" />
      <c:set var="flag" scope="request" value="${requestScope.flag}" />
 

@@ -27,7 +27,7 @@ public class FormOrderCommand implements ICommand {
         String price = null;
         String money = null;
         Car car = null;
-        for (Car i : DataBaseImpl.getCars()) {
+        for (Car i : new DataBaseImpl().getCars()) {
             if (i.getImagePath().equals(imagePath)) {
                 car = i;
                 break;
@@ -39,7 +39,7 @@ public class FormOrderCommand implements ICommand {
         }
         Minibus minibus = null;
         if (Objects.isNull(car)){
-            for (Minibus i:DataBaseImpl.getMinibuses()) {
+            for (Minibus i:new DataBaseImpl().getMinibuses()) {
                 if (i.getImagePath().equals(imagePath)){
                     minibus = i;
                     break;
