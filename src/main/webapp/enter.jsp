@@ -3,6 +3,8 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+    <c:set var="script" scope="request" value="${requestScope.script}" />
+
 <html>
 
 <head>
@@ -39,5 +41,8 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <script src="js/noScroll.js"></script>
+    <c:if test="${not empty script}">
+        <script src="js/wrongCodeAlert.js"></script>
+    </c:if>
 </body>
 </html>

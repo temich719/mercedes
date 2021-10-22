@@ -1,6 +1,5 @@
 package controller;
 
-
 import controller.command.CommandFactory;
 import controller.command.ICommand;
 

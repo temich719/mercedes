@@ -11,8 +11,8 @@ public class CheckCodeCommand implements ICommand {
         final String code = req.getParameter("codeOfConfirm");
         final String input = req.getParameter("confirmation");
         if (!code.equals(input)){
-            req.setAttribute("error", "Неверный код!");
-            return "enter";//подумать куда выкидывать(мб выкидывать на enter и js alert что неверно введено)
+            req.setAttribute("script", "true");
+            return "enter";
         }
         return "forgetPassword";
     }
