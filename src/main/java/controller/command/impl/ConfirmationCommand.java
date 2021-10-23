@@ -13,8 +13,8 @@ public class ConfirmationCommand implements ICommand {
         final String code = req.getParameter("code");
         final String userInput = req.getParameter("confirmation");
         if (!userInput.equals(code)){
-            req.setAttribute("error", "Неверный код подтверждения. Высылаем новый");
-            return "confirmation";//????????????????????????????????????
+            req.setAttribute("script", "true");
+            return "registration";
         }
         final String email = req.getParameter("email");
         final String password = req.getParameter("password");

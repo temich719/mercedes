@@ -22,11 +22,6 @@ public class MakeOrderCommand implements ICommand {//проверки и пер�
         final String email = req.getParameter("email");
         final String phone = req.getParameter("phone");
         final String imagePath = req.getParameter("img");
-        /*if (Objects.isNull(name) || Objects.isNull(surname) || Objects.isNull(email)
-        || Objects.isNull(phone)){
-            req.setAttribute("error", "Заполните все обязательные поля!");
-            return "formOfOrder";
-        }*/
 
         String mark = null;
         String price = null;

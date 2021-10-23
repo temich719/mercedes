@@ -14,13 +14,6 @@ public class FormOrderCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String imagePath = req.getParameter("img");
-        /*Car car = null;
-        for (Car i:DataBaseImpl.getCars()) {
-            if (i.getImagePath().equals(imagePath)){
-                car = i;
-                break;
-            }
-        }*/
 
         //дубликация с MakeOrderCommand
         String mark = null;
@@ -63,7 +56,6 @@ public class FormOrderCommand implements ICommand {
         if (Objects.isNull(price))req.setAttribute("money", money);
         else req.setAttribute("price", price);
         req.setAttribute("carName", mark);
-        //req.setAttribute("money", car.getPrice());
         if (Objects.isNull(req.getSession().getAttribute("nameAccount"))){
             req.setAttribute("nameAccount","");
             req.setAttribute("surnameAccount","");
