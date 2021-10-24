@@ -57,6 +57,7 @@
                         <c:otherwise>
                           <span style="margin-top: 9%;margin-left: 60%;width: 35%;position: absolute;">
                             <span style="font-size: 18px;"><c:out value="${select}" /></span>
+                            <input type="hidden" name="select" value=${select}>
                           </span>
                         </c:otherwise>
                     </c:choose>

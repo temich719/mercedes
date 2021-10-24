@@ -2,7 +2,6 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import dao.database.impl.DataBaseImpl;
-import dao.entity.car.Car;
 import service.email.Mail;
 
 import javax.mail.MessagingException;
@@ -20,21 +19,21 @@ public class MakeTestDriveOrderCommand implements ICommand {
         final String email = req.getParameter("email");
         final String phone = req.getParameter("phone");
         final String date = req.getParameter("date");
+        final String sel = req.getParameter("sel");
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
                 || date.equals("")){
             req.setAttribute("error", "Заполните все обязательные поля!");
+            if (Objects.nonNull(sel)){
+                req.setAttribute("select", "true");
+                req.setAttribute("sel", sel);
+            }
             return "testDriveOrder";
         }
-        String mark = null;
+        String mark;
         String image;
         if (Objects.isNull(req.getParameter("selectName"))){
             image = req.getParameter("mark");
-            for (Car car: DataBaseImpl.getCars()) {
-                if (car.getImagePath().equals(image)){
-                    mark = car.getNameOfMark();
-                    break;
-                }
-            }
+            mark = new DataBaseImpl().getCarMarkByImage(image);
         }
         else mark = req.getParameter("selectName");
         new DataBaseImpl().addOrder(userName, userSurname, email, "test-drive", mark, "20$", phone, date);

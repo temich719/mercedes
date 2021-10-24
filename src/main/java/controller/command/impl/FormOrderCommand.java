@@ -2,8 +2,6 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import dao.database.impl.DataBaseImpl;
-import dao.entity.car.Car;
-import dao.entity.car.Minibus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,48 +12,14 @@ public class FormOrderCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String imagePath = req.getParameter("img");
-
-        //дубликация с MakeOrderCommand
-        String mark = null;
-        String price = null;
-        String money = null;
-        Car car = null;
-        for (Car i : DataBaseImpl.getCars()) {
-            if (i.getImagePath().equals(imagePath)) {
-                car = i;
-                break;
-            }
-        }
-        if (Objects.nonNull(car)){
-            mark = car.getNameOfMark();
-            price = car.getPrice();
-        }
-        Minibus minibus = null;
-        if (Objects.isNull(car)){
-            for (Minibus i:DataBaseImpl.getMinibuses()) {
-                if (i.getImagePath().equals(imagePath)){
-                    minibus = i;
-                    break;
-                }
-            }
-        }
-        if (Objects.nonNull(minibus)){
-            mark = minibus.getNameOfMark();
-            money = minibus.getPrice();
-        }
-        else if (Objects.isNull(car)){
-            mark = "Actros";
-            money = "73 000$";
-        }
-
-
-
-
         req.setAttribute("img", imagePath);
-        req.setAttribute("mark", mark);
-        if (Objects.isNull(price))req.setAttribute("money", money);
-        else req.setAttribute("price", price);
-        req.setAttribute("carName", mark);
+        //вытащить в переменные как в MakeOrderCommand
+        String[] markAndPrice = new DataBaseImpl().getMarkAndPriceByImage(imagePath);
+        req.setAttribute("mark", markAndPrice[0]);
+        if (Objects.isNull(markAndPrice[1]))req.setAttribute("money", markAndPrice[2]);
+        else req.setAttribute("price", markAndPrice[1]);
+        req.setAttribute("carName", markAndPrice[0]);
+
         if (Objects.isNull(req.getSession().getAttribute("nameAccount"))){
             req.setAttribute("nameAccount","");
             req.setAttribute("surnameAccount","");

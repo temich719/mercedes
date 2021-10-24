@@ -2,8 +2,6 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import dao.database.impl.DataBaseImpl;
-import dao.entity.car.Car;
-import dao.entity.car.Minibus;
 import service.email.Mail;
 
 import javax.mail.MessagingException;
@@ -13,58 +11,27 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Objects;
 
-//дубликация
-public class MakeOrderCommand implements ICommand {//проверки и перенаправление в аккаунт где уже будет новый заказ
-    @Override    //тут и в formOrderCommand вынести как метод поиск по картинке
+public class MakeOrderCommand implements ICommand {
+    @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String name = req.getParameter("name");
         final String surname = req.getParameter("surname");
         final String email = req.getParameter("email");
         final String phone = req.getParameter("phone");
         final String imagePath = req.getParameter("img");
-
-        String mark = null;
-        String price = null;
-        Car car = null;
-        for (Car i : DataBaseImpl.getCars()) {
-            if (i.getImagePath().equals(imagePath)) {
-                car = i;
-                break;
-            }
-        }
-        if (Objects.nonNull(car)){
-            mark = car.getNameOfMark();
-            price = car.getPrice();
-        }
-        Minibus minibus = null;
-        if (Objects.isNull(car)){
-            for (Minibus i:DataBaseImpl.getMinibuses()) {
-                if (i.getImagePath().equals(imagePath)){
-                    minibus = i;
-                    break;
-                }
-            }
-        }
-        if (Objects.nonNull(minibus)){
-            mark = minibus.getNameOfMark();
-            price = minibus.getPrice();
-        }
-        else if (Objects.isNull(car)){
-            mark = "Actros";
-            price = "73 000$";
-        }
-
+        //нужно вытащить в переменные для понятности mark price и money
+        String[] markAndPrice = new DataBaseImpl().getMarkAndPriceByImage(imagePath);
         if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")){
             req.setAttribute("error", "Заполните все обязательные поля!");
             req.setAttribute("img", imagePath);
-            req.setAttribute("price", price);
-            req.setAttribute("mark", mark);
+            if (Objects.isNull(markAndPrice[1]))req.setAttribute("money", markAndPrice[2]);
+            else req.setAttribute("price", markAndPrice[1]);
+            req.setAttribute("mark", markAndPrice[0]);
             return "formOfOrder";
         }
-
-        new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", mark, price, phone,null);
+        new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone,null);
         try {
-            Mail.sendOrder(email, mark, price);
+            Mail.sendOrder(email, markAndPrice[0], markAndPrice[1]);
         } catch (IOException e) {
             System.out.println("IOException");
         } catch (MessagingException e) {

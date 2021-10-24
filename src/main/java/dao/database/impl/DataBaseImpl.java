@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Properties;
 
 public class DataBaseImpl implements UserDAO, OrderDAO {
@@ -97,6 +98,57 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
         allCars.addAll(getMinibuses());
         allCars.addAll(getTrucks());
         return allCars;
+    }
+
+    //интерфейс для след. 3-х методов
+    public String getCarMarkByImage(String imagePath)throws SQLException{
+        String mark = null;
+        for (Car car:getCars()){
+            if (car.getImagePath().equals(imagePath))mark = car.getNameOfMark();
+        }
+        return mark;
+    }
+
+    public ArrayList<Car> getCarListByType(String type)throws SQLException{
+        ArrayList<Car> cars = new ArrayList<>();
+        for (Car car:getCars()){
+            if (car.getType().equals(type))cars.add(car);
+        }
+        return cars;
+    }
+
+    //ну такое
+    public String[] getMarkAndPriceByImage(String imagePath)throws SQLException{
+        String[] resultSet = new String[3];
+        Car car = null;
+        for (Car i : getCars()) {
+            if (i.getImagePath().equals(imagePath)) {
+                car = i;
+                break;
+            }
+        }
+        if (Objects.nonNull(car)){
+            resultSet[0] = car.getNameOfMark();
+            resultSet[1] = car.getPrice();
+        }
+        Minibus minibus = null;
+        if (Objects.isNull(car)){
+            for (Minibus i: getMinibuses()) {
+                if (i.getImagePath().equals(imagePath)){
+                    minibus = i;
+                    break;
+                }
+            }
+        }
+        if (Objects.nonNull(minibus)){
+            resultSet[0] = minibus.getNameOfMark();
+            resultSet[2] = minibus.getPrice();
+        }
+        else if (Objects.isNull(car)){
+            resultSet[0] = "Actros";
+            resultSet[2] = "73 000$";
+        }
+        return resultSet;
     }
 
     @Override

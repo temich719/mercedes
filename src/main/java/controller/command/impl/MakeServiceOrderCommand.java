@@ -14,16 +14,16 @@ import java.util.Objects;
 public class MakeServiceOrderCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        //дубликация с MakeTestDriveOrderCommand
         final String userName = req.getParameter("name");
         final String userSurname = req.getParameter("surname");
         final String email = req.getParameter("email");
         final String phone = req.getParameter("phone");
         final String date = req.getParameter("date");
-        //со всеми make дубликация
+        final String select = req.getParameter("select");
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
                 || date.equals("")){
             req.setAttribute("error", "Заполните все обязательные поля!");
+            req.setAttribute("select", select);
             return "serviceOrder";
         }
         final String mark;
