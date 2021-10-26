@@ -3,6 +3,7 @@ package dao.database.impl;
 import dao.database.OrderDAO;
 import dao.database.UserDAO;
 import dao.entity.AbstractCar;
+import dao.entity.Order;
 import dao.entity.Pair;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
@@ -219,5 +220,27 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
             statement.executeUpdate("insert into surnames(user_surname) values('"+surname+"');");
         statement.executeUpdate("insert into orders(user_name,user_surname,email,service,car_name,price,phone,date) values('"+
                 name+"','"+surname+"','"+email+"','"+service+"','"+carName+"','"+price+"','"+phone+"','"+date+"');");
+    }
+
+    /*public static ArrayList<Order> getListOfOrdersByEmail(String email)throws SQLException{
+        ResultSet resultSet = statement.executeQuery("select * from orders where email='" + email + "';");
+        ArrayList<Order> orders = new ArrayList<>();
+        while (resultSet.next()){
+            orders.add(new Order(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
+                    resultSet.getString(5),resultSet.getString(6),resultSet.getString(7),
+                    resultSet.getString(8),resultSet.getString(9)));
+        }
+        return orders;
+    }*/
+
+    public static ArrayList<Order> getListOfOrders() throws SQLException{
+        ResultSet resultSet = statement.executeQuery("select * from orders;");
+        ArrayList<Order> orders = new ArrayList<>();
+        while (resultSet.next()){
+            orders.add(new Order(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
+                    resultSet.getString(5),resultSet.getString(6),resultSet.getString(7),
+                    resultSet.getString(8),resultSet.getString(9)));
+        }
+        return orders;
     }
 }

@@ -31,7 +31,7 @@
                       </ul>
                   </li>
                   <li><a href="allCars.jsp">Автомобили</a></li>
-                  <li id="account"><a href="">${sessionScope.nameAccount} | ${sessionScope.emailAccount}</a></li>
+                  <li id="account"><a href="account.jsp">${sessionScope.nameAccount} | ${sessionScope.emailAccount}</a></li>
                   <li style="margin-right: auto;"><a href="">
                         <form action="FrontController" method="get">
                             <input type="hidden" name="command" value="LOG_OFF_COMMAND">
