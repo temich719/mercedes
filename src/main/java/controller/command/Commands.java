@@ -22,6 +22,10 @@ public enum Commands {
     MAKE_TEST_DRIVE_ORDER_COMMAND(new MakeTestDriveOrderCommand()),
     TRUCK_SERVICE_ORDER_COMMAND(new TruckServiceOrderCommand()),
     MAKE_SERVICE_ORDER_COMMAND(new MakeServiceOrderCommand()),
+    UPLOAD_AVATAR_COMMAND(new UploadAvatarCommand()),
+    ACCOUNT_PAGE_COMMAND(new AccountPageCommand()),
+    MARK_AS_READ_COMMAND(new MarkAsReadCommand()),
+    DELETE_ORDER_FROM_ACCOUNT_COMMAND(new DeleteOrderFromAccountCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;

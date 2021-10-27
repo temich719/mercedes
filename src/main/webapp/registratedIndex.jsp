@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
+        <c:set var="count" scope="session" value="${sessionScope.count}" />
 
 <html>
     <head>
@@ -31,7 +33,12 @@
                       </ul>
                   </li>
                   <li><a href="allCars.jsp">Автомобили</a></li>
-                  <li id="account"><a href="account.jsp">${sessionScope.nameAccount} | ${sessionScope.emailAccount}</a></li>
+                  <li style="margin-right: auto;"><a href="">
+                        <form action="FrontController" method="get">
+                           <input type="hidden" name="command" value="ACCOUNT_PAGE_COMMAND">
+                           <button><c:out value="${sessionScope.nameAccount}  ${sessionScope.emailAccount}" /></button>
+                        </form>
+                  </a></li>
                   <li style="margin-right: auto;"><a href="">
                         <form action="FrontController" method="get">
                             <input type="hidden" name="command" value="LOG_OFF_COMMAND">
@@ -40,6 +47,11 @@
                   </a></li>
               </ul>
          </nav>
+
+         <!--<span>${sessionScope.count}</span>-->
+          <span style="color: white;background: red;width: 30px;border-radius: 100%;position: absolute;text-align: center;margin-top: -4.5%;margin-left: 70%;">
+             <c:out value="${count}" />
+          </span>
 
             <video pip="false" style="z-index: -1;" src="videos/gt63.mp4" autoplay loop width="100%" muted id="video"></video>
             <p id="gt63">Mercedes-Benz GT63</p>

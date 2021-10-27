@@ -24,6 +24,7 @@ create table if not exists users(
     email varchar(50) unique not null,
     password varchar(50) not null,
     access_type varchar(20) not null,
+    avatar varchar(100),
     foreign key(user_name) references names(user_name),
     foreign key(user_surname) references surnames(user_surname),
     foreign key(access_type) references access_types(access_type)
@@ -87,6 +88,7 @@ create table if not exists orders(
     price varchar(20) not null,
     phone varchar(20) not null,
     date varchar(20),
+    status_in_account varchar(10),--need to make this line a foreign key and create new table with statuses
     foreign key(car_name) references allCars(allCars_name),
     foreign key(service) references services(service),
     foreign key(user_name) references names(user_name),

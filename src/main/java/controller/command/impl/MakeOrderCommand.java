@@ -29,7 +29,8 @@ public class MakeOrderCommand implements ICommand {
             req.setAttribute("mark", markAndPrice[0]);
             return "formOfOrder";
         }
-        new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone,null);
+        if (Objects.isNull(markAndPrice[1])) new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2],phone, null);
+        else new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone,null);
         try {
             Mail.sendOrder(email, markAndPrice[0], markAndPrice[1]);
         } catch (IOException e) {
@@ -38,6 +39,7 @@ public class MakeOrderCommand implements ICommand {
             System.out.println("MessageException");
         }
         req.setAttribute("email", email);
+        req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));
         return "thanks";
     }
 }

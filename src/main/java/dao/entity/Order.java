@@ -11,8 +11,9 @@ public class Order {
     private final String price;
     private final String phone;
     private final String date;
+    private final String status;
 
-    public Order(String name, String surname, String email, String service, String mark, String price, String phone, String date) {
+    public Order(String name, String surname, String email, String service, String mark, String price, String phone, String date, String status) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -21,10 +22,15 @@ public class Order {
         this.price = price;
         this.phone = phone;
         this.date = date;
+        this.status = status;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getStatus(){
+        return status;
     }
 
     public String getSurname() {

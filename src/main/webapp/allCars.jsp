@@ -40,7 +40,7 @@
                         <input type="hidden" name="command" value="Filter_All_Cars_COMMAND">
                         <input type="hidden" name="type" value="minibus">
                         <button class="types" style="${requestScope.minibusButton}">Малотоннажные</button>
-                   </form>
+                    </form>
                 </li>
                 <li>
                     <form action="FrontController" method="get" class="ft" style="${requestScope.truckForm}">

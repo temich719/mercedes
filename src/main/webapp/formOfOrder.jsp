@@ -30,21 +30,21 @@
                         </span>
                     </span>
                     <input style="margin-top: 9%;margin-left: 7%;width: 40%;" type="text" name="name" placeholder="Иван"
-                    value=${requestScope.nameAccount}><br>
+                    value=${sessionScope.accountName}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
                             Фамилия:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="surname" placeholder="Иванов"
-                    value=${requestScope.surnameAccount}><br>
+                    value=${sessionScope.accountSurname}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
                             E-mail:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="email" placeholder="example@mail.ru"
-                    value=${requestScope.emailAccount}><br>
+                    value=${sessionScope.emailAccount}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
                             Телефон:<span style="color: red;">*</span>

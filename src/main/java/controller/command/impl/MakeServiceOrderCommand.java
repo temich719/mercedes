@@ -38,6 +38,7 @@ public class MakeServiceOrderCommand implements ICommand {
             System.out.println("MessagingException");
         }
         req.setAttribute("email", email);
+        req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));
         return "thanks";
     }
 }

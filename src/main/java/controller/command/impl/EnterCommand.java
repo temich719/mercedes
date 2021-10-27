@@ -23,6 +23,7 @@ public class EnterCommand implements ICommand {
                 session.setAttribute("accountName", names.getFirst());
                 session.setAttribute("accountSurname", names.getSecond());
                 session.setAttribute("emailAccount", pair.getFirst());
+                session.setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(pair.getFirst()));
                 return "registratedIndex";
             }
         }

@@ -118,7 +118,6 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
         return cars;
     }
 
-    //ну такое
     public String[] getMarkAndPriceByImage(String imagePath)throws SQLException{
         String[] resultSet = new String[3];
         Car car = null;
@@ -214,24 +213,38 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
 
     @Override
     public void addOrder(String name, String surname, String email, String service, String carName, String price, String phone, String date)throws  SQLException{
-        if (!isAlreadyExistsInDatabase(name, SELECT_FROM_NAMES))
-            statement.executeUpdate("insert into names(user_name) values('"+name+"');");
-        if (!isAlreadyExistsInDatabase(surname, SELECT_FROM_SURNAMES))
-            statement.executeUpdate("insert into surnames(user_surname) values('"+surname+"');");
-        statement.executeUpdate("insert into orders(user_name,user_surname,email,service,car_name,price,phone,date) values('"+
-                name+"','"+surname+"','"+email+"','"+service+"','"+carName+"','"+price+"','"+phone+"','"+date+"');");
+        if (Objects.isNull(date)){
+            statement.executeUpdate("insert into orders(user_name,user_surname,email,service,car_name,price,phone,status_in_account) values('"+
+                    name+"','"+surname+"','"+email+"','"+service+"','"+carName+"','"+price+"','"+phone+"','unread');");
+        }
+        else {
+            if (!isAlreadyExistsInDatabase(name, SELECT_FROM_NAMES))
+                statement.executeUpdate("insert into names(user_name) values('" + name + "');");
+            if (!isAlreadyExistsInDatabase(surname, SELECT_FROM_SURNAMES))
+                statement.executeUpdate("insert into surnames(user_surname) values('" + surname + "');");
+            statement.executeUpdate("insert into orders(user_name,user_surname,email,service,car_name,price,phone,date,status_in_account) values('" +
+                    name + "','" + surname + "','" + email + "','" + service + "','" + carName + "','" + price + "','" + phone + "','" + date + "','unread');");
+        }
     }
 
-    /*public static ArrayList<Order> getListOfOrdersByEmail(String email)throws SQLException{
-        ResultSet resultSet = statement.executeQuery("select * from orders where email='" + email + "';");
-        ArrayList<Order> orders = new ArrayList<>();
-        while (resultSet.next()){
-            orders.add(new Order(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
-                    resultSet.getString(5),resultSet.getString(6),resultSet.getString(7),
-                    resultSet.getString(8),resultSet.getString(9)));
+    @Override
+    public void deleteOrder(String name, String surname, String email, String service, String mark, String price, String date, String phone)throws SQLException{
+        if (Objects.isNull(date) || date.equals("")){
+            statement.execute("delete from orders where user_name='"+name+"' && user_surname='"+surname+"' && email='"+email+"' && service='"+
+                    service+"' && car_name='"+mark+"' && price='"+price+"' && phone='"+phone+"';");
         }
-        return orders;
-    }*/
+        else statement.execute("delete from orders where user_name='"+name+"' && user_surname='"+surname+"' && email='"+email+"' && service='"+
+                service+"' && car_name='"+mark+"' && price='"+price+"' && date='"+date+"' && phone='"+phone+"';");
+    }
+
+    public static String getCountOfUnreadOrders(String email)throws SQLException{
+        ResultSet resultSet = statement.executeQuery("select status_in_account from orders where email = '" + email + "';");
+        int size = 0;
+        while (resultSet.next()){
+            if (resultSet.getString(1).equals("unread"))size++;
+        }
+        return size+"";
+    }
 
     public static ArrayList<Order> getListOfOrders() throws SQLException{
         ResultSet resultSet = statement.executeQuery("select * from orders;");
@@ -239,8 +252,29 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
         while (resultSet.next()){
             orders.add(new Order(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
                     resultSet.getString(5),resultSet.getString(6),resultSet.getString(7),
-                    resultSet.getString(8),resultSet.getString(9)));
+                    resultSet.getString(8),resultSet.getString(9), resultSet.getString(10)));
         }
         return orders;
+    }
+
+    public static void addAvatar(String avatarPath, String email)throws SQLException{
+        statement.executeUpdate("update users set avatar = '" + avatarPath + "' where email = '" + email + "';");
+    }
+
+    public String getAvatarPathByEmail(String email)throws SQLException{
+        ResultSet resultSet = statement.executeQuery("select avatar from users where email='" + email + "';");
+        resultSet.next();
+        return resultSet.getString(1);
+    }
+
+    public static void markAsRead(String name, String surname, String email, String service, String mark)throws SQLException{
+        System.out.println("1-" + name);
+        System.out.println("2-" + surname);
+        System.out.println("3-" + email);
+        System.out.println("4-" + service);
+        System.out.println("5-" + mark);
+
+        statement.executeUpdate("update orders set status_in_account = 'read' where user_name='"+name+
+                "' && user_surname='" +surname+"' && email='"+email+"' && service='"+service+"' && car_name='"+mark+"';" );
     }
 }

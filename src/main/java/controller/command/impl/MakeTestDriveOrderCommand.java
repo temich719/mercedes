@@ -45,6 +45,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
             System.out.println("MessageException");
         }
         req.setAttribute("email", email);
+        req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));
         return "thanks";
     }
 }
