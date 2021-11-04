@@ -26,6 +26,7 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
     private static final String SELECT_FROM_NAMES = "select * from names";
     private static final String SELECT_FROM_SURNAMES = "select * from surnames";
     private static final String SELECT_FROM_ACCESS_TYPES = "select * from access_types";
+    private static final String SELECT_FROM_ORDERS = "select * from orders;";
     private static Statement statement;
 
     static {
@@ -247,7 +248,7 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
     }
 
     public static ArrayList<Order> getListOfOrders() throws SQLException{
-        ResultSet resultSet = statement.executeQuery("select * from orders;");
+        ResultSet resultSet = statement.executeQuery(SELECT_FROM_ORDERS);
         ArrayList<Order> orders = new ArrayList<>();
         while (resultSet.next()){
             orders.add(new Order(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
@@ -268,12 +269,6 @@ public class DataBaseImpl implements UserDAO, OrderDAO {
     }
 
     public static void markAsRead(String name, String surname, String email, String service, String mark)throws SQLException{
-        System.out.println("1-" + name);
-        System.out.println("2-" + surname);
-        System.out.println("3-" + email);
-        System.out.println("4-" + service);
-        System.out.println("5-" + mark);
-
         statement.executeUpdate("update orders set status_in_account = 'read' where user_name='"+name+
                 "' && user_surname='" +surname+"' && email='"+email+"' && service='"+service+"' && car_name='"+mark+"';" );
     }

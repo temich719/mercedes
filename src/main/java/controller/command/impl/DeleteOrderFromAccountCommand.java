@@ -18,6 +18,7 @@ public class DeleteOrderFromAccountCommand implements ICommand {
         final String price = req.getParameter("price");
         final String date = req.getParameter("date");
         final String phone = req.getParameter("phone");
+        //make in service
         new DataBaseImpl().deleteOrder(name, surname, email, service, mark, price, date, phone);
         req.setAttribute("avatarImage", "img/" + new DataBaseImpl().getAvatarPathByEmail(email));
         req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));

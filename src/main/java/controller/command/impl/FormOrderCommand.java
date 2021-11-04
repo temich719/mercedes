@@ -14,6 +14,7 @@ public class FormOrderCommand implements ICommand {
         final String imagePath = req.getParameter("img");
         req.setAttribute("img", imagePath);
         //вытащить в переменные как в MakeOrderCommand
+        //make in service
         String[] markAndPrice = new DataBaseImpl().getMarkAndPriceByImage(imagePath);
         req.setAttribute("mark", markAndPrice[0]);
         if (Objects.isNull(markAndPrice[1]))req.setAttribute("money", markAndPrice[2]);

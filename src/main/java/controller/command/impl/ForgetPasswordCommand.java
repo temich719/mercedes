@@ -3,7 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import dao.database.impl.DataBaseImpl;
 import dao.entity.Pair;
-import service.Validator;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +25,7 @@ public class ForgetPasswordCommand implements ICommand {
             req.setAttribute("error","Пароль введен неверно!");
             return "forgetPassword";
         }
+        //make in service
         new DataBaseImpl().updatePassword(email, newPassword);
         Pair pair = new DataBaseImpl().getName(email);
         HttpSession session = req.getSession(true);

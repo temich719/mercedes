@@ -14,6 +14,7 @@ public class SelectCarTypeCommand implements ICommand {//во фронте кн�
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String carType = req.getParameter("carButton");
         CssEditor.pressedButton(carType, req);
+        //make in service
         req.setAttribute("cars", new DataBaseImpl().getCarListByType(carType));
         req.setAttribute("flag", "true");
         return "cars";

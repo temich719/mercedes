@@ -29,6 +29,7 @@ public class MakeServiceOrderCommand implements ICommand {
         final String mark;
         if (Objects.isNull(req.getParameter("selectName")))mark = req.getParameter("mark");
         else mark = req.getParameter("selectName");
+        //make in service
         new DataBaseImpl().addOrder(userName, userSurname, email, "service", mark, "После осмотра", phone, date);
         try {
             Mail.sendServiceOrder(email, mark, date, "После осмотра");

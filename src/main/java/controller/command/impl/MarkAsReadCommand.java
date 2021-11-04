@@ -15,6 +15,7 @@ public class MarkAsReadCommand implements ICommand {
         final String surname = req.getSession().getAttribute("accountSurname").toString();
         final String email = req.getSession().getAttribute("emailAccount").toString();
         final String mark = req.getParameter("mark");
+        //make in service
         DataBaseImpl.markAsRead(name, surname, email, service, mark);
         req.setAttribute("avatarImage", "img/" + new DataBaseImpl().getAvatarPathByEmail(email));
         req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));

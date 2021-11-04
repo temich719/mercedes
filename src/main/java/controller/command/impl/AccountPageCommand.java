@@ -11,6 +11,7 @@ import java.util.Objects;
 public class AccountPageCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        //make in service && DaoFactory
         final String avatarPath = new DataBaseImpl().getAvatarPathByEmail(req.getSession().getAttribute("emailAccount").toString());
         if (Objects.isNull(avatarPath))req.setAttribute("avatarImage", "img/avatar.jpg");
         else req.setAttribute("avatarImage", "img/" + avatarPath);

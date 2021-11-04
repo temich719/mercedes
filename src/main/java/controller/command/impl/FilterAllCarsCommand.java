@@ -18,6 +18,7 @@ public class FilterAllCarsCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String carType = req.getParameter("type");
         CssEditor.pressedButton(carType, req);
+        //make in service
         if (carType.equals("car")){
             ArrayList<Car> cars = DataBaseImpl.getCars();
             req.setAttribute("filtered", cars);

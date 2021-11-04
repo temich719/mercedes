@@ -20,6 +20,7 @@ public class MakeOrderCommand implements ICommand {
         final String phone = req.getParameter("phone");
         final String imagePath = req.getParameter("img");
         //нужно вытащить в переменные для понятности mark price и money
+        //make in service
         String[] markAndPrice = new DataBaseImpl().getMarkAndPriceByImage(imagePath);
         if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")){
             req.setAttribute("error", "Заполните все обязательные поля!");
@@ -29,6 +30,7 @@ public class MakeOrderCommand implements ICommand {
             req.setAttribute("mark", markAndPrice[0]);
             return "formOfOrder";
         }
+        //make in service
         if (Objects.isNull(markAndPrice[1])) new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2],phone, null);
         else new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone,null);
         try {

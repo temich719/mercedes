@@ -33,9 +33,11 @@ public class MakeTestDriveOrderCommand implements ICommand {
         String image;
         if (Objects.isNull(req.getParameter("selectName"))){
             image = req.getParameter("mark");
+            //make in service
             mark = new DataBaseImpl().getCarMarkByImage(image);
         }
         else mark = req.getParameter("selectName");
+        //make in service
         new DataBaseImpl().addOrder(userName, userSurname, email, "test-drive", mark, "20$", phone, date);
         try {
             Mail.sendTestDriveOrder(email, mark, date, "20$");

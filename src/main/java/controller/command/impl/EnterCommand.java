@@ -14,6 +14,7 @@ public class EnterCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         Pair pair = new Pair(req.getParameter("email"), req.getParameter("password"));
+        //make in service
         ArrayList<Pair> arrayList = new DataBaseImpl().selectDataForEnter();
         for (Pair value : arrayList) {
             if (value.getFirst().equals(pair.getFirst()) && value.getSecond().equals(pair.getSecond())){
@@ -23,6 +24,7 @@ public class EnterCommand implements ICommand {
                 session.setAttribute("accountName", names.getFirst());
                 session.setAttribute("accountSurname", names.getSecond());
                 session.setAttribute("emailAccount", pair.getFirst());
+                //make in service
                 session.setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(pair.getFirst()));
                 return "registratedIndex";
             }

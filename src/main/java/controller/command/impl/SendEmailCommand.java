@@ -1,8 +1,8 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import service.CodeConfirmGenerator;
-import service.Validator;
+import service.util.CodeConfirmGenerator;
+import service.util.Validator;
 import service.email.Mail;
 
 import javax.mail.MessagingException;

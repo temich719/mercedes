@@ -11,6 +11,7 @@ public class DefiniteTestDriveCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         final String img = req.getParameter("markToList");
+        //make in service
         req.setAttribute("sel", new DataBaseImpl().getCarMarkByImage(img));
         req.setAttribute("select", img);
         return "testDriveOrder";
