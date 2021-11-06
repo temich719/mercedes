@@ -1,24 +1,34 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import dao.database.impl.DataBaseImpl;
+import controller.exception.ControllerException;
 import dao.entity.car.Minibus;
+import service.CarService;
+import service.ServiceFactory;
+import service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 
 public class MinibusOrderCommand implements ICommand {
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
+    private final CarService carService = serviceFactory.getCarService();
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         final String imagePath = req.getParameter("img");
         Minibus minibus = null;
-        //make in service
-        for (Minibus i: DataBaseImpl.getMinibuses()) {
-            if (i.getImagePath().equals(imagePath)){
-                minibus = i;
-                break;
+        try {
+            for (Minibus i : carService.getMinibuses()) {
+                if (i.getImagePath().equals(imagePath)) {
+                    minibus = i;
+                    break;
+                }
             }
+        }
+        catch (ServiceException e){
+            throw new ControllerException(e);
         }
         req.setAttribute("mark", minibus.getNameOfMark());
         req.setAttribute("money", minibus.getPrice());

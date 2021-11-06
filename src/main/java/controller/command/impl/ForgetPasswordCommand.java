@@ -1,18 +1,24 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import dao.database.impl.DataBaseImpl;
+import controller.exception.ControllerException;
 import dao.entity.Pair;
+import service.ServiceFactory;
+import service.UserService;
+import service.exception.ServiceException;
 import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 
 public class ForgetPasswordCommand implements ICommand {
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
+    private final UserService userService = serviceFactory.getUserService();
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         final String newPassword = req.getParameter("newPassword");
         final String email = req.getParameter("emailUpdate");
         if (!Validator.validatePassword(newPassword)){
@@ -25,12 +31,16 @@ public class ForgetPasswordCommand implements ICommand {
             req.setAttribute("error","Пароль введен неверно!");
             return "forgetPassword";
         }
-        //make in service
-        new DataBaseImpl().updatePassword(email, newPassword);
-        Pair pair = new DataBaseImpl().getName(email);
-        HttpSession session = req.getSession(true);
-        session.setAttribute("nameAccount", pair.getFirst() + " " + pair.getSecond());
-        session.setAttribute("emailAccount", email);
+        try {
+            userService.updatePassword(email, newPassword);
+            Pair pair = userService.getName(email);
+            HttpSession session = req.getSession(true);
+            session.setAttribute("nameAccount", pair.getFirst() + " " + pair.getSecond());
+            session.setAttribute("emailAccount", email);
+        }
+        catch (ServiceException e){
+            throw new ControllerException(e);
+        }
         return "registratedIndex";
     }
 }

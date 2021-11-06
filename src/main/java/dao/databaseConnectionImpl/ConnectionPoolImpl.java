@@ -18,8 +18,8 @@ import static dao.DAOFinals.*;
 public class ConnectionPoolImpl implements ConnectionPool{
 
     private final String DRIVER;
-    private final String FIXED_URL;
     private static boolean driverIsLoaded = false;
+    private final int connections = 50;
 
     private final BlockingQueue<Connection> availableConnections;
     private final BlockingQueue<Connection> takenConnections;
@@ -30,17 +30,18 @@ public class ConnectionPoolImpl implements ConnectionPool{
         String url = databaseConfigReader.get(DB_URL);
         String user = databaseConfigReader.get(DB_LOGIN);
         String password = databaseConfigReader.get(DB_PASSWORD);
-        this.FIXED_URL = url + "?user=" + user + "&password=" + password;//может быть не сработает
-        int amountOfConnections = Integer.parseInt(databaseConfigReader.get(DB_CONNECTIONS));
+        int amountOfConnections = connections;
         this.availableConnections = new ArrayBlockingQueue<>(amountOfConnections);
         this.takenConnections = new ArrayBlockingQueue<>(amountOfConnections);
 
         try {
             getJDBCDriver();
             for (int i = 0; i < amountOfConnections; i++) {
-                availableConnections.add(getConnection());
+                availableConnections.add(getConnection(url, user, password));
             }
-        } catch (DAOException e) {}
+        } catch (DAOException e) {
+            //тут будет логер
+        }
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
     }
 
     @Override
-    public void retrieve(Connection connection) throws DAOException {
+    public void retrieve(Connection connection) {
         if (connection != null) {
             takenConnections.remove(connection);
             availableConnections.add(connection);
@@ -68,10 +69,10 @@ public class ConnectionPoolImpl implements ConnectionPool{
     /**
      * creates a connection
      */
-    private Connection getConnection() throws DAOException{
-        Connection connection = null;
+    private Connection getConnection(String url, String user, String password) throws DAOException{
+        Connection connection;
         try {
-            connection = DriverManager.getConnection(FIXED_URL);
+            connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             shutdownTomcat();
             throw new DAOException("Connection to database failed", e);
@@ -99,7 +100,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
      */
     private static void shutdownTomcat() throws DAOException{
         try {
-            Socket socket = new Socket("localhost", 8005);
+            Socket socket = new Socket("localhost", 8080);
             if (socket.isConnected()) {
                 PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
                 pw.println("SHUTDOWN");

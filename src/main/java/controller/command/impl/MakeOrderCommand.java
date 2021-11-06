@@ -1,47 +1,63 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import dao.database.impl.DataBaseImpl;
+import controller.exception.ControllerException;
+import dao.entity.Order;
+import service.CarService;
+import service.OrderService;
+import service.ServiceFactory;
 import service.email.Mail;
+import service.exception.ServiceException;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class MakeOrderCommand implements ICommand {
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
+    private final CarService carService = serviceFactory.getCarService();
+    private final OrderService orderService = serviceFactory.getOrderService();
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         final String name = req.getParameter("name");
         final String surname = req.getParameter("surname");
         final String email = req.getParameter("email");
         final String phone = req.getParameter("phone");
         final String imagePath = req.getParameter("img");
-        //нужно вытащить в переменные для понятности mark price и money
-        //make in service
-        String[] markAndPrice = new DataBaseImpl().getMarkAndPriceByImage(imagePath);
-        if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")){
-            req.setAttribute("error", "Заполните все обязательные поля!");
-            req.setAttribute("img", imagePath);
-            if (Objects.isNull(markAndPrice[1]))req.setAttribute("money", markAndPrice[2]);
-            else req.setAttribute("price", markAndPrice[1]);
-            req.setAttribute("mark", markAndPrice[0]);
-            return "formOfOrder";
-        }
-        //make in service
-        if (Objects.isNull(markAndPrice[1])) new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2],phone, null);
-        else new DataBaseImpl().addOrder(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone,null);
         try {
-            Mail.sendOrder(email, markAndPrice[0], markAndPrice[1]);
-        } catch (IOException e) {
-            System.out.println("IOException");
-        } catch (MessagingException e) {
-            System.out.println("MessageException");
+            String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
+            if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
+                req.setAttribute("error", "Заполните все обязательные поля!");
+                req.setAttribute("img", imagePath);
+                if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
+                else req.setAttribute("price", markAndPrice[1]);
+                req.setAttribute("mark", markAndPrice[0]);
+                return "formOfOrder";
+            }
+            if (Objects.isNull(markAndPrice[1]))
+                orderService.addOrder(
+                    new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2], phone, null, "unread")
+            );
+            else orderService.addOrder(
+                    new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone, null, "unread")
+            );
+            try {
+                Mail.sendOrder(email, markAndPrice[0], markAndPrice[1]);
+            } catch (IOException e) {
+                System.out.println("IOException");
+            } catch (MessagingException e) {
+                System.out.println("MessageException");
+            }
+            req.setAttribute("email", email);
+            req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
         }
-        req.setAttribute("email", email);
-        req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));
+        catch (ServiceException e){
+            throw new ControllerException(e);
+        }
         return "thanks";
     }
 }

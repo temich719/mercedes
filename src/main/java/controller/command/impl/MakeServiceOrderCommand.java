@@ -1,19 +1,26 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import dao.database.impl.DataBaseImpl;
+import controller.exception.ControllerException;
+import dao.entity.Order;
+import service.OrderService;
+import service.ServiceFactory;
 import service.email.Mail;
+import service.exception.ServiceException;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class MakeServiceOrderCommand implements ICommand {
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
+    private final OrderService orderService = serviceFactory.getOrderService();
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         final String userName = req.getParameter("name");
         final String userSurname = req.getParameter("surname");
         final String email = req.getParameter("email");
@@ -29,17 +36,21 @@ public class MakeServiceOrderCommand implements ICommand {
         final String mark;
         if (Objects.isNull(req.getParameter("selectName")))mark = req.getParameter("mark");
         else mark = req.getParameter("selectName");
-        //make in service
-        new DataBaseImpl().addOrder(userName, userSurname, email, "service", mark, "После осмотра", phone, date);
         try {
-            Mail.sendServiceOrder(email, mark, date, "После осмотра");
-        } catch (IOException e) {
-            System.out.println("IOException");
-        } catch (MessagingException e) {
-            System.out.println("MessagingException");
+            orderService.addOrder(new Order(userName, userSurname, email, "service", mark, "После осмотра", phone, date, "unread"));
+            try {
+                Mail.sendServiceOrder(email, mark, date, "После осмотра");
+            } catch (IOException e) {
+                System.out.println("IOException");
+            } catch (MessagingException e) {
+                System.out.println("MessagingException");
+            }
+            req.setAttribute("email", email);
+            req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
         }
-        req.setAttribute("email", email);
-        req.getSession().setAttribute("count", DataBaseImpl.getCountOfUnreadOrders(email));
+        catch (ServiceException e){
+            throw new ControllerException(e);
+        }
         return "thanks";
     }
 }

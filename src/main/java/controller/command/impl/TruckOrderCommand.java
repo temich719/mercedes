@@ -4,12 +4,11 @@ import controller.command.ICommand;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class TruckOrderCommand implements ICommand {
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) {
         req.setAttribute("mark","Actros");
         req.setAttribute("img","img/truck.jpg");
         req.setAttribute("money", "73 000$");
@@ -26,6 +25,6 @@ public class TruckOrderCommand implements ICommand {
             req.setAttribute("surnameAccount", strings[1]);
             req.setAttribute("emailAccount", req.getSession().getAttribute("emailAccount"));
         }
-        return "formOfOrder";//Страница с благодарностью
+        return "formOfOrder";
     }
 }

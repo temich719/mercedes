@@ -2,9 +2,9 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-     <%@ page import="dao.database.impl.DataBaseImpl" %>
+     <%@ page import="dao.impl.CarDAOImpl" %>
 
-     <c:set var="cars" scope="request" value="<%=DataBaseImpl.getAllCars()%>" />
+     <c:set var="cars" scope="request" value="<%=CarDAOImpl.getAllCars()%>" />
      <c:set var="select" scope="request" value="${requestScope.select}" />
      <c:set var="sel" scope="request" value="${requestScope.sel}" />
 

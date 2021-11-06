@@ -2,9 +2,9 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-     <%@ page import="dao.database.impl.DataBaseImpl" %>
+     <%@ page import="dao.impl.OrderDAOImpl" %>
 
-     <c:set var="orders" scope="request" value="<%=DataBaseImpl.getListOfOrders()%>" />
+     <c:set var="orders" scope="request" value="<%=OrderDAOImpl.getListOfOrders()%>" />
 
 <html>
     <head>

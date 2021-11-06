@@ -1,35 +1,32 @@
 package dao.databaseConnectionImpl;
 
 import dao.DataBaseConfigReader;
-import dao.exception.DAOException;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
-
-import static dao.DAOFinals.DATABASE_SETTINGS_PATH;
 
 public class DataBaseConfigReaderImpl implements DataBaseConfigReader {
     private Properties properties;
 
     public DataBaseConfigReaderImpl() {
-        try {
-            load();
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
+        load();
     }
 
-    /**
-     * <p>Loads properties' file</p>
-     * @throws DAOException module exception
-     */
-    private void load() throws DAOException {
-        try (InputStream is = DataBaseConfigReaderImpl.class.getClassLoader().getResourceAsStream(DATABASE_SETTINGS_PATH)) {
-            properties = new Properties();
-            properties.load(is);
+    private void load() {
+        properties = new Properties();
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream("C:\\Projects\\Servlet\\src\\main\\resources\\databaseConfig.properties");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            properties.load(in);
+            in.close();
         } catch (IOException e) {
-            throw new DAOException("Error while initializing DatabaseConfigReader", e);
+            e.printStackTrace();
         }
     }
 

@@ -1,24 +1,34 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import dao.database.impl.DataBaseImpl;
+import controller.exception.ControllerException;
 import dao.entity.car.Car;
+import service.CarService;
+import service.ServiceFactory;
+import service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 
 public class ViewCarCommand implements ICommand {
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
+    private final CarService carService = serviceFactory.getCarService();
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         final String nameOfMark = req.getParameter("nameOfMark");
         Car car = null;
-        //make in service
-        for (Car i: DataBaseImpl.getCars()) {
-            if (i.getNameOfMark().equals(nameOfMark)){
-                car = i;
-                break;
+        try {
+            for (Car i : carService.getCars()) {
+                if (i.getNameOfMark().equals(nameOfMark)) {
+                    car = i;
+                    break;
+                }
             }
+        }
+        catch (ServiceException e){
+            throw new ControllerException(e);
         }
         req.setAttribute("nameOfMark", nameOfMark);
         req.setAttribute("img", car.getImagePath());

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-     <%@ page import="dao.database.impl.DataBaseImpl" %>
+     <%@ page import="dao.impl.CarDAOImpl" %>
 
      <c:set var="account" scope="request" value="${sessionScope.nameAccount}" />
 
@@ -51,7 +51,7 @@
             <div style="margin-top: 37%;padding-left: 11%;"> </div>
             <br>
             <div style="width: 100%;">
-                <c:forEach var="minibus" items="<%=DataBaseImpl.getMinibuses()%>" >
+                <c:forEach var="minibus" items="<%=CarDAOImpl.getMinibuses()%>" >
                     <div class="forms">
                         <form action="FrontController" method="get">
                             <input type="hidden" name="command" value="MINIBUS_ORDER_COMMAND">

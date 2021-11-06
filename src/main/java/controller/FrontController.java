@@ -2,13 +2,13 @@ package controller;
 
 import controller.command.CommandFactory;
 import controller.command.ICommand;
+import controller.exception.ControllerException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class FrontController extends HttpServlet{
     @Override
@@ -23,13 +23,13 @@ public class FrontController extends HttpServlet{
         String forward = null;
         try {
             forward = handleRequest(request, response);
-        } catch (SQLException throwable) {
+        } catch (ControllerException throwable) {
             throwable.printStackTrace();
         }
         request.getRequestDispatcher( forward + ".jsp").forward(request, response);
     }
 
-    private String handleRequest(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+    private String handleRequest(HttpServletRequest request, HttpServletResponse response) throws ControllerException {
         ICommand iCommand = CommandFactory.createCommand(request);
         return iCommand.execute(request, response);
     }

@@ -1,9 +1,10 @@
 package controller.command;
 
+import controller.exception.ControllerException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 
 public interface ICommand {
-    String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException;
+    String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException;
 }

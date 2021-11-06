@@ -1,6 +1,6 @@
 package dao.entity;
 
-//изменить password на char[], добавить equals hashCode toString
+// TODO: 06.11.2021 изменить password на char[], добавить equals hashCode toString
 public class User {
 
     private static int id = 0;
@@ -18,4 +18,27 @@ public class User {
         this.password = password;
     }
 
+    public static int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getAccessType() {
+        return accessType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

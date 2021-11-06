@@ -1,7 +1,10 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
-import dao.database.impl.DataBaseImpl;
+import controller.exception.ControllerException;
+import service.ServiceFactory;
+import service.UserService;
+import service.exception.ServiceException;
 import service.util.CodeConfirmGenerator;
 import service.util.Validator;
 import service.email.Mail;
@@ -11,18 +14,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class RegistrationCommand implements ICommand {
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
+    private final UserService userService = serviceFactory.getUserService();
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         final String email = req.getParameter("email");
-        //make in service
-        if (new DataBaseImpl().isExistingEmail(email.trim())){
-            req.setAttribute("error", "Данная электронная почта уже зарегистрирована!");
-            return "registration";
+        try {
+            if (userService.isExistingEmail(email.trim())) {
+                req.setAttribute("error", "Данная электронная почта уже зарегистрирована!");
+                return "registration";
+            }
         }
-        final String password = req.getParameter("password");//why we need char[]???
+        catch (ServiceException e){
+            throw new ControllerException(e);
+        }
+        // TODO: 06.11.2021 password in char[]
+        final String password = req.getParameter("password");
         if (Validator.validateEmail(email.trim())){
             if (Validator.validatePassword(password)){
                 req.getSession().setAttribute("email", email);
