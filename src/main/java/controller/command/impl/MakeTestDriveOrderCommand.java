@@ -29,12 +29,19 @@ public class MakeTestDriveOrderCommand implements ICommand {
         final String phone = req.getParameter("phone");
         final String date = req.getParameter("date");
         final String sel = req.getParameter("sel");
+        final String def = req.getParameter("defImage");
+        System.out.println(def);
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
                 || date.equals("")){
             req.setAttribute("error", "Заполните все обязательные поля!");
             if (Objects.nonNull(sel)){
                 req.setAttribute("select", "true");
-                req.setAttribute("sel", sel);
+                req.setAttribute("defImage", def);
+                try {
+                    req.setAttribute("sel", carService.getCarMarkByImage(def));
+                } catch (ServiceException e) {
+                    throw new ControllerException(e);
+                }
             }
             return "testDriveOrder";
         }
@@ -42,8 +49,10 @@ public class MakeTestDriveOrderCommand implements ICommand {
         String image;
         try {
             if (Objects.isNull(req.getParameter("selectName"))) {
-                image = req.getParameter("mark");
+                image = req.getParameter("defImage");
+                System.out.println(image);
                 mark = carService.getCarMarkByImage(image);
+                System.out.println(mark);
             } else mark = req.getParameter("selectName");
             orderService.addOrder(new Order(userName, userSurname, email, "test-drive", mark, "20$", phone, date, "unread"));
             try {

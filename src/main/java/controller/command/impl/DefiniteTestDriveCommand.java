@@ -19,6 +19,7 @@ public class DefiniteTestDriveCommand implements ICommand {
         final String img = req.getParameter("markToList");
         try {
             req.setAttribute("sel", carService.getCarMarkByImage(img));
+            req.setAttribute("defImage", img);
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }

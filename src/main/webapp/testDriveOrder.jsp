@@ -7,6 +7,7 @@
      <c:set var="cars" scope="request" value="<%=CarDAOImpl.getAllCars()%>" />
      <c:set var="select" scope="request" value="${requestScope.select}" />
      <c:set var="sel" scope="request" value="${requestScope.sel}" />
+     <c:set var="def" scope="request" value="${requestScope.defImage}" />
 
 <html>
     <head>
@@ -27,6 +28,7 @@
                    <!-- <img src="images/hatchback.png" alt="" style=" width: 657px;width: 345px; padding-top: 4px;padding-left: 5px;">-->
                 </div>
                 <form action="FrontController" method="get">
+                    <input type="hidden" name="defImage" value=${def}>
                     <input type="hidden" name="command" value="MAKE_TEST_DRIVE_ORDER_COMMAND">
                     <input type="hidden" name="mark" value=${select}>
                     <c:choose>
