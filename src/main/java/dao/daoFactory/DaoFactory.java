@@ -16,14 +16,14 @@ public class DaoFactory {
     private static final DaoFactory INSTANCE = new DaoFactory();
     private final CarDAO carDAO;
     private final OrderDAO orderDAO;
-    private final UserDAOTime userDAOTime;
-    private final JspDAOImpl dataBase;
+    private final UserDAO userDAO;
+    private final JspDAOImpl jspDAO;
 
     private DaoFactory(){
         this.carDAO = new CarDAOImpl(connectionPool);
         this.orderDAO = new OrderDAOImpl(connectionPool);
-        this.userDAOTime = new UserDAOImpl(connectionPool);
-        this.dataBase = new JspDAOImpl(connectionPool);
+        this.userDAO = new UserDAOImpl(connectionPool);
+        this.jspDAO = new JspDAOImpl(connectionPool);
     }
 
     public static DaoFactory getINSTANCE() {
@@ -38,9 +38,9 @@ public class DaoFactory {
         return orderDAO;
     }
 
-    public UserDAOTime getUserDAOTime() {
-        return userDAOTime;
+    public UserDAO getUserDAOTime() {
+        return userDAO;
     }
 
-    public JspDAOImpl getDataBase(){return dataBase;}
+    public JspDAOImpl getDataBase(){return jspDAO;}
 }

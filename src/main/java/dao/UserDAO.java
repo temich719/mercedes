@@ -7,7 +7,7 @@ import dao.exception.DAOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public interface UserDAOTime {
+public interface UserDAO {
     void insertUser(User user) throws DAOException;
     ResultSet getResultSetOfAllUsers() throws DAOException;
     void updatePassword(String email, String password) throws DAOException;

@@ -2,7 +2,7 @@ package dao.impl;
 
 import dao.AbstractDAO;
 import dao.ConnectionPool;
-import dao.UserDAOTime;
+import dao.UserDAO;
 import dao.entity.Pair;
 import dao.entity.User;
 import dao.exception.DAOException;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class UserDAOImpl extends AbstractDAO implements UserDAOTime {
+public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     private static final String SELECT_FROM_NAMES = "select * from names";
     private static final String SELECT_FROM_SURNAMES = "select * from surnames";

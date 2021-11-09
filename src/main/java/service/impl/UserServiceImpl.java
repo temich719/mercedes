@@ -1,6 +1,6 @@
 package service.impl;
 
-import dao.UserDAOTime;
+import dao.UserDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Pair;
 import dao.entity.User;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class UserServiceImpl implements UserService {
 
-    private final UserDAOTime userDAO = DaoFactory.getINSTANCE().getUserDAOTime();
+    private final UserDAO userDAO = DaoFactory.getINSTANCE().getUserDAOTime();
 
     public UserServiceImpl(){}
 
