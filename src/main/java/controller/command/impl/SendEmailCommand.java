@@ -1,6 +1,7 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
+import org.apache.log4j.Logger;
 import service.util.CodeConfirmGenerator;
 import service.util.Validator;
 import service.email.Mail;
@@ -12,8 +13,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class SendEmailCommand implements ICommand {
+
+    private final static Logger logger = Logger.getLogger(SendEmailCommand.class);
+
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
+        logger.info("We got to SendEmailCommand");
         final String email = req.getParameter("email");
         if (!Validator.validateEmail(email)){
             req.setAttribute("error", "Неверный email!");

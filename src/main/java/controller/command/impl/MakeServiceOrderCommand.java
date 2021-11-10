@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import dao.entity.Order;
+import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
 import service.email.Mail;
@@ -16,11 +17,13 @@ import java.util.Objects;
 
 public class MakeServiceOrderCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(MakeServiceOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final OrderService orderService = serviceFactory.getOrderService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to MakeServiceOrderCommand");
         final String userName = req.getParameter("name");
         final String userSurname = req.getParameter("surname");
         final String email = req.getParameter("email");

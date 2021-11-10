@@ -13,6 +13,7 @@ public class CommandFactory {
             iCommand = Commands.valueOf(command).getCommand();
         }
         else {
+            // TODO: 10.11.2021 add errorCommand to commands
             iCommand = Commands.valueOf("ERROR_COMMAND").getCommand();
         }
         return iCommand;

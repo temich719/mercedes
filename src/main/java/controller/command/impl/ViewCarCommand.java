@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import dao.entity.car.Car;
+import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
@@ -12,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ViewCarCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(ViewCarCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to ViewCarCommand");
         final String nameOfMark = req.getParameter("nameOfMark");
         Car car = null;
         try {

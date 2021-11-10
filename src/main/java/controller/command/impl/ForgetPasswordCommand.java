@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import dao.entity.Pair;
+import org.apache.log4j.Logger;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
@@ -14,11 +15,13 @@ import javax.servlet.http.HttpSession;
 
 public class ForgetPasswordCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(ForgetPasswordCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to ForgetPasswordCommand");
         final String newPassword = req.getParameter("newPassword");
         final String email = req.getParameter("emailUpdate");
         if (!Validator.validatePassword(newPassword)){

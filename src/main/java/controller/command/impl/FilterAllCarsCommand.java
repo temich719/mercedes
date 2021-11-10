@@ -5,6 +5,7 @@ import controller.exception.ControllerException;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
+import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.cssEditor.CssEditor;
@@ -16,11 +17,13 @@ import java.util.ArrayList;
 
 public class FilterAllCarsCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(FilterAllCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to FilterAllCarsCommand");
         final String carType = req.getParameter("type");
         CssEditor.pressedButton(carType, req);
         try {

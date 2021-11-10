@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import dao.entity.User;
+import org.apache.log4j.Logger;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
@@ -12,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ConfirmationCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(ConfirmationCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to ConfirmationCommand");
         final String code = req.getParameter("code");
         final String userInput = req.getParameter("confirmation");
         if (!userInput.equals(code)){

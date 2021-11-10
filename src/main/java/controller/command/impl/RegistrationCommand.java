@@ -2,6 +2,7 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
+import org.apache.log4j.Logger;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
@@ -17,11 +18,13 @@ import java.io.IOException;
 
 public class RegistrationCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(RegistrationCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to RegistrationCommand");
         final String email = req.getParameter("email");
         try {
             if (userService.isExistingEmail(email.trim())) {

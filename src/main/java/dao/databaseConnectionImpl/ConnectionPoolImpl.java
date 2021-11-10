@@ -3,6 +3,7 @@ package dao.databaseConnectionImpl;
 import dao.ConnectionPool;
 import dao.DataBaseConfigReader;
 import dao.exception.DAOException;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,7 @@ import static dao.DAOFinals.*;
 
 public class ConnectionPoolImpl implements ConnectionPool{
 
+    private final static Logger logger = Logger.getLogger(ConnectionPoolImpl.class);
     private final String DRIVER;
     private static boolean driverIsLoaded = false;
     private final int connections = 50;
@@ -40,7 +42,8 @@ public class ConnectionPoolImpl implements ConnectionPool{
                 availableConnections.add(getConnection(url, user, password));
             }
         } catch (DAOException e) {
-            //тут будет логер
+            logger.info("availableConnections.size() is " + availableConnections.size());
+            logger.info("takenConnections.size() is " + takenConnections.size());
         }
     }
 
@@ -53,6 +56,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
         } catch (InterruptedException e) {
             throw new DAOException(e);
         }
+        logger.info("ConnectionPool.provide()");
+        logger.info("ConnectionPool.availableConnections.size() is " + availableConnections.size());
+        logger.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
         return newConnection;
     }
 
@@ -62,8 +68,11 @@ public class ConnectionPoolImpl implements ConnectionPool{
             takenConnections.remove(connection);
             availableConnections.add(connection);
         } else {
-            System.out.println("Connection is NULL");
+            logger.info("ConnectionPool.retrieve(Connection connection)");
+            logger.info("connection is NULL");
         }
+        logger.info("ConnectionPool.availableConnections.size() is " + availableConnections.size());
+        logger.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
     }
 
     /**
@@ -74,6 +83,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
+            logger.error("Could not connect to database");
             shutdownTomcat();
             throw new DAOException("Connection to database failed", e);
         }
@@ -88,7 +98,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
             try {
                 Class.forName(DRIVER);
                 driverIsLoaded = true;
+                logger.info("MySQL driver is loaded");
             } catch (ClassNotFoundException e) {
+                logger.error("MySQL driver is not loaded");
                 shutdownTomcat();
                 throw new DAOException("MySQL driver is not loaded", e);
             }

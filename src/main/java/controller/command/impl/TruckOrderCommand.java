@@ -1,14 +1,19 @@
 package controller.command.impl;
 
 import controller.command.ICommand;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 public class TruckOrderCommand implements ICommand {
+
+    private final static Logger logger = Logger.getLogger(TruckOrderCommand.class);
+
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
+        logger.info("We got to TruckOrderCommand");
         req.setAttribute("mark","Actros");
         req.setAttribute("img","img/truck.jpg");
         req.setAttribute("money", "73 000$");

@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import dao.entity.Order;
+import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
 import service.UserService;
@@ -13,12 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteOrderFromAccountCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(DeleteOrderFromAccountCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final OrderService orderService = serviceFactory.getOrderService();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to DeleteOrderFromAccountCommand");
         final String name = req.getSession().getAttribute("accountName").toString();
         final String surname = req.getSession().getAttribute("accountSurname").toString();
         final String email = req.getSession().getAttribute("emailAccount").toString();

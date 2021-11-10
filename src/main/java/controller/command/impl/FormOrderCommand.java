@@ -2,6 +2,7 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
+import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
@@ -12,11 +13,13 @@ import java.util.Objects;
 
 public class FormOrderCommand implements ICommand {
 
+    private final static Logger logger = Logger.getLogger(FormOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
+        logger.info("We got to FormOrderCommand");
         final String imagePath = req.getParameter("img");
         req.setAttribute("img", imagePath);
         try {
