@@ -10,6 +10,7 @@ import dao.exception.DAOException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class JspDAOImpl extends AbstractDAO implements JspDAO {
 
@@ -119,6 +120,7 @@ public class JspDAOImpl extends AbstractDAO implements JspDAO {
         finally {
             connectionPool.retrieve(connection);
         }
+        Collections.reverse(orders);
         return orders;
     }
 

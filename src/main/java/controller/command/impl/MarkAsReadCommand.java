@@ -29,7 +29,7 @@ public class MarkAsReadCommand implements ICommand {
         try {
             orderService.markAsRead(name, surname, email, service, mark);
             req.setAttribute("avatarImage", "img/" + userService.getAvatarPathByEmail(email));
-            req.setAttribute("count", orderService.getCountOfUnreadOrders(email));
+            req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
         }
         catch (ServiceException e){
             throw new ControllerException(e);
