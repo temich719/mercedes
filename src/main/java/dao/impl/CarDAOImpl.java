@@ -9,29 +9,36 @@ import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
 import dao.exception.DAOException;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class CarDAOImpl extends AbstractDAO implements CarDAO {
 
+    private final static Logger logger = Logger.getLogger(CarDAOImpl.class);
+
     public CarDAOImpl(ConnectionPool connectionPool){
         super(connectionPool);
     }
 
     public static ArrayList<Car> getCars() throws DAOException {
+        logger.info("Go to car page");
         return DaoFactory.getINSTANCE().getDataBase().getCars();
     }
 
     public static ArrayList<Minibus> getMinibuses() throws DAOException {
+        logger.info("Go to minibus page");
         return DaoFactory.getINSTANCE().getDataBase().getMinibuses();
     }
 
     public static ArrayList<Truck> getTrucks() throws DAOException {
+        logger.info("Go to truck page");
         return DaoFactory.getINSTANCE().getDataBase().getTrucks();
     }
 
     public static ArrayList<AbstractCar> getAllCars() throws DAOException {
+        logger.info("Go to all cars page");
         return DaoFactory.getINSTANCE().getDataBase().getAllCars();
     }
 

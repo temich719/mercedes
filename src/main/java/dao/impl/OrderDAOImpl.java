@@ -6,6 +6,7 @@ import dao.OrderDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
 import dao.exception.DAOException;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,12 +19,14 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
 
     private static final String SELECT_FROM_NAMES = "select * from names";
     private static final String SELECT_FROM_SURNAMES = "select * from surnames";
+    private static final Logger logger = Logger.getLogger(OrderDAOImpl.class);
 
     public OrderDAOImpl(ConnectionPool connectionPool){
         super(connectionPool);
     }
 
     public static ArrayList<Order> getListOfOrders()throws DAOException{
+        logger.info("List of orders");
         return DaoFactory.getINSTANCE().getDataBase().getListOfOrders();
     }
 
@@ -64,7 +67,6 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         }
     }
 
-    // TODO: 06.11.2021 fix bag: after click when not all info is written name of mark changes and don't adds into DB
     @Override
     public void addOrder(Order order) throws DAOException {
         Connection connection = null;
