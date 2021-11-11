@@ -6,8 +6,10 @@ import dao.entity.Order;
 import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
+import service.UserService;
 import service.email.Mail;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ public class MakeServiceOrderCommand implements ICommand {
     private final static Logger logger = Logger.getLogger(MakeServiceOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final OrderService orderService = serviceFactory.getOrderService();
+    private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
@@ -35,6 +38,20 @@ public class MakeServiceOrderCommand implements ICommand {
             req.setAttribute("error", "Заполните все обязательные поля!");
             req.setAttribute("select", select);
             return "serviceOrder";
+        }
+        if (!Validator.validateEmail(email)){
+            req.setAttribute("error", "Неверный email!");
+            req.setAttribute("select", select);
+            return "serviceOrder";
+        }
+        try {
+            if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())){
+                req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                req.setAttribute("select", select);
+                return "serviceOrder";
+            }
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
         }
         final String mark;
         if (Objects.isNull(req.getParameter("selectName")))mark = req.getParameter("mark");

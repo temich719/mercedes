@@ -7,8 +7,10 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.OrderService;
 import service.ServiceFactory;
+import service.UserService;
 import service.email.Mail;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ public class MakeOrderCommand implements ICommand {
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
     private final OrderService orderService = serviceFactory.getOrderService();
+    private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
@@ -35,6 +38,22 @@ public class MakeOrderCommand implements ICommand {
             String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
             if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
                 req.setAttribute("error", "Заполните все обязательные поля!");
+                req.setAttribute("img", imagePath);
+                if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
+                else req.setAttribute("price", markAndPrice[1]);
+                req.setAttribute("mark", markAndPrice[0]);
+                return "formOfOrder";
+            }
+            if (!Validator.validateEmail(email)){
+                req.setAttribute("error", "Неверный email!");
+                req.setAttribute("img", imagePath);
+                if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
+                else req.setAttribute("price", markAndPrice[1]);
+                req.setAttribute("mark", markAndPrice[0]);
+                return "formOfOrder";
+            }
+            if (!name.equals(userService.getName(email).getFirst()) || !surname.equals(userService.getName(email).getSecond())){
+                req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
                 req.setAttribute("img", imagePath);
                 if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
                 else req.setAttribute("price", markAndPrice[1]);

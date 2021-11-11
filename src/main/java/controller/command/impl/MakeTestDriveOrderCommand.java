@@ -7,8 +7,10 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.OrderService;
 import service.ServiceFactory;
+import service.UserService;
 import service.email.Mail;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
     private final OrderService orderService = serviceFactory.getOrderService();
+    private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
@@ -33,7 +36,6 @@ public class MakeTestDriveOrderCommand implements ICommand {
         final String date = req.getParameter("date");
         final String sel = req.getParameter("sel");
         final String def = req.getParameter("defImage");
-        System.out.println(def);
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
                 || date.equals("")){
             req.setAttribute("error", "Заполните все обязательные поля!");
@@ -48,6 +50,36 @@ public class MakeTestDriveOrderCommand implements ICommand {
             }
             return "testDriveOrder";
         }
+        if (!Validator.validateEmail(email)){
+            req.setAttribute("error", "Неверный email!");
+            if (Objects.nonNull(sel)){
+                req.setAttribute("select", "true");
+                req.setAttribute("defImage", def);
+                try {
+                    req.setAttribute("sel", carService.getCarMarkByImage(def));
+                } catch (ServiceException e) {
+                    throw new ControllerException(e);
+                }
+            }
+            return "testDriveOrder";
+        }
+        try {
+            if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())){
+                req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                if (Objects.nonNull(sel)){
+                    req.setAttribute("select", "true");
+                    req.setAttribute("defImage", def);
+                    try {
+                        req.setAttribute("sel", carService.getCarMarkByImage(def));
+                    } catch (ServiceException e) {
+                        throw new ControllerException(e);
+                    }
+                }
+                return "testDriveOrder";
+            }
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+        }
         String mark;
         String image;
         try {
@@ -55,7 +87,6 @@ public class MakeTestDriveOrderCommand implements ICommand {
                 image = req.getParameter("defImage");
                 System.out.println(image);
                 mark = carService.getCarMarkByImage(image);
-                System.out.println(mark);
             } else mark = req.getParameter("selectName");
             orderService.addOrder(new Order(userName, userSurname, email, "test-drive", mark, "20$", phone, date, "unread"));
             try {
