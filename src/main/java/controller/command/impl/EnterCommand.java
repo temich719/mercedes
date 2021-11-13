@@ -43,7 +43,9 @@ public class EnterCommand implements ICommand {
         catch (ServiceException e){
             throw new ControllerException(e);
         }
-        req.setAttribute("error", "Неверный адресс электронной почты или пароль.");
+        if (req.getSession().getAttribute("locale").equals("ru"))req.setAttribute("error", "Неверный адрес электронной почты или пароль.");
+        else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "無效的電子郵件或密碼。 ");
+        else req.setAttribute("error", "Invalid email or password.");
         return "enter";
     }
 }

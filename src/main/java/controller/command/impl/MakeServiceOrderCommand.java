@@ -35,18 +35,24 @@ public class MakeServiceOrderCommand implements ICommand {
         final String select = req.getParameter("select");
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
                 || date.equals("")){
-            req.setAttribute("error", "Заполните все обязательные поля!");
+            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Заполните все обязательные поля!");
+            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "請填寫所有必填字段！");
+            else req.setAttribute("error", "Please fill in all required fields! ");
             req.setAttribute("select", select);
             return "serviceOrder";
         }
         if (!Validator.validateEmail(email)){
-            req.setAttribute("error", "Неверный email!");
+            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Неверный email!");
+            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "不合規電郵！ ");
+            else req.setAttribute("error", "Invalid email! ");
             req.setAttribute("select", select);
             return "serviceOrder";
         }
         try {
             if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())){
-                req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
+                else req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
                 req.setAttribute("select", select);
                 return "serviceOrder";
             }

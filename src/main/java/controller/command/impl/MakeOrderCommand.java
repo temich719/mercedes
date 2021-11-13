@@ -37,7 +37,9 @@ public class MakeOrderCommand implements ICommand {
         try {
             String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
             if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
-                req.setAttribute("error", "Заполните все обязательные поля!");
+                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Заполните все обязательные поля!");
+                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "請填寫所有必填字段！");
+                else req.setAttribute("error", "Please fill in all required fields! ");
                 req.setAttribute("img", imagePath);
                 if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
                 else req.setAttribute("price", markAndPrice[1]);
@@ -45,7 +47,9 @@ public class MakeOrderCommand implements ICommand {
                 return "formOfOrder";
             }
             if (!Validator.validateEmail(email)){
-                req.setAttribute("error", "Неверный email!");
+                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Неверный email!");
+                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "不合規電郵！ ");
+                else req.setAttribute("error", "Invalid email! ");
                 req.setAttribute("img", imagePath);
                 if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
                 else req.setAttribute("price", markAndPrice[1]);
@@ -53,7 +57,9 @@ public class MakeOrderCommand implements ICommand {
                 return "formOfOrder";
             }
             if (!name.equals(userService.getName(email).getFirst()) || !surname.equals(userService.getName(email).getSecond())){
-                req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
+                else req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
                 req.setAttribute("img", imagePath);
                 if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
                 else req.setAttribute("price", markAndPrice[1]);

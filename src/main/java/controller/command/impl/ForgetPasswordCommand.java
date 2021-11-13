@@ -25,13 +25,20 @@ public class ForgetPasswordCommand implements ICommand {
         final String newPassword = req.getParameter("newPassword");
         final String email = req.getParameter("emailUpdate");
         if (!Validator.validatePassword(newPassword)){
+            if (req.getSession().getAttribute("locale").equals("ru"))
             req.setAttribute("err","Пароль должен содержать латинскую букву верхнего и нижнего регистра, цифру, " +
                     "спецсимвол и иметь длину от 8 до 16 символов");
+            else if (req.getSession().getAttribute("locale").equals("ch"))
+                req.setAttribute("err","密碼必須包含大小寫拉丁字母、數字、特殊字符且長度為 8 到 16 個字符");
+            else req.setAttribute("err", "The password must contain an upper and lower case Latin letter, " +
+                        "a number, a special character and have a length of 8 to 16 characters ");
             return "forgetPassword";
         }
         final String confirmNewPassword = req.getParameter("confirmNewPassword");
         if (!newPassword.equals(confirmNewPassword)){
-            req.setAttribute("error","Пароль введен неверно!");
+            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error","Пароль введен неверно!");
+            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error","密碼輸入錯誤！");
+            else req.setAttribute("error","The password was entered incorrectly! ");
             return "forgetPassword";
         }
         try {

@@ -21,7 +21,9 @@ public class SendEmailCommand implements ICommand {
         logger.info("We got to SendEmailCommand");
         final String email = req.getParameter("email");
         if (!Validator.validateEmail(email)){
-            req.setAttribute("error", "Неверный email!");
+            if (req.getSession().getAttribute("locale").equals("ru"))req.setAttribute("error", "Неверный email!");
+            else if (req.getSession().getAttribute("locale").equals("ch")) req.setAttribute("error", "不合規電郵！");
+            else req.setAttribute("error", "Wrong email");
             return "codeConfirmNewPassword";
         }
         try {
