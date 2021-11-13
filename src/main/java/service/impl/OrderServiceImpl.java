@@ -42,9 +42,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void markAsRead(String name, String surname, String email, String service, String mark) throws ServiceException {
+    public void markAsRead(String name, String surname, String email, String service, String mark, String date) throws ServiceException {
         try {
-            OrderDAOImpl.markAsRead(name, surname, email, service, mark);
+            OrderDAOImpl.markAsRead(name, surname, email, service, mark, date);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

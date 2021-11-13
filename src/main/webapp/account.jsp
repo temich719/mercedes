@@ -21,6 +21,7 @@
          <fmt:message bundle="${loc}" key="local.date" var="date" />
          <fmt:message bundle="${loc}" key="local.markAsRead" var="asRead" />
          <fmt:message bundle="${loc}" key="local.delete" var="delete" />
+         <fmt:message bundle="${loc}" key="local.upload" var="upload" />
     </head>
 
     <body>
@@ -38,7 +39,7 @@
                     <label for="ava"><img style="width:400px;height:400px;" src="${requestScope.avatarImage}" id="avatar" /></label>
                     <input type="file" id="ava" name="ava" /><br/>
                     <input type="hidden" name="command" value="UPLOAD_AVATAR_COMMAND">
-                    <input style="width:400px;" type="submit" id="upload" value="Загрузить аватар"/>
+                    <input style="width:400px;" type="submit" id="upload" value="${upload}"/>
                 </form>
             </div>
             <div style="margin-left:5%;">
@@ -99,6 +100,7 @@
                                 <form action="FrontController" method="get">
                                     <input type="hidden" name="service" value="${order.getService()}">
                                     <input type="hidden" name="mark" value="${order.getMark()}">
+                                    <input type="hidden" name="date" value="${order.getDate()}">
                                     <input type="hidden" name="command" value="MARK_AS_READ_COMMAND">
                                     <button class="but" data-title="${asRead}"><span>✅</span></button>
                                 </form>

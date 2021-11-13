@@ -51,13 +51,20 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         return size+"";
     }
 
-    public static void markAsRead(String name, String surname, String email, String service, String mark)throws DAOException{
+    public static void markAsRead(String name, String surname, String email, String service, String mark, String date)throws DAOException{
         Connection connection = null;
         try {
             connection = connectionPool.provide();
             Statement statement = connection.createStatement();
-            statement.executeUpdate("update orders set status_in_account = 'read' where user_name='"+name+
-                    "' && user_surname='" +surname+"' && email='"+email+"' && service='"+service+"' && car_name='"+mark+"';" );
+            if (!date.equals("")) {
+                statement.executeUpdate("update orders set status_in_account = 'read' where user_name='" + name +
+                        "' && user_surname='" + surname + "' && email='" + email + "' && service='" + service + "' && car_name='" + mark +
+                        "' && date='" + date + "';");
+            }
+            else {
+                statement.executeUpdate("update orders set status_in_account = 'read' where user_name='" + name +
+                        "' && user_surname='" + surname + "' && email='" + email + "' && service='" + service + "' && car_name='" + mark + "';");
+            }
         }
         catch (SQLException e){
             throw new DAOException("Error in DAO method", e);

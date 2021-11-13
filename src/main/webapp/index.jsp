@@ -3,6 +3,15 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+     <c:choose>
+         <c:when test="${empty locale}">
+               <c:set var="locale" scope="session" value="ru" />
+         </c:when>
+         <c:otherwise>
+
+         </c:otherwise>
+     </c:choose>
+
 <html>
     <head>
         <title>Mercedes-Benz</title>

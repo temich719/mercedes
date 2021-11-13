@@ -26,8 +26,9 @@ public class MarkAsReadCommand implements ICommand {
         final String surname = req.getSession().getAttribute("accountSurname").toString();
         final String email = req.getSession().getAttribute("emailAccount").toString();
         final String mark = req.getParameter("mark");
+        final String date = req.getParameter("date");
         try {
-            orderService.markAsRead(name, surname, email, service, mark);
+            orderService.markAsRead(name, surname, email, service, mark, date);
             req.setAttribute("avatarImage", "img/" + userService.getAvatarPathByEmail(email));
             req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
         }

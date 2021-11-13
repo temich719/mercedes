@@ -13,7 +13,7 @@
         <fmt:message bundle="${loc}" key="local.thanks" var="thanks" />
         <fmt:message bundle="${loc}" key="local.onEmail" var="onEmail" />
         <fmt:message bundle="${loc}" key="local.details" var="details" />
-        <fmt:message bundle="${loc}" key="local.backToMain" var="details" />
+        <fmt:message bundle="${loc}" key="local.backToMain" var="backToMain" />
     </head>
     <body style="background-image:url(img/back.jpg)">
         <div id="mainDiv">

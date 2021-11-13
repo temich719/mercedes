@@ -35,6 +35,6 @@ public interface OrderService {
      * @param mark is a mark
      * @throws ServiceException is a module exception
      */
-    void markAsRead(String name, String surname, String email, String service, String mark)throws ServiceException;
+    void markAsRead(String name, String surname, String email, String service, String mark, String date)throws ServiceException;
 
 }
