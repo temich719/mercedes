@@ -8,11 +8,20 @@
         <title>Fill in the order</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/formOfOrder.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.makeOrder" var="makeOrder" />
+        <fmt:message bundle="${loc}" key="local.name" var="name" />
+        <fmt:message bundle="${loc}" key="local.surname" var="surname" />
+        <fmt:message bundle="${loc}" key="local.email" var="email" />
+        <fmt:message bundle="${loc}" key="local.phone" var="phone" />
+        <fmt:message bundle="${loc}" key="local.toOrder" var="toOrder" />
+        <fmt:message bundle="${loc}" key="local.requiredFields" var="requiredFields" />
     </head>
 
     <body>
         <div id="mainDiv">
-            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;"><b>Оформление заказа</b></span>
+            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;"><b><c:out value="${makeOrder}" /></b></span>
             <div style="width: 50%;position: absolute;border: 1px solid grey;height: 80%;margin-left: 23%;margin-top: 7%;">
                 <span style="position: absolute;margin-left: 63%;margin-top: 10%;font-size: 25px;width:70%;">${requestScope.mark}</span>
                 <div style="position: absolute;margin-left: 50%;margin-top: 13%;">
@@ -26,28 +35,28 @@
                     <input type="hidden" name="money" value=${requestScope.money}>
                     <span style="position: absolute;margin-top: 5%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Имя:<span style="color: red;">*</span>
+                            <c:out value="${name}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 9%;margin-left: 7%;width: 40%;" type="text" name="name" placeholder="Иван"
                     value=${sessionScope.accountName}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Фамилия:<span style="color: red;">*</span>
+                            <c:out value="${surname}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="surname" placeholder="Иванов"
                     value=${sessionScope.accountSurname}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            E-mail:<span style="color: red;">*</span>
+                            <c:out value="${email}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="email" placeholder="example@mail.ru"
                     value=${sessionScope.emailAccount}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Телефон:<span style="color: red;">*</span>
+                            <c:out value="${phone}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="phone" placeholder="+375251111111"><br>
@@ -55,10 +64,10 @@
                         ${requestScope.error}
                     </span>
                     <button style="margin-top:20%;margin-left:9%;width:200px;height: 30px;border:none;background: orange;color: white;">
-                        Заказать
+                        <c:out value="${toOrder}" />
                     </button>
                     <span style="position: absolute;margin-left: 9%;margin-top: 21%;">
-                        <span style="color: red;">*</span><span style="font-size: 15px;">обязательные поля</span>
+                        <span style="color: red;">*</span><span style="font-size: 15px;"><c:out value="${requiredFields}" /></span>
                     </span>
                 </form>
             </div>

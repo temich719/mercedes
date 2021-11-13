@@ -8,20 +8,26 @@
         <title>Thanks</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/thanks.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.thanks" var="thanks" />
+        <fmt:message bundle="${loc}" key="local.onEmail" var="onEmail" />
+        <fmt:message bundle="${loc}" key="local.details" var="details" />
+        <fmt:message bundle="${loc}" key="local.backToMain" var="details" />
     </head>
     <body style="background-image:url(img/back.jpg)">
         <div id="mainDiv">
             <span id="thk">
                 <b>
-                    Спасибо за заказ!
+                    <c:out value="${thanks}" />!
                 </b>
             </span>
             <span id="mail">
-                На почту <span style="color: deepskyblue;">${requestScope.email}</span> отправлено письмо, в котором указаны детали заказа
+                <c:out value="${onEmail}" /> <span style="color: deepskyblue;">${requestScope.email}</span> <c:out value="${details}" />
             </span>
             <form action="FrontController" method="get">
                 <input type="hidden" name="command" value="BACK_FROM_ALL_CARS_COMMAND">
-                <button>Вернуться на главную</button>
+                <button> <c:out value="${backToMain}" /></button>
             </form>
         </div>
         <script src="js/noScroll.js"></script>

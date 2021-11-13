@@ -22,6 +22,13 @@
         <title>Cars</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/allCars.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.cars" var="legk" />
+        <fmt:message bundle="${loc}" key="local.minibus" var="mini" />
+        <fmt:message bundle="${loc}" key="local.trucks" var="tr" />
+        <fmt:message bundle="${loc}" key="local.back" var="backPage" />
+        <fmt:message bundle="${loc}" key="local.modelRow" var="lineup" />
     </head>
 
     <body style="background-color: #DCDCDC;overflow-x:hidden;">
@@ -32,27 +39,27 @@
                    <form action="FrontController" method="get" class="ft" style="${requestScope.carForm}">
                         <input type="hidden" name="command" value="Filter_All_Cars_COMMAND">
                         <input type="hidden" name="type" value="car">
-                        <button class="types" style="${requestScope.carButton}">Легковые</button>
+                        <button class="types" style="${requestScope.carButton}"><c:out value="${legk}" /></button>
                    </form>
                 </li>
                 <li>
                     <form action="FrontController" method="get" class="ft" style="${requestScope.minibusForm}">
                         <input type="hidden" name="command" value="Filter_All_Cars_COMMAND">
                         <input type="hidden" name="type" value="minibus">
-                        <button class="types" style="${requestScope.minibusButton}">Малотоннажные</button>
+                        <button class="types" style="${requestScope.minibusButton}"><c:out value="${mini}" /></button>
                     </form>
                 </li>
                 <li>
                     <form action="FrontController" method="get" class="ft" style="${requestScope.truckForm}">
                         <input type="hidden" name="command" value="Filter_All_Cars_COMMAND">
                         <input type="hidden" name="type" value="truck">
-                        <button class="types" style="${requestScope.truckButton}">Грузовые</button>
+                        <button class="types" style="${requestScope.truckButton}"><c:out value="${tr}" /></button>
                    </form>
                 </li>
                 <li>
                     <form action="FrontController" method="get" class="ft">
                         <input type="hidden" name="command" value="BACK_FROM_ALL_CARS_COMMAND">
-                        <button class="types">Назад</button>
+                        <button class="types"><c:out value="${backPage}" /></button>
                     </form>
                 </li>
             </ul>
@@ -60,7 +67,7 @@
         <br><br><br><br>
         <div id="model">
             <h1>
-                Модельный ряд
+                <c:out value="${lineup}" />
             </h1>
         </div>
         <div style="margin-left: 4%;">

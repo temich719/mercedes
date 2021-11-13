@@ -23,6 +23,15 @@
         <title>Cars</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/cars.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.sedan" var="sed" />
+        <fmt:message bundle="${loc}" key="local.hatchback" var="hatch" />
+        <fmt:message bundle="${loc}" key="local.coupe" var="coup" />
+        <fmt:message bundle="${loc}" key="local.crossOver" var="cross" />
+        <fmt:message bundle="${loc}" key="local.SUV" var="SUV" />
+        <fmt:message bundle="${loc}" key="local.minivan" var="van" />
+        <fmt:message bundle="${loc}" key="local.modelRow" var="lineup" />
     </head>
 
     <body style="background-color: #DCDCDC;overflow-x:hidden;">
@@ -33,42 +42,42 @@
                     <form action="FrontController" method="get" style="${requestScope.sedanForm}" class="ft">
                         <input type="hidden" name="command" value="SELECT_CAR_TYPE_COMMAND">
                         <input type="hidden" name="carButton" value="sedan">
-                        <button class="types" style="${requestScope.sedanButton}">Седан</button>
+                        <button class="types" style="${requestScope.sedanButton}"><c:out value="${sed}" /></button>
                     </form>
                 </li>
                 <li>
                     <form action="FrontController" method="" style="${requestScope.hatchbackForm}" class="ft">
                         <input type="hidden" name="command" value="SELECT_CAR_TYPE_COMMAND">
                         <input type="hidden" name="carButton" value="hatchback">
-                        <button class="types" style="${requestScope.hatchbackButton}">Хэтчбэк</button>
+                        <button class="types" style="${requestScope.hatchbackButton}"><c:out value="${hatch}" /></button>
                     </form>
                 </li>
                 <li>
                     <form action="FrontController" method="" style="${requestScope.coupeForm}" class="ft">
                          <input type="hidden" name="command" value="SELECT_CAR_TYPE_COMMAND">
                          <input type="hidden" name="carButton" value="coupe">
-                         <button class="types" style="${requestScope.coupeButton}">Купе</button>
+                         <button class="types" style="${requestScope.coupeButton}"><c:out value="${coup}" /></button>
                     </form>
                 </li>
                 <li>
                     <form action="FrontController" method="" style="${requestScope.crossForm}" class="ft">
                          <input type="hidden" name="command" value="SELECT_CAR_TYPE_COMMAND">
                          <input type="hidden" name="carButton" value="cross">
-                         <button class="types" style="${requestScope.crossButton}">Кроссовер</button>
+                         <button class="types" style="${requestScope.crossButton}"><c:out value="${cross}" /></button>
                     </form>
                 </li>
                 <li>
                    <form action="FrontController" method="" style="${requestScope.offRoadForm}" class="ft">
                        <input type="hidden" name="command" value="SELECT_CAR_TYPE_COMMAND">
                        <input type="hidden" name="carButton" value="offRoad">
-                       <button class="types" style="${requestScope.offRoadButton}">Внедорожник</button>
+                       <button class="types" style="${requestScope.offRoadButton}"><c:out value="${SUV}" /></button>
                    </form>
                 </li>
                 <li>
                     <form action="FrontController" method="" style="${requestScope.minivanForm}" class="ft">
                          <input type="hidden" name="command" value="SELECT_CAR_TYPE_COMMAND">
                          <input type="hidden" name="carButton" value="minivan">
-                         <button class="types" style="${requestScope.minivanButton}">Минивен</button>
+                         <button class="types" style="${requestScope.minivanButton}"><c:out value="${van}" /></button>
                     </form>
                 </li>
             </ul>
@@ -76,7 +85,7 @@
         <br><br><br><br>
         <div id="model">
             <h1>
-                Модельный ряд
+                <c:out value="${lineup}" />
             </h1>
         </div>
         <div style="margin-left:4%;">

@@ -19,7 +19,6 @@ public class FrontController extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String locale = req.getParameter("locale");
         req.getSession().setAttribute("locale", locale);
-        System.out.println(req.getParameter("command"));
         resp.sendRedirect("index.jsp");
     }
 

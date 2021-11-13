@@ -8,6 +8,25 @@
         <title>Order</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/carInfo.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.auto" var="auto" />
+        <fmt:message bundle="${loc}" key="local.price" var="pr" />
+        <fmt:message bundle="${loc}" key="local.power" var="pow" />
+        <fmt:message bundle="${loc}" key="local.ls" var="ls" />
+        <fmt:message bundle="${loc}" key="local.accel" var="accel" />
+        <fmt:message bundle="${loc}" key="local.sec" var="sec" />
+        <fmt:message bundle="${loc}" key="local.consumption" var="consumption" />
+        <fmt:message bundle="${loc}" key="local.liter" var="liter" />
+        <fmt:message bundle="${loc}" key="local.engine" var="engine" />
+        <fmt:message bundle="${loc}" key="local.tank" var="tank" />
+        <fmt:message bundle="${loc}" key="local.trunk" var="trunk" />
+        <fmt:message bundle="${loc}" key="local.speed" var="speed" />
+        <fmt:message bundle="${loc}" key="local.kmh" var="kmh" />
+        <fmt:message bundle="${loc}" key="local.type" var="type" />
+        <fmt:message bundle="${loc}" key="local.makeOrder" var="makeOrder" />
+        <fmt:message bundle="${loc}" key="local.td" var="td" />
+
     </head>
     <body style="background-color: #DCDCDC;overflow-x:hidden;">
         <div id="topMenu">
@@ -17,7 +36,7 @@
                     <li>
                         <form action="FrontController" class="ft">
                             <button class="types">
-                                <a style="text-decoration:none;color:white;" href="cars.jsp">Автомобили</a>
+                                <a style="text-decoration:none;color:white;" href="cars.jsp"><c:out value="${auto}" /></a>
                             </button>
                         </form>
                     </li>
@@ -26,7 +45,7 @@
                             <input type="hidden" name="command" value="DEFINITE_TEST_DRIVE_COMMAND">
                             <input type="hidden" name="markToList" value=${requestScope.img}>
                             <button class="types">
-                                Тест-Драйв
+                                <c:out value="${td}" />
                             </button>
                         </form>
                     </li>
@@ -40,25 +59,25 @@
             </div>
             <div>
                 <img src="${requestScope.img}" alt="car" class="carImage">
-                <span style="color: grey;position: absolute;margin-top: 12%;margin-left: 10%;font-size: 20px;">Цена</span>
+                <span style="color: grey;position: absolute;margin-top: 12%;margin-left: 10%;font-size: 20px;"><c:out value="${pr}" /></span>
                 <span style="color: black;position: absolute;font-size: 20px;margin-top: 14%;margin-left: 10%;">${requestScope.price}</span>
-                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 12%;margin-left: 25%;">Мощность</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 14%;margin-left: 25%;">${requestScope.power} л.с.</span>
-                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 12%;margin-left: 40%;">Разгон до 100 км/ч</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 14%;margin-left: 40%;">${requestScope.acceleration} сек.</span>
+                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 12%;margin-left: 25%;"><c:out value="${pow}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 14%;margin-left: 25%;">${requestScope.power} <c:out value="${ls}" /></span>
+                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 12%;margin-left: 40%;"><c:out value="${accel}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 14%;margin-left: 40%;">${requestScope.acceleration} <c:out value="${sec}" /></span>
 
-                <span style="color: grey;position: absolute;margin-top: 17%;margin-left: 10%;font-size: 20px;">Расход на 100 км</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 10%;">${requestScope.consumption} л.</span>
-                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 17%;margin-left: 25%;">Объем двигателя</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 25%;">${requestScope.engine} л.</span>
-                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 17%;margin-left: 40%;">Объем бака</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 40%;">${requestScope.tank} л.</span>
+                <span style="color: grey;position: absolute;margin-top: 17%;margin-left: 10%;font-size: 20px;"><c:out value="${consumption}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 10%;">${requestScope.consumption} <c:out value="${liter}" /></span>
+                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 17%;margin-left: 25%;"><c:out value="${engine}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 25%;">${requestScope.engine} <c:out value="${liter}" /></span>
+                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 17%;margin-left: 40%;"><c:out value="${tank}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 40%;">${requestScope.tank} <c:out value="${liter}" /></span>
 
-                <span style="color: grey;position: absolute;margin-top: 22%;margin-left: 10%;font-size: 20px;">Объем багажника</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 10%;">${requestScope.trunk} л.</span>
-                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 22%;margin-left: 25%;">Макс. скорость</span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 25%;">${requestScope.speed} км/ч</span>
-                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 22%;margin-left: 40%;">Тип</span>
+                <span style="color: grey;position: absolute;margin-top: 22%;margin-left: 10%;font-size: 20px;"><c:out value="${trunk}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 10%;">${requestScope.trunk} <c:out value="${liter}" /></span>
+                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 22%;margin-left: 25%;"><c:out value="${speed}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 25%;">${requestScope.speed} <c:out value="${kmh}" /></span>
+                <span style="color: grey;position: absolute;font-size: 20px;margin-top: 22%;margin-left: 40%;"><c:out value="${type}" /></span>
                 <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 40%;">${requestScope.type}</span>
 
             </div>
@@ -68,7 +87,7 @@
                         <input type="hidden" name="command" value="FORM_ORDER_COMMAND">
                         <input type="hidden" name="img" value=${requestScope.img}>
                         <button style="height: 50px;width: 200px;background-color: blue;color: white;border: none;border-radius: 2%;">
-                            Оформить заказ
+                            <c:out value="${makeOrder}" />
                         </button>
                     </form>
                 </div>

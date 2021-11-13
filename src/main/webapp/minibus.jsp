@@ -20,6 +20,11 @@
         <title>Minibus</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/minibus.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.backToMain" var="backToMain" />
+        <fmt:message bundle="${loc}" key="local.reviewLowTonnage" var="reviewLowTonnage" />
+        <fmt:message bundle="${loc}" key="local.autoMB" var="autoMB" />
     </head>
     <body>
         <div id="mainDiv">
@@ -28,7 +33,7 @@
            </div>
            <div id="divBackButton">
                <span id="backButton">
-                   <a href="${backLink}" style="color: white;">Вернуться на главную</a>
+                   <a href="${backLink}" style="color: white;"><c:out value="${backToMain}" /></a>
                </span>
            </div>
         </div>
@@ -38,11 +43,11 @@
             </div>
             <div id="overImage">
                 <span style="color: #DCDCDC;font-size: 48px;">
-                    Обзор моделей малотоннажных
+                    <c:out value="${reviewLowTonnage}" />
                 </span>
                 <br>
                 <span style="color: #DCDCDC;font-size: 42px;padding-left: 7%;">
-                    автомобилей Mercedes-Benz
+                    <c:out value="${autoMB}" />
                 </span>
             </div>
         </div>

@@ -18,11 +18,24 @@
                 cursor:pointer;
             }
         </style>
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.testDrive" var="testDrive" />
+        <fmt:message bundle="${loc}" key="local.makeOrder" var="makeOrder" />
+        <fmt:message bundle="${loc}" key="local.name" var="name" />
+        <fmt:message bundle="${loc}" key="local.surname" var="surname" />
+        <fmt:message bundle="${loc}" key="local.email" var="email" />
+        <fmt:message bundle="${loc}" key="local.phone" var="phone" />
+        <fmt:message bundle="${loc}" key="local.date" var="date" />
+        <fmt:message bundle="${loc}" key="local.toOrder" var="toOrder" />
+        <fmt:message bundle="${loc}" key="local.requiredFields" var="requiredFields" />
+        <fmt:message bundle="${loc}" key="local.chooseCar" var="chooseCar" />
+        <fmt:message bundle="${loc}" key="local.nameOfCar" var="nameOfCar" />
     </head>
 
     <body>
         <div id="mainDiv">
-            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;"><b>Заявка на тест-драйв</b></span>
+            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;"><b><c:out value="${testDrive}" /></b></span>
             <div style="width: 50%;position: absolute;border: 1px solid grey;height: 80%;margin-left: 23%;margin-top: 7%;">
                 <div style="position: absolute;margin-left: 50%;margin-top: 13%;">
                    <!-- <img src="images/hatchback.png" alt="" style=" width: 657px;width: 345px; padding-top: 4px;padding-left: 5px;">-->
@@ -35,14 +48,14 @@
                         <c:when test="${empty select}">
                              <span style="position: absolute;margin-top: 5%;margin-left: 60%;">
                                    <span style="font-size: 18px;">
-                                        Выберете машину<span style="color: red;">*</span>
+                                        <c:out value="${chooseCar}" /><span style="color: red;">*</span>
                                     </span>
                              </span>
                         </c:when>
                         <c:otherwise>
                              <span style="position: absolute;margin-top: 5%;margin-left: 60%;">
                                 <span style="font-size: 18px;">
-                                     Название машины:
+                                     <c:out value="${nameOfCar}" />:
                                  </span>
                              </span>
                         </c:otherwise>
@@ -66,34 +79,34 @@
                     </c:choose>
                     <span style="position: absolute;margin-top: 5%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Имя:<span style="color: red;">*</span>
+                            <c:out value="${name}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 9%;margin-left: 7%;width: 40%;" type="text" name="name" placeholder="Иван"
                     value=${sessionScope.accountName}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Фамилия:<span style="color: red;">*</span>
+                            <c:out value="${surname}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="surname" placeholder="Иванов"
                     value=${sessionScope.accountSurname}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            E-mail:<span style="color: red;">*</span>
+                            <c:out value="${email}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="email" placeholder="example@mail.ru"
                     value=${sessionScope.emailAccount}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Телефон:<span style="color: red;">*</span>
+                            <c:out value="${phone}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="phone" placeholder="+375251111111"><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
-                            Дата:<span style="color: red;">*</span>
+                            <c:out value="${date}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
                     <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="date" name="date"><br>
@@ -101,10 +114,10 @@
                           ${requestScope.error}
                     </span>
                     <button style="margin-top:15%;margin-left:9%;width:200px;height: 30px;border:none;background: orange;color: white;">
-                        Заказать
+                        <c:out value="${toOrder}" />
                     </button>
                     <span style="position: absolute;margin-left: 9%;margin-top: 16%;">
-                        <span style="color: red;">*</span><span style="font-size: 15px;">обязательные поля</span>
+                        <span style="color: red;">*</span><span style="font-size: 15px;"><c:out value="${requiredFields}" /></span>
                     </span>
                 </form>
             </div>
