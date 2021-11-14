@@ -175,23 +175,23 @@
            <div style="margin-left: 9%;display:inline;">©Mercedes-Benz <c:out value="${belarus}" />, 2021</div>
            <div style = "margin-left:42%;display:inline;">
                 <form action="FrontController" method="POST" style="display:inline;">
-                        <input type="hidden" name="command" value="locale">
+                        <input type="hidden" name="command" value="CHANGE_LANGUAGE_COMMAND">
                         <input type="hidden" name="locale" value="ch">
                         <button id="butt" type="submit" style="cursor: pointer;width:8%;color:white;background-color:black;border:none;border-bottom:1px solid white;">
                         <c:out value="${ch}" />
                         </button>
                 </form>
-                <form action="FrontController" method="POST" style="display:inline;>
-                        <input type="hidden" name="command" value="locale">
+                <form action="FrontController" method="POST" style="display:inline;">
+                        <input type="hidden" name="command" value="CHANGE_LANGUAGE_COMMAND">
                         <input type="hidden" name="locale" value="ru">
-                        <button type="submit" style="cursor: pointer;width:8%;color:white;background-color:black;border:none;border-bottom:1px solid white;">
+                        <button id="butt" type="submit" style="cursor: pointer;width:8%;color:white;background-color:black;border:none;border-bottom:1px solid white;">
                         <c:out value="${ru}" />
                         </button>
                 </form>
-                <form action="FrontController" method="POST" style="display:inline;>
-                        <input type="hidden" name="command" value="locale">
+                <form action="FrontController" method="POST" style="display:inline;">
+                        <input type="hidden" name="command" value="CHANGE_LANGUAGE_COMMAND">
                         <input type="hidden" name="locale" value="en">
-                        <button style="cursor: pointer;width:8%;color:white;background-color:black;border:none;border-bottom:1px solid white;" type="submit">
+                        <button id="butt" type="submit" style="cursor: pointer;width:8%;color:white;background-color:black;border:none;border-bottom:1px solid white;">
                         <c:out value="${en}" />
                         </button>
                 </form>

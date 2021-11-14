@@ -26,6 +26,7 @@ public enum Commands {
     ACCOUNT_PAGE_COMMAND(new AccountPageCommand()),
     MARK_AS_READ_COMMAND(new MarkAsReadCommand()),
     DELETE_ORDER_FROM_ACCOUNT_COMMAND(new DeleteOrderFromAccountCommand()),
+    CHANGE_LANGUAGE_COMMAND(new ChangeLanguageCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;
