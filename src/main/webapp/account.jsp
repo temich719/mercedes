@@ -50,10 +50,10 @@
                 <table style="position: absolute;margin-top: 12%;margin-left: 35%;border:3px solid white;border-right:none;">
                     <tr>
                         <th style="width: 200px;height:50px;text-align: center;border: 1px solid white;font-size: 20px;">
-                            <span style="color: white;"><c:out value="${serv}" /></span>usluga
+                            <span style="color: white;"><c:out value="${serv}" /></span>
                         </th>
                         <th style="width: 200px;height:50px;text-align: center;border: 1px solid white;font-size: 20px;">
-                            <span style="color: white;"> <c:out value="${mark}" /> </span> m m
+                            <span style="color: white;"> <c:out value="${mark}" /> </span>
                         </th>
                         <th style="width: 200px;height:50px;text-align: center;border: 1px solid white;font-size: 20px;">
                             <span style="color: white;"><c:out value="${price}" /></span>

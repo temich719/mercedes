@@ -4182,3 +4182,10 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2021-11-16 01:52:23,856 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
 2021-11-16 01:52:26,069 INFO  FrontController:35 - START servlet : GET : command : BACK_FROM_ALL_CARS_COMMAND
 2021-11-16 01:52:26,069 INFO  BackFromAllCarsCommand:16 - We got to BackFromAllCarsCommand
+2021-11-16 23:36:50,753 INFO  CarDAOImpl:26 - Go to car page
+2021-11-16 23:36:50,809 INFO  ConnectionPoolImpl:101 - MySQL driver is loaded
+2021-11-16 23:36:55,103 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-16 23:36:55,103 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-16 23:36:55,104 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-16 23:36:55,189 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-16 23:36:55,189 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
