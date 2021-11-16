@@ -49,12 +49,17 @@ public class MakeServiceOrderCommand implements ICommand {
             return "serviceOrder";
         }
         try {
-            if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())){
-                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
-                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
-                else req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
-                req.setAttribute("select", select);
-                return "serviceOrder";
+            if (Objects.nonNull(req.getSession().getAttribute("nameAccount"))) {
+                if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
+                    if (req.getSession().getAttribute("locale").equals("ru"))
+                        req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                    else if (req.getSession().getAttribute("locale").equals("ch"))
+                        req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
+                    else
+                        req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
+                    req.setAttribute("select", select);
+                    return "serviceOrder";
+                }
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);

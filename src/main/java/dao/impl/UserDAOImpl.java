@@ -7,10 +7,7 @@ import dao.entity.Pair;
 import dao.entity.User;
 import dao.exception.DAOException;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
@@ -19,6 +16,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SELECT_FROM_SURNAMES = "select * from surnames";
     private static final String SELECT_FROM_ACCESS_TYPES = "select * from access_types";
     private static final String SELECT_FROM_USERS = "select * from users";
+    private static final String ADD_AVATAR = "update users set avatar = ? where email = ?;";
+    private static final String ADD_USER_NAME = "insert into names(user_name) values(?);";
+    private static final String ADD_SURNAME = "insert into surnames(user_surname) values(?);";
+    private static final String ADD_ACCESS_TYPE = "insert into access_types(access_type) values(?);";
+    private static final String ADD_USER = "insert into users(user_name,user_surname,email,password,access_type) values(?, ?, ?, ?, ?);";
+    private static final String UPDATE_PASSWORD = "update users set password = ? where email = ?;";
+    private static final String GET_NAME_AND_SURNAME = "select * from users where email = ?;";
+    private static final String GET_AVATAR_BY_IMAGE = "select avatar from users where email = ?;";
 
     public UserDAOImpl(ConnectionPool connectionPool){
         super(connectionPool);
@@ -28,8 +33,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("update users set avatar = '" + avatarPath + "' where email = '" + email + "';");
+            PreparedStatement preparedStatement;
+            preparedStatement = connection.prepareStatement(ADD_AVATAR);
+            preparedStatement.setString(1, avatarPath);
+            preparedStatement.setString(2, email);
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e){
             throw new DAOException("Error in DAO method", e);
@@ -44,17 +52,30 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
+            PreparedStatement preparedStatement;
             final String access = "registered";
-            if (!isAlreadyExistsInDatabase(user.getName(), SELECT_FROM_NAMES, connection))
-                statement.executeUpdate("insert into names(user_name) values('"+user.getName()+"');");
-            if (!isAlreadyExistsInDatabase(user.getSurname(), SELECT_FROM_SURNAMES, connection))
-                statement.executeUpdate("insert into surnames(user_surname) values('"+user.getSurname()+"');");
-            if (!isAlreadyExistsInDatabase(access, SELECT_FROM_ACCESS_TYPES, connection))
-                statement.executeUpdate("insert into access_types(access_type) values('registered');");
-            statement.executeUpdate("insert into users(user_name,user_surname,email,password,access_type) " +
-                    "values('"+user.getName()+"','"+user.getSurname()+"','"+user.getEmail()+"','"+user.getPassword()
-                    +"','registered');");
+            if (!isAlreadyExistsInDatabase(user.getName(), SELECT_FROM_NAMES, connection)){
+                preparedStatement = connection.prepareStatement(ADD_USER_NAME);
+                preparedStatement.setString(1, user.getName());
+                preparedStatement.executeUpdate();
+            }
+            if (!isAlreadyExistsInDatabase(user.getSurname(), SELECT_FROM_SURNAMES, connection)){
+                preparedStatement = connection.prepareStatement(ADD_SURNAME);
+                preparedStatement.setString(1, user.getSurname());
+                preparedStatement.executeUpdate();
+            }
+            if (!isAlreadyExistsInDatabase(access, SELECT_FROM_ACCESS_TYPES, connection)){
+                preparedStatement = connection.prepareStatement(ADD_ACCESS_TYPE);
+                preparedStatement.setString(1, access);
+                preparedStatement.executeUpdate();
+            }
+            preparedStatement = connection.prepareStatement(ADD_USER);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(5, user.getAccessType());
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e){
             throw new DAOException("Error in DAO method", e);
@@ -87,8 +108,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("update users set password='" + password + "' where email='" + email + "';");
+            PreparedStatement preparedStatement;
+            preparedStatement = connection.prepareStatement(UPDATE_PASSWORD);
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, email);
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e){
             throw new DAOException("Error in DAO method", e);
@@ -105,8 +129,10 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Pair pair;
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery("select * from users where email='" + email + "';");
+            PreparedStatement preparedStatement;
+            preparedStatement = connection.prepareStatement(GET_NAME_AND_SURNAME);
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
             resultSet.next();
             pair = new Pair(resultSet.getString(2), resultSet.getString(3));
         }
@@ -157,8 +183,10 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         String result;
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery("select avatar from users where email='" + email + "';");
+            PreparedStatement preparedStatement;
+            preparedStatement = connection.prepareStatement(GET_AVATAR_BY_IMAGE);
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
             resultSet.next();
             result = resultSet.getString(1);
         }

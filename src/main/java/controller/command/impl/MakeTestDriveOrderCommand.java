@@ -68,20 +68,25 @@ public class MakeTestDriveOrderCommand implements ICommand {
             return "testDriveOrder";
         }
         try {
-            if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())){
-                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
-                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
-                else req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
-                if (Objects.nonNull(sel)){
-                    req.setAttribute("select", "true");
-                    req.setAttribute("defImage", def);
-                    try {
-                        req.setAttribute("sel", carService.getCarMarkByImage(def));
-                    } catch (ServiceException e) {
-                        throw new ControllerException(e);
+            if (Objects.nonNull(req.getSession().getAttribute("nameAccount"))) {
+                if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
+                    if (req.getSession().getAttribute("locale").equals("ru"))
+                        req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
+                    else if (req.getSession().getAttribute("locale").equals("ch"))
+                        req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
+                    else
+                        req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
+                    if (Objects.nonNull(sel)) {
+                        req.setAttribute("select", "true");
+                        req.setAttribute("defImage", def);
+                        try {
+                            req.setAttribute("sel", carService.getCarMarkByImage(def));
+                        } catch (ServiceException e) {
+                            throw new ControllerException(e);
+                        }
                     }
+                    return "testDriveOrder";
                 }
-                return "testDriveOrder";
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
