@@ -7534,3 +7534,94 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2021-11-19 19:50:03,466 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
 2021-11-19 19:50:03,476 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
 2021-11-19 19:50:03,476 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:13,250 INFO  CarDAOImpl:55 - Go to all cars page
+2021-11-20 01:21:13,312 INFO  ConnectionPoolImpl:101 - MySQL driver is loaded
+2021-11-20 01:21:17,663 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:17,663 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:17,663 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:17,759 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:17,760 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:17,761 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:17,762 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:17,762 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:17,767 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:17,767 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:17,767 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:17,767 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:17,767 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:17,781 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:17,784 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:24,580 INFO  FrontController:35 - START servlet : POST : command : CHANGE_LANGUAGE_COMMAND
+2021-11-20 01:21:24,713 INFO  ChangeLanguageCommand:17 - We got to ChangeLanguageCommand
+2021-11-20 01:21:26,711 INFO  CarDAOImpl:40 - Go to car page
+2021-11-20 01:21:26,711 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:26,712 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:26,712 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:26,715 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:26,715 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:28,907 INFO  FrontController:35 - START servlet : GET : command : SELECT_CAR_TYPE_COMMAND
+2021-11-20 01:21:28,908 INFO  SelectCarTypeCommand:22 - We got to SelectCarTypeCommand
+2021-11-20 01:21:28,911 INFO  CarDAOImpl:40 - Go to car page
+2021-11-20 01:21:28,912 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:28,912 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:28,912 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:28,922 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:28,922 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:28,927 INFO  CarDAOImpl:40 - Go to car page
+2021-11-20 01:21:28,927 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:28,927 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:28,927 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:28,933 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:28,933 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:30,497 INFO  FrontController:35 - START servlet : GET : command : VIEW_CAR_COMMAND
+2021-11-20 01:21:30,497 INFO  ViewCarCommand:22 - We got to ViewCarCommand
+2021-11-20 01:21:30,497 INFO  CarDAOImpl:40 - Go to car page
+2021-11-20 01:21:30,497 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:30,497 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:30,498 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:30,501 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:30,501 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:31,935 INFO  FrontController:35 - START servlet : GET : command : DEFINITE_TEST_DRIVE_COMMAND
+2021-11-20 01:21:31,935 INFO  DefiniteTestDriveCommand:21 - We got to DefiniteTestDriveCommand
+2021-11-20 01:21:31,935 INFO  CarDAOImpl:40 - Go to car page
+2021-11-20 01:21:31,935 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:31,936 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:31,936 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:31,939 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:31,939 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:31,945 INFO  CarDAOImpl:55 - Go to all cars page
+2021-11-20 01:21:31,945 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:31,945 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:31,945 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:31,950 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:31,951 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:31,951 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:31,951 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:31,951 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:31,955 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:31,955 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:31,955 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:31,956 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:31,956 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:31,959 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:31,959 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:41,368 INFO  FrontController:35 - START servlet : POST : command : CHANGE_LANGUAGE_COMMAND
+2021-11-20 01:21:41,368 INFO  ChangeLanguageCommand:17 - We got to ChangeLanguageCommand
+2021-11-20 01:21:51,890 INFO  FrontController:35 - START servlet : GET : command : TRUCK_SERVICE_ORDER_COMMAND
+2021-11-20 01:21:51,890 INFO  TruckServiceOrderCommand:15 - We got to TruckServiceOrderCommand
+2021-11-20 01:21:52,859 INFO  CarDAOImpl:55 - Go to all cars page
+2021-11-20 01:21:52,860 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:52,860 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:52,860 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:52,864 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:52,865 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:52,865 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:52,865 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:52,865 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:52,871 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:52,872 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0
+2021-11-20 01:21:52,872 INFO  ConnectionPoolImpl:59 - ConnectionPool.provide()
+2021-11-20 01:21:52,872 INFO  ConnectionPoolImpl:60 - ConnectionPool.availableConnections.size() is 49
+2021-11-20 01:21:52,872 INFO  ConnectionPoolImpl:61 - ConnectionPool.takenConnections.size() is 1
+2021-11-20 01:21:52,879 INFO  ConnectionPoolImpl:74 - ConnectionPool.availableConnections.size() is 50
+2021-11-20 01:21:52,880 INFO  ConnectionPoolImpl:75 - ConnectionPool.takenConnections.size() is 0

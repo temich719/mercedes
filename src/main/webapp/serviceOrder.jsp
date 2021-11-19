@@ -29,6 +29,8 @@
         <fmt:message bundle="${loc}" key="local.requiredFields" var="requiredFields" />
         <fmt:message bundle="${loc}" key="local.chooseCar" var="chooseCar" />
         <fmt:message bundle="${loc}" key="local.nameOfCar" var="nameOfCar" />
+        <fmt:message bundle="${loc}" key="local.exampleName" var="exName" />
+        <fmt:message bundle="${loc}" key="local.exampleSurname" var="exSurname" />
     </head>
 
     <body>
@@ -79,14 +81,14 @@
                             <c:out value="${name}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
-                    <input style="margin-top: 9%;margin-left: 7%;width: 40%;" type="text" name="name" placeholder="Иван"
+                    <input style="margin-top: 9%;margin-left: 7%;width: 40%;" type="text" name="name" placeholder=${exName}
                     value=${sessionScope.accountName}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
                            <c:out value="${surname}" />:<span style="color: red;">*</span>
                         </span>
                     </span>
-                    <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="surname" placeholder="Иванов"
+                    <input style="margin-top: 7%;margin-left: 7%;width: 40%;" type="text" name="surname" placeholder=${exSurname}
                     value=${sessionScope.accountSurname}><br>
                     <span style="position: absolute;margin-top: 3%;margin-left: 7%;">
                         <span style="font-size: 18px;">
