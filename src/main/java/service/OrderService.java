@@ -2,7 +2,6 @@ package service;
 
 import dao.entity.Order;
 import dao.entity.User;
-import dao.exception.DAOException;
 import service.exception.ServiceException;
 
 import java.util.ArrayList;

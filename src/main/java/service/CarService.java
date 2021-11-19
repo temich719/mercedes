@@ -3,7 +3,6 @@ package service;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
-import dao.exception.DAOException;
 import service.exception.ServiceException;
 
 import java.util.ArrayList;
