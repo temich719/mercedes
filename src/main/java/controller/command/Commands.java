@@ -27,6 +27,19 @@ public enum Commands {
     MARK_AS_READ_COMMAND(new MarkAsReadCommand()),
     DELETE_ORDER_FROM_ACCOUNT_COMMAND(new DeleteOrderFromAccountCommand()),
     CHANGE_LANGUAGE_COMMAND(new ChangeLanguageCommand()),
+    ADMIN_GET_ALL_USERS_COMMAND(new AdminAllUsersCommand()),
+    ADMIN_GET_ORDERS_COMMAND(new AdminAllOrdersCommand()),
+    ADMIN_TO_ADD_CAR_PAGE_COMMAND(new AdminGoToAddCarPageCommand()),
+    ADMIN_DELETE_CAR_COMMAND(new AdminGoToDeleteCarCommand()),
+    ADMIN_EDIT_CAR_DESCRIPTION_COMMAND(new AdminGoToEditDescriptionCommand()),
+    ADD_CAR_COMMAND(new AdminAddCarCommand()),
+    ADD_MINIBUS_COMMAND(new AdminAddMinibusCommand()),
+    DELETE_CAR_COMMAND(new AdminDeleteCarCommand()),
+    DELETE_MINIBUS_COMMAND(new AdminDeleteMinibusCommand()),
+    CHOOSE_CAR_FOR_CHANGING_INFO_COMMAND(new AdminGoDefiniteCarInfoCommand()),
+    CHANGE_INFO_COMMAND(new AdminChangeInfoCommand()),
+    DELETE_USER_FROM_ADMIN_COMMAND(new AdminDeleteUserCommand()),
+    DELETE_ORDER_FROM_ADMIN_COMMAND(new AdminDeleteOrderCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;

@@ -71,4 +71,84 @@ public class CarServiceImpl implements CarService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public Car getCarByMark(String mark) throws ServiceException {
+        try {
+            return carDAO.getCarByMark(mark);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void updateCarInfo(Car car) throws ServiceException {
+        try {
+            carDAO.updateCarInfo(car);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean isAllowedCarType(String type) throws ServiceException {
+        try {
+            return carDAO.isAllowedCarType(type);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Car getCarByImage(String imagePath) throws ServiceException {
+        try {
+            return carDAO.getCarByImage(imagePath);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void deleteMinibus(String mark) throws ServiceException {
+        try {
+            carDAO.deleteMinibus(mark);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void deleteCar(String mark) throws ServiceException {
+        try {
+            carDAO.deleteCar(mark);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void addMinibus(Minibus minibus) throws ServiceException {
+        try {
+            carDAO.addMinibus(minibus);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void addCar(Car car) throws ServiceException {
+        try {
+            carDAO.addCar(car);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
 }

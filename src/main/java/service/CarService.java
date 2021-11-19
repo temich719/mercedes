@@ -3,6 +3,7 @@ package service;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
+import dao.exception.DAOException;
 import service.exception.ServiceException;
 
 import java.util.ArrayList;
@@ -49,7 +50,66 @@ public interface CarService {
      * finds cars according to type
      * @param type is a type of car
      * @return list of cars by type
-     * @throws ServiceException
+     * @throws ServiceException is a module exception
      */
     ArrayList<Car> getCarListByType(String type) throws ServiceException;
+
+    /**
+     * adds new car
+     * @param car is a car
+     * @throws ServiceException is a module exception
+     */
+    void addCar(Car car)throws ServiceException;
+
+    /**
+     * adds new minibus
+     * @param minibus is a minibus
+     * @throws ServiceException is a module exception
+     */
+    void addMinibus(Minibus minibus)throws ServiceException;
+
+    /**
+     * deletes car from database
+     * @param mark is a mark of car
+     * @throws ServiceException is a module exception
+     */
+    void deleteCar(String mark)throws ServiceException;
+
+    /**
+     * deletes minibus from database
+     * @param mark is a mark of minibus
+     * @throws ServiceException is a module exception
+     */
+    void deleteMinibus(String mark)throws ServiceException;
+
+    /**
+     * finds car by image
+     * @param imagePath is a path of image
+     * @return Car object according to image
+     * @throws ServiceException is a module exception
+     */
+    Car getCarByImage(String imagePath)throws ServiceException;
+
+    /**
+     * finds car by mark
+     * @param mark is the mark of car
+     * @return Car object according to mark
+     * @throws ServiceException is a module exception
+     */
+    Car getCarByMark(String mark)throws ServiceException;
+
+    /**
+     * updates information of definite car
+     * @param car is a car
+     * @throws ServiceException is a module exception
+     */
+    void updateCarInfo(Car car)throws ServiceException;
+
+    /**
+     * checks if type is allowed
+     * @param type is the type of car
+     * @return true if type is allowed and false if not
+     * @throws ServiceException is a module exception
+     */
+    boolean isAllowedCarType(String type)throws ServiceException;
 }

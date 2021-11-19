@@ -62,6 +62,14 @@ public class AbstractCar {
         return type;
     }
 
+    public String getFullLoad() {
+        return fullLoad;
+    }
+
+    public String getCurbWeight() {
+        return curbWeight;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

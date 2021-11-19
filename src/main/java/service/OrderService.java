@@ -1,7 +1,11 @@
 package service;
 
 import dao.entity.Order;
+import dao.entity.User;
+import dao.exception.DAOException;
 import service.exception.ServiceException;
+
+import java.util.ArrayList;
 
 public interface OrderService {
     /**
@@ -37,4 +41,17 @@ public interface OrderService {
      */
     void markAsRead(String name, String surname, String email, String service, String mark, String date)throws ServiceException;
 
+    /**
+     * finds all orders
+     * @return list of orders
+     * @throws ServiceException is a module exception
+     */
+    ArrayList<Order> getListOfOrders()throws ServiceException;
+
+    /**
+     * deletes orders of user who was deleted
+     * @param user is the deleted user
+     * @throws ServiceException is a module exception
+     */
+    void deleteOrdersOfDeletedUser(User user)throws ServiceException;
 }

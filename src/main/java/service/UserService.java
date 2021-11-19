@@ -2,6 +2,7 @@ package service;
 
 import dao.entity.Pair;
 import dao.entity.User;
+import dao.exception.DAOException;
 import service.exception.ServiceException;
 
 import java.util.ArrayList;
@@ -60,4 +61,18 @@ public interface UserService {
      * @throws ServiceException is a module exception
      */
     Pair getName(String email)throws ServiceException;
+
+    /**
+     * finds list of registered users
+     * @return list of registered users
+     * @throws ServiceException is a module exception
+     */
+    ArrayList<User> getListOfUsers() throws ServiceException;
+
+    /**
+     * deletes user
+     * @param user is a registrated user
+     * @throws ServiceException is a module exception
+     */
+    void deleteUser(User user)throws ServiceException;
 }

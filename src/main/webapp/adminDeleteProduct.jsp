@@ -6,6 +6,7 @@
 <html>
     <head>
         <title>Delete product</title>
+        <meta charset="UTF-8">
     </head>
     <body>
         <div>
@@ -17,6 +18,7 @@
                     <select name="selectName" style="width: 35%;">
                          <c:forEach var="car" items="${requestScope.cars}" >
                              <option>
+                                <!--<input type="hidden" name="imagePath" value="${car.getImagePath()}">-->
                                 <c:out value="${car.getNameOfMark()}" />
                              </option>
                          </c:forEach>
@@ -33,6 +35,7 @@
                     <select name="selectName" style="width: 35%;">
                          <c:forEach var="minibus" items="${requestScope.minibuses}" >
                              <option>
+                                <!--<input type="hidden" name="imagePath" value="${minibus.getImagePath()}">-->
                                 <c:out value="${minibus.getNameOfMark()}" />
                              </option>
                          </c:forEach>

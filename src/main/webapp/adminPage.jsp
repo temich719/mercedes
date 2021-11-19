@@ -26,7 +26,7 @@
         </div>
         <div style="margin-top: 20%;margin-left: 14%;position:absolute;width: 100%;">
             <form action="FrontController" method="get">
-                <input type="hidden" name="command" value="ADMIN_ADD_CAR_COMMAND">
+                <input type="hidden" name="command" value="ADMIN_TO_ADD_CAR_PAGE_COMMAND">
                 <button style="width: 70%;height: 70px;text-align: center;" class="but">Добавить товар</button>
             </form>
         </div>
@@ -42,6 +42,6 @@
                 <button style="width: 70%;height: 70px;text-align: center;" class="but">Изменить описание товара</button>
             </form>
         </div>
-        <script src="js/index.js"></script>
+        <script src="js/noScroll.js"></script>
     </body>
 </html>

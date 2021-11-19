@@ -6,6 +6,7 @@
 <html>
     <head>
         <title>Add Product</title>
+        <meta charset="UTF-8">
     </head>
     <body>
         <h1 style="margin-left:37%;">Добавление товаров</h1>

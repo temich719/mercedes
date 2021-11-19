@@ -24,6 +24,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String UPDATE_PASSWORD = "update users set password = ? where email = ?;";
     private static final String GET_NAME_AND_SURNAME = "select * from users where email = ?;";
     private static final String GET_AVATAR_BY_IMAGE = "select avatar from users where email = ?;";
+    private static final String DELETE_USER = "delete from users where user_name = ? && user_surname = ? && email = ? && access_type = ?;";
 
     public UserDAOImpl(ConnectionPool connectionPool){
         super(connectionPool);
@@ -197,5 +198,49 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             connectionPool.retrieve(connection);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<User> getListOfUsers()throws DAOException {
+        Connection connection = null;
+        ResultSet resultSet;
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            connection = connectionPool.provide();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery(SELECT_FROM_USERS);
+            while (resultSet.next()){
+                users.add(new User(resultSet.getString(2), resultSet.getString(3),resultSet.getString(6),
+                        resultSet.getString(4), ""));
+            }
+        }
+        catch (SQLException e){
+            throw new DAOException("Error in DAO method", e);
+        }
+        finally {
+            connectionPool.retrieve(connection);
+        }
+        return users;
+    }
+
+    @Override
+    public void deleteUser(User user) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(DELETE_USER);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getAccessType());
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new DAOException(e);
+        }
+        finally {
+            connectionPool.retrieve(connection);
+        }
     }
 }

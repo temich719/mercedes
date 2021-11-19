@@ -79,4 +79,24 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public ArrayList<User> getListOfUsers() throws ServiceException {
+        try {
+            return userDAO.getListOfUsers();
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void deleteUser(User user) throws ServiceException {
+        try {
+            userDAO.deleteUser(user);
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
 }

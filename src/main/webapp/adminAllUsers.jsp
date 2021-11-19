@@ -6,6 +6,7 @@
 <html>
     <head>
         <title>All users page</title>
+        <meta charset="UTF-8">
     </head>
     <body>
         <h1 style="margin-left:35%;margin-top:3%;">Список пользователей</h1>
@@ -40,14 +41,10 @@
                     </th>
                     <th style="width: 30px;height:50px;text-align: center;">
                         <form action="FrontController" method="get">
-                            <input type="hidden" name="service" value="${order.getService()}">
-                            <input type="hidden" name="mark" value="${order.getMark()}">
-                            <input type="hidden" name="price" value="${order.getPrice()}">
-                            <input type="hidden" name="date" value="${order.getDate()}">
-                            <input type="hidden" name="phone" value="${order.getPhone()}">
-                            <input type="hidden" name="name" value="${order.getName()}">
-                            <input type="hidden" surname="surname" value="${order.getSurname()}">
-                            <input type="hidden" email="email" value"${order.getEmail()}">
+                            <input type="hidden" name="name" value="${user.getName()}">
+                            <input type="hidden" name="surname" value="${user.getSurname()}">
+                            <input type="hidden" name="email" value="${user.getEmail()}">
+                            <input type="hidden" name="accessType" value="${user.getAccessType()}">
                             <input type="hidden" name="command" value="DELETE_USER_FROM_ADMIN_COMMAND">
                             <button>
                                 <span>❌</span>
@@ -57,5 +54,6 @@
                 </tr>
             </c:forEach>
         </table>
+        <a href="adminPage.jsp" style="display:block;text-decoration:none;width:300px;height:30px;background:orange;color:white;text-align:center;margin-top:3%;margin-left:36%;padding-top:1%;">Назад</a>
     </body>
 </html>

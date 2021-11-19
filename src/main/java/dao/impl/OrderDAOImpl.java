@@ -5,6 +5,7 @@ import dao.ConnectionPool;
 import dao.OrderDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
+import dao.entity.User;
 import dao.exception.DAOException;
 import org.apache.log4j.Logger;
 
@@ -33,6 +34,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             "user_surname = ? && email = ? && service = ? && car_name = ? && price = ? && phone = ?;";
     private static final String DELETE_FROM_ORDERS = "delete from orders where user_name = ? && user_surname = ? &&" +
             "email = ? && service = ? && car_name = ? && price = ? && date = ? && phone = ?;";
+    private static final String DELETE_ORDER_OF_DELETED_USER = "delete from orders where user_name = ? && user_surname = ? && email = ?;";
 
     private static final Logger logger = Logger.getLogger(OrderDAOImpl.class);
 
@@ -176,10 +178,30 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(7, order.getDate());
                 preparedStatement.setString(8, order.getPhone());
             }
-            preparedStatement.execute();
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e){
             throw new DAOException("Error in DAO method", e);
+        }
+        finally {
+            connectionPool.retrieve(connection);
+        }
+    }
+
+    @Override
+    public void deleteOrdersOfDeletedUser(User user) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(DELETE_ORDER_OF_DELETED_USER);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new DAOException(e);
         }
         finally {
             connectionPool.retrieve(connection);

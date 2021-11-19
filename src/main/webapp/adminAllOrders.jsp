@@ -6,6 +6,7 @@
 <html>
     <head>
         <title>All orders page</title>
+        <meta charset="UTF-8">
     </head>
     <body>
         <h1 style="margin-left:40%;margin-top:3%;">Список заказов</h1>
@@ -70,8 +71,8 @@
                             <input type="hidden" name="date" value="${order.getDate()}">
                             <input type="hidden" name="phone" value="${order.getPhone()}">
                             <input type="hidden" name="name" value="${order.getName()}">
-                            <input type="hidden" surname="surname" value="${order.getSurname()}">
-                            <input type="hidden" email="email" value"${order.getEmail()}">
+                            <input type="hidden" name="surname" value="${order.getSurname()}">
+                            <input type="hidden" name="email" value="${order.getEmail()}">
                             <input type="hidden" name="command" value="DELETE_ORDER_FROM_ADMIN_COMMAND">
                             <button>
                                 <span>❌</span>
@@ -81,5 +82,6 @@
                 </tr>
             </c:forEach>
         </table>
+        <a href="adminPage.jsp" style="display:block;text-decoration:none;width:300px;height:30px;background:orange;color:white;text-align:center;margin-top:3%;margin-left:39%;padding-top:1%;">Назад</a>
     </body>
 </html>

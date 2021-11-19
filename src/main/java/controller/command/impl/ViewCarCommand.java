@@ -21,14 +21,9 @@ public class ViewCarCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         logger.info("We got to ViewCarCommand");
         final String nameOfMark = req.getParameter("nameOfMark");
-        Car car = null;
+        Car car;
         try {
-            for (Car i : carService.getCars()) {
-                if (i.getNameOfMark().equals(nameOfMark)) {
-                    car = i;
-                    break;
-                }
-            }
+            car = carService.getCarByMark(nameOfMark);
         }
         catch (ServiceException e){
             throw new ControllerException(e);

@@ -3,10 +3,13 @@ package service.impl;
 import dao.OrderDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
+import dao.entity.User;
 import dao.exception.DAOException;
 import dao.impl.OrderDAOImpl;
 import service.OrderService;
 import service.exception.ServiceException;
+
+import java.util.ArrayList;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -46,6 +49,26 @@ public class OrderServiceImpl implements OrderService {
         try {
             OrderDAOImpl.markAsRead(name, surname, email, service, mark, date);
         } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Order> getListOfOrders() throws ServiceException {
+        try {
+            return OrderDAOImpl.getListOfOrders();
+        }
+        catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void deleteOrdersOfDeletedUser(User user) throws ServiceException {
+        try {
+            orderDAO.deleteOrdersOfDeletedUser(user);
+        }
+        catch (DAOException e){
             throw new ServiceException(e);
         }
     }
