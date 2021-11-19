@@ -65,7 +65,7 @@ public class RegistrationCommand implements ICommand {
             String code = CodeConfirmGenerator.generateCode();
             HttpSession session = req.getSession(true);
             session.setAttribute("code", code);
-            Mail.sendMessage(email, code);
+            Mail.sendMessage(email, code, req);
         } catch (IOException | MessagingException e) {
             e.printStackTrace();
         }

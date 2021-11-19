@@ -70,7 +70,7 @@ public class MakeServiceOrderCommand implements ICommand {
         try {
             orderService.addOrder(new Order(userName, userSurname, email, "service", mark, "После осмотра", phone, date, "unread"));
             try {
-                Mail.sendServiceOrder(email, mark, date, "После осмотра");
+                Mail.sendServiceOrder(email, mark, date, "После осмотра", req);
             } catch (IOException e) {
                 System.out.println("IOException");
             } catch (MessagingException e) {

@@ -101,7 +101,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
             } else mark = req.getParameter("selectName");
             orderService.addOrder(new Order(userName, userSurname, email, "test-drive", mark, "20$", phone, date, "unread"));
             try {
-                Mail.sendTestDriveOrder(email, mark, date, "20$");
+                Mail.sendTestDriveOrder(email, mark, date, "20$", req);
             } catch (IOException e) {
                 System.out.println("IOException");
             } catch (MessagingException e) {

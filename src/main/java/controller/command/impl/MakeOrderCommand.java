@@ -79,7 +79,7 @@ public class MakeOrderCommand implements ICommand {
                     new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone, null, "unread")
             );
             try {
-                Mail.sendOrder(email, markAndPrice[0], markAndPrice[1]);
+                Mail.sendOrder(email, markAndPrice[0], markAndPrice[1], req);
             } catch (IOException e) {
                 System.out.println("IOException");
             } catch (MessagingException e) {

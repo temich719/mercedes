@@ -31,7 +31,7 @@ public class SendEmailCommand implements ICommand {
             HttpSession session = req.getSession(true);
             session.setAttribute("codeOfConfirm", code);
             session.setAttribute("emailUpdate", email);
-            Mail.sendMessage(email, code);
+            Mail.sendMessage(email, code, req);
         } catch (IOException | MessagingException e) {
             e.printStackTrace();
         }
