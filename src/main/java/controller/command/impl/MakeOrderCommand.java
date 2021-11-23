@@ -71,19 +71,17 @@ public class MakeOrderCommand implements ICommand {
                     return "formOfOrder";
                 }
             }
-            if (Objects.isNull(markAndPrice[1]))
+            if (Objects.isNull(markAndPrice[1])) {
                 orderService.addOrder(
-                    new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2], phone, null, "unread")
-            );
-            else orderService.addOrder(
-                    new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone, null, "unread")
-            );
-            try {
-                Mail.sendOrder(email, markAndPrice[0], markAndPrice[1], req);
-            } catch (IOException e) {
-                System.out.println("IOException");
-            } catch (MessagingException e) {
-                System.out.println("MessageException");
+                        new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2], phone, null, "unread")
+                );
+                sendMessage(email, markAndPrice[0], markAndPrice[2], req);
+            }
+            else {
+                orderService.addOrder(
+                        new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone, null, "unread")
+                );
+                sendMessage(email, markAndPrice[0], markAndPrice[1], req);
             }
             req.setAttribute("email", email);
             req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
@@ -93,4 +91,15 @@ public class MakeOrderCommand implements ICommand {
         }
         return "thanks";
     }
+
+    private void sendMessage(String email, String mark, String price, HttpServletRequest req){
+        try {
+            Mail.sendOrder(email, mark, price, req);
+        } catch (IOException e) {
+            System.out.println("IOException");
+        } catch (MessagingException e) {
+            System.out.println("MessageException");
+        }
+    }
+
 }
