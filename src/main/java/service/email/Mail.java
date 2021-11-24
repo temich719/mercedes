@@ -9,6 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 public class Mail {
@@ -37,7 +38,7 @@ public class Mail {
         MimeMessage message = new MimeMessage(mailSession);
         message.setFrom(new InternetAddress(internetAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
-        if (req.getSession().getAttribute("locale").equals("ru"))subject = "Код подтверждения";
+        if (req.getSession().getAttribute("locale").equals("ru") || Objects.isNull(req.getSession().getAttribute("locale")))subject = "Код подтверждения";
         else if (req.getSession().getAttribute("locale").equals("ch"))subject = "驗證碼";
         else subject = "Confirmation code";
         message.setSubject(subject);
@@ -53,7 +54,7 @@ public class Mail {
         MimeMessage message = new MimeMessage(mailSession);
         message.setFrom(new InternetAddress(internetAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
-        if (req.getSession().getAttribute("locale").equals("ru")){
+        if (req.getSession().getAttribute("locale").equals("ru") || Objects.isNull(req.getSession().getAttribute("locale"))){
             order = "Ваш заказ:";
             nameOfMark = "Название автомобиля: ";
             money = "\nЦена: ";
@@ -82,7 +83,7 @@ public class Mail {
         MimeMessage message = new MimeMessage(mailSession);
         message.setFrom(new InternetAddress(internetAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
-        if (req.getSession().getAttribute("locale").equals("ru")){
+        if (req.getSession().getAttribute("locale").equals("ru") || Objects.isNull(req.getSession().getAttribute("locale"))){
             testDrive = "Запись на тест-драйв:";
             testAuto = "Вы записались на тест-драйв автомобиля:\n";
             money = "\nЦена услуги: ";
@@ -114,7 +115,7 @@ public class Mail {
         MimeMessage message = new MimeMessage(mailSession);
         message.setFrom(new InternetAddress(internetAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
-        if (req.getSession().getAttribute("locale").equals("ru")){
+        if (req.getSession().getAttribute("locale").equals("ru") || Objects.isNull(req.getSession().getAttribute("locale"))){
             service = "Запись на сервис:";
             serviceAuto = "Вы записались на сервис автомобиля:\n";
             money = "\nЦена услуги: ";
