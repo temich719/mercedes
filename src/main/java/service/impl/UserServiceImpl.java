@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addAvatar(String avatarPath, String email) throws ServiceException {
         try {
-            UserDAOImpl.addAvatar(avatarPath, email);
+            userDAO.addAvatar(avatarPath, email);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

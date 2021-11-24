@@ -30,7 +30,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         super(connectionPool);
     }
 
-    public static void addAvatar(String avatarPath, String email)throws DAOException{
+    @Override
+    public void addAvatar(String avatarPath, String email)throws DAOException{
         Connection connection = null;
         try {
             connection = connectionPool.provide();

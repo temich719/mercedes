@@ -74,4 +74,12 @@ public interface UserDAO {
      * @throws DAOException is a module exception
      */
     void deleteUser(User user)throws DAOException;
+
+    /**
+     * updates avatar into user account
+     * @param imagePath is a path of image
+     * @param email is an email of user
+     * @throws DAOException is a module exception
+     */
+    void addAvatar(String imagePath, String email)throws DAOException;
 }
