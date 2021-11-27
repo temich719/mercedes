@@ -15,8 +15,8 @@ import java.util.Objects;
 
 public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
 
-    private static final String SELECT_FROM_NAMES = "select * from names";
-    private static final String SELECT_FROM_SURNAMES = "select * from surnames";
+    private static final String SELECT_FROM_NAMES = "select * from names;";
+    private static final String SELECT_FROM_SURNAMES = "select * from surnames;";
     private static final String SELECT_STATUS_IN_ACCOUNT = "select status_in_account from orders where email = ?;";
     private static final String MAKE_ORDER_STATUS_READ_WHERE_DATE_NON_NULL = "update orders set status_in_account = 'read' where user_name= ? && " +
             "user_surname = ? && email = ? && service = ? && car_name = ? && date = ?;";

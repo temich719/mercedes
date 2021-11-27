@@ -76,13 +76,13 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         return false;
     }
 
-    private String getMinibusMarkByImage(String imagePath) throws DAOException {
+    /*private String getMinibusMarkByImage(String imagePath) throws DAOException {
         String mark = null;
         for (Minibus minibus:getMinibuses()){
             if (minibus.getImagePath().equals(imagePath))mark = minibus.getNameOfMark();
         }
         return mark;
-    }
+    }*/
 
     @Override
     public boolean isAllowedCarType(String type) throws DAOException {

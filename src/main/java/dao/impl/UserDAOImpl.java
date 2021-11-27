@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
-    private static final String SELECT_FROM_NAMES = "select * from names";
-    private static final String SELECT_FROM_SURNAMES = "select * from surnames";
-    private static final String SELECT_FROM_ACCESS_TYPES = "select * from access_types";
-    private static final String SELECT_FROM_USERS = "select * from users";
+    private static final String SELECT_FROM_NAMES = "select * from names;";
+    private static final String SELECT_FROM_SURNAMES = "select * from surnames;";
+    private static final String SELECT_FROM_ACCESS_TYPES = "select * from access_types;";
+    private static final String SELECT_FROM_USERS = "select * from users;";
     private static final String ADD_AVATAR = "update users set avatar = ? where email = ?;";
     private static final String ADD_USER_NAME = "insert into names(user_name) values(?);";
     private static final String ADD_SURNAME = "insert into surnames(user_surname) values(?);";
