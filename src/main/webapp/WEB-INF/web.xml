@@ -3,12 +3,25 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>controller.filter.EncodingFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/FrontController</url-pattern>
+  </filter-mapping>
+
   <servlet>
     <servlet-name>index</servlet-name>
     <servlet-class>controller.FrontController</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>index</servlet-name>
     <url-pattern>/FrontController</url-pattern>
   </servlet-mapping>
+
 </web-app>
