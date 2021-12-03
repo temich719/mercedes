@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registration(User user) throws ServiceException {
+    public void register(User user) throws ServiceException {
         try {
             userDAO.insertUser(user);
         } catch (DAOException e) {

@@ -6,8 +6,6 @@ public class ControllerException extends Exception {
 
     private final static Logger logger = Logger.getLogger(ControllerException.class);
 
-    private static final long serialVersionUID = 1L;
-
     public ControllerException() {
         super();
         logger.error("ERROR_OCCUPIED");

@@ -15,33 +15,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
+import static controller.ControllerStringsStorage.*;
+
 public class FilterAllCarsCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(FilterAllCarsCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(FilterAllCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to FilterAllCarsCommand");
-        final String carType = req.getParameter("type");
+        LOGGER.info("We got to FilterAllCarsCommand");
+        final String carType = req.getParameter(TYPE);
         CssEditor.pressedButton(carType, req);
         try {
-            if (carType.equals("car")) {
+            if (carType.equals(CAR)) {
                 ArrayList<Car> cars = carService.getCars();
-                req.setAttribute("filtered", cars);
-            } else if (carType.equals("minibus")) {
+                req.setAttribute(FILTERED, cars);
+            } else if (carType.equals(MINIBUS)) {
                 ArrayList<Minibus> minibuses = carService.getMinibuses();
-                req.setAttribute("filtered", minibuses);
+                req.setAttribute(FILTERED, minibuses);
             } else {
                 ArrayList<Truck> trucks = carService.getTrucks();
-                req.setAttribute("filtered", trucks);
+                req.setAttribute(FILTERED, trucks);
             }
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        req.setAttribute("flag", "true");
-        return "allCars";
+        req.setAttribute(FLAG, "true");
+        return JSP_USER + ALL_CARS_PAGE;
     }
 }

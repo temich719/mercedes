@@ -11,39 +11,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class FormOrderCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(FormOrderCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(FormOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to FormOrderCommand");
-        final String imagePath = req.getParameter("img");
-        req.setAttribute("img", imagePath);
+        LOGGER.info("We got to FormOrderCommand");
+        final String imagePath = req.getParameter(PICTURE);
+        req.setAttribute(PICTURE, imagePath);
         try {
             String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
-            req.setAttribute("mark", markAndPrice[0]);
-            if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
-            else req.setAttribute("price", markAndPrice[1]);
-            req.setAttribute("carName", markAndPrice[0]);
-
-            if (Objects.isNull(req.getSession().getAttribute("nameAccount"))) {
-                req.setAttribute("nameAccount", "");
-                req.setAttribute("surnameAccount", "");
-                req.setAttribute("emailAccount", "");
+            req.setAttribute(MARK, markAndPrice[0]);
+            if (Objects.isNull(markAndPrice[1])) {
+                req.setAttribute(MONEY, markAndPrice[2]);
             } else {
-                final String nameSurname = req.getSession().getAttribute("nameAccount").toString();
-                String[] strings = nameSurname.split(" ");
-                req.setAttribute("nameAccount", strings[0]);
-                req.setAttribute("surnameAccount", strings[1]);
-                req.setAttribute("emailAccount", req.getSession().getAttribute("emailAccount"));
+                req.setAttribute(PRICE, markAndPrice[1]);
             }
-        }
-        catch (ServiceException e){
+            req.setAttribute(CAR_NAME, markAndPrice[0]);
+
+            if (Objects.isNull(req.getSession().getAttribute(NAME_ACCOUNT))) {
+                req.setAttribute(NAME_ACCOUNT, "");
+                req.setAttribute(SURNAME_ACCOUNT, "");
+                req.setAttribute(EMAIL_ACCOUNT, "");
+            } else {
+                final String nameSurname = req.getSession().getAttribute(NAME_ACCOUNT).toString();
+                String[] strings = nameSurname.split(" ");
+                req.setAttribute(NAME_ACCOUNT, strings[0]);
+                req.setAttribute(SURNAME_ACCOUNT, strings[1]);
+                req.setAttribute(EMAIL_ACCOUNT, req.getSession().getAttribute(EMAIL_ACCOUNT));
+            }
+        } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "formOfOrder";
+        return JSP_USER + FORM_OF_ORDER_PAGE;
     }
 }

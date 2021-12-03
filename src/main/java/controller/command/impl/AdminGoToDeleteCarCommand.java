@@ -10,21 +10,23 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AdminGoToDeleteCarCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(AdminGoToDeleteCarCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminGoToDeleteCarCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AdminGoToDeleteCarCommand");
+        LOGGER.info("We got to AdminGoToDeleteCarCommand");
         try {
-            req.setAttribute("cars", carService.getCars());
-            req.setAttribute("minibuses", carService.getMinibuses());
+            req.setAttribute(CARS, carService.getCars());
+            req.setAttribute(MINIBUSES, carService.getMinibuses());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            throw new ControllerException(e);
         }
-        return "adminDeleteProduct";
+        return JSP_ADMIN + ADMIN_DELETE_PRODUCT_PAGE;
     }
 }

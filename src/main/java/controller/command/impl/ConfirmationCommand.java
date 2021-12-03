@@ -11,32 +11,37 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class ConfirmationCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(ConfirmationCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(ConfirmationCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to ConfirmationCommand");
-        final String code = req.getParameter("code");
-        final String userInput = req.getParameter("confirmation");
-        if (!userInput.equals(code)){
-            req.setAttribute("script", "true");
-            return "registration";
+        LOGGER.info("We got to ConfirmationCommand");
+        String page = JSP_USER + REGISTRATED_INDEX_PAGE;
+        final String code = req.getParameter(CODE);
+        final String userInput = req.getParameter(CONFIRMATION);
+        if (!userInput.equals(code)) {
+            req.setAttribute(SCRIPT, "true");
+            page = JSP_USER + REGISTRATION;
+        } else {
+            final String email = req.getParameter(EMAIL);
+            final String password = req.getParameter(PASSWORD);
+            final String name = req.getParameter(NAME);
+            final String surname = req.getParameter(SURNAME);
+            try {
+                User user = new User(name, surname, REGISTERED, email, password);
+                userService.register(user);
+            } catch (ServiceException e) {
+                throw new ControllerException(e);
+            }
+            req.getSession().setAttribute(NAME_ACCOUNT, name + " " + surname);
+            req.getSession().setAttribute(EMAIL_ACCOUNT, email);
         }
-        final String email = req.getParameter("email");
-        final String password = req.getParameter("password");
-        final String name = req.getParameter("name");
-        final String surname = req.getParameter("surname");
-        try {
-            userService.registration(new User(name, surname, "registered", email, password));
-        } catch (ServiceException e) {
-            throw new ControllerException(e);
-        }
-        req.getSession().setAttribute("nameAccount",name + " " + surname);
-        req.getSession().setAttribute("emailAccount", email);
-        return "registratedIndex";
+        return page;
     }
 }

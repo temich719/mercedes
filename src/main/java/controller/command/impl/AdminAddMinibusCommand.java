@@ -11,25 +11,28 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AdminAddMinibusCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(AdminAddMinibusCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminAddMinibusCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AdminAddMinibusCommand");
-        final String mark = req.getParameter("mark");
-        final String price = req.getParameter("price");
-        final String imagePath = req.getParameter("image");
-        final String load = req.getParameter("load");
-        final String weight = req.getParameter("weight");
+        LOGGER.info("We got to AdminAddMinibusCommand");
+        final String mark = req.getParameter(MARK);
+        final String price = req.getParameter(PRICE);
+        final String imagePath = req.getParameter(IMAGE_PATH);
+        final String load = req.getParameter(LOAD);
+        final String weight = req.getParameter(WEIGHT);
         try {
-            carService.addMinibus(new Minibus(mark, price, imagePath, load, weight));
+            Minibus minibus = new Minibus(mark, price, imagePath, load, weight);
+            carService.addMinibus(minibus);
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "adminPage";
+        return JSP_ADMIN + ADMIN_PAGE;
     }
 }

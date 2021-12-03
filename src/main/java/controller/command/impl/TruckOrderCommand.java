@@ -7,29 +7,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class TruckOrderCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(TruckOrderCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(TruckOrderCommand.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        logger.info("We got to TruckOrderCommand");
-        req.setAttribute("mark","Actros");
-        req.setAttribute("img","img/truck.jpg");
-        req.setAttribute("money", "73 000$");
-        req.setAttribute("price","");
-        if (Objects.isNull(req.getSession().getAttribute("nameAccount"))){//дубликация кода с formOrderCommand
-            req.setAttribute("nameAccount","");
-            req.setAttribute("surnameAccount","");
-            req.setAttribute("emailAccount","");
-        }
-        else {
-            final String nameSurname = req.getSession().getAttribute("nameAccount").toString();
+        LOGGER.info("We got to TruckOrderCommand");
+        req.setAttribute(MARK, TRUCK_NAME);
+        req.setAttribute(PICTURE, IMG + "truck.jpg");
+        req.setAttribute(MONEY, TRUCK_PRICE);
+        req.setAttribute(PRICE, "");
+        if (Objects.isNull(req.getSession().getAttribute(NAME_ACCOUNT))) {
+            req.setAttribute(NAME_ACCOUNT, "");
+            req.setAttribute(SURNAME_ACCOUNT, "");
+            req.setAttribute(EMAIL_ACCOUNT, "");
+        } else {
+            final String nameSurname = req.getSession().getAttribute(NAME_ACCOUNT).toString();
             String[] strings = nameSurname.split(" ");
-            req.setAttribute("nameAccount", strings[0]);
-            req.setAttribute("surnameAccount", strings[1]);
-            req.setAttribute("emailAccount", req.getSession().getAttribute("emailAccount"));
+            req.setAttribute(NAME_ACCOUNT, strings[0]);
+            req.setAttribute(SURNAME_ACCOUNT, strings[1]);
+            req.setAttribute(EMAIL_ACCOUNT, req.getSession().getAttribute(EMAIL_ACCOUNT));
         }
-        return "formOfOrder";
+        return JSP_USER + FORM_OF_ORDER_PAGE;
     }
 }

@@ -10,20 +10,22 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AdminAllUsersCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(AdminAllUsersCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(AdminAllUsersCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AdminAllUsersCommand");
+        LOGGER.info("We got to AdminAllUsersCommand");
         try {
-            req.setAttribute("users", userService.getListOfUsers());
+            req.setAttribute(USERS, userService.getListOfUsers());
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "adminAllUsers";
+        return JSP_ADMIN + ADMIN_ALL_USERS_PAGE;
     }
 }

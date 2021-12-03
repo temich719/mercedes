@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-public class FrontController extends HttpServlet{
+import static controller.ControllerStringsStorage.*;
 
-    private final static Logger logger = Logger.getLogger(FrontController.class);
+public class FrontController extends HttpServlet {
+
+    private final static Logger LOGGER = Logger.getLogger(FrontController.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -22,7 +24,7 @@ public class FrontController extends HttpServlet{
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doExecute(request, response);
     }
 
@@ -32,14 +34,19 @@ public class FrontController extends HttpServlet{
     }
 
     private void doExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("START servlet : " + request.getMethod() + " : command : " + request.getParameter("command"));
+        LOGGER.info("START servlet : " + request.getMethod() + " : command : " + request.getParameter(COMMAND));
         String forward = null;
         try {
             forward = handleRequest(request, response);
-        }
-        catch (ControllerException e){
+        } catch (ControllerException e) {
             e.printStackTrace();
         }
-        if (Objects.nonNull(forward))request.getRequestDispatcher(forward + ".jsp").forward(request, response);
+        if (Objects.nonNull(forward)) {
+            if (forward.equals(INDEX_PAGE)) {
+                request.getRequestDispatcher(forward + JSP).forward(request, response);
+            } else {
+                request.getRequestDispatcher(WEB_INF + forward + JSP).forward(request, response);
+            }
+        }
     }
 }

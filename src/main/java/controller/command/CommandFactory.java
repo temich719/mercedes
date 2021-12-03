@@ -2,19 +2,20 @@ package controller.command;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static controller.ControllerStringsStorage.*;
+
 public class CommandFactory {
 
-    private CommandFactory(){}
+    private CommandFactory() {
+    }
 
-    public static ICommand createCommand(HttpServletRequest request){
-        String command = request.getParameter("command");
+    public static ICommand createCommand(HttpServletRequest request) {
+        String command = request.getParameter(COMMAND);
         ICommand iCommand;
-        if (command != null){
+        if (command != null && !command.equals("")) {
             iCommand = Commands.valueOf(command).getCommand();
-        }
-        else {
-            // TODO: 10.11.2021 add errorCommand to commands
-            iCommand = Commands.valueOf("ERROR_COMMAND").getCommand();
+        } else {
+            iCommand = Commands.valueOf(ERROR_COMMAND).getCommand();
         }
         return iCommand;
     }

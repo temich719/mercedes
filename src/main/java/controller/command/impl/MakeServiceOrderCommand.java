@@ -17,71 +17,68 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class MakeServiceOrderCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(MakeServiceOrderCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(MakeServiceOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final OrderService orderService = serviceFactory.getOrderService();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to MakeServiceOrderCommand");
-        final String userName = req.getParameter("name");
-        final String userSurname = req.getParameter("surname");
-        final String email = req.getParameter("email");
-        final String phone = req.getParameter("phone");
-        final String date = req.getParameter("date");
-        final String select = req.getParameter("select");
-        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
-                || date.equals("")){
-            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Заполните все обязательные поля!");
-            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "請填寫所有必填字段！");
-            else req.setAttribute("error", "Please fill in all required fields! ");
-            req.setAttribute("select", select);
-            return "serviceOrder";
+        LOGGER.info("We got to MakeServiceOrderCommand");
+        String page = JSP_USER + THANKS_PAGE;
+        boolean isRight = true;
+        final String userName = req.getParameter(NAME);
+        final String userSurname = req.getParameter(SURNAME);
+        final String email = req.getParameter(EMAIL);
+        final String phone = req.getParameter(PHONE);
+        final String date = req.getParameter(DATE);
+        final String select = req.getParameter(SELECT);
+        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
+            req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
+            req.setAttribute(SELECT, select);
+            isRight = false;
+            page = JSP_USER + SERVICE_ORDER_PAGE;
         }
-        if (!Validator.validateEmail(email)){
-            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Неверный email!");
-            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "不合規電郵！ ");
-            else req.setAttribute("error", "Invalid email! ");
-            req.setAttribute("select", select);
-            return "serviceOrder";
+        if (!Validator.validateEmail(email) && isRight) {
+            req.setAttribute(ERROR, INVALID_EMAIL);
+            req.setAttribute(SELECT, select);
+            isRight = false;
+            page = JSP_USER + SERVICE_ORDER_PAGE;
         }
         try {
-            if (Objects.nonNull(req.getSession().getAttribute("nameAccount"))) {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && isRight) {
                 if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
-                    if (req.getSession().getAttribute("locale").equals("ru"))
-                        req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
-                    else if (req.getSession().getAttribute("locale").equals("ch"))
-                        req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
-                    else
-                        req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
-                    req.setAttribute("select", select);
-                    return "serviceOrder";
+                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
+                    req.setAttribute(SELECT, select);
+                    isRight = false;
+                    page = JSP_USER + SERVICE_ORDER_PAGE;
                 }
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        final String mark;
-        if (Objects.isNull(req.getParameter("selectName")))mark = req.getParameter("mark");
-        else mark = req.getParameter("selectName");
-        try {
-            orderService.addOrder(new Order(userName, userSurname, email, "service", mark, "После осмотра", phone, date, "unread"));
+        if (isRight) {
+            final String mark;
+            if (Objects.isNull(req.getParameter(SELECT_NAME))) mark = req.getParameter(MARK);
+            else mark = req.getParameter(SELECT_NAME);
             try {
-                Mail.sendServiceOrder(email, mark, date, "После осмотра", req);
-            } catch (IOException e) {
-                System.out.println("IOException");
-            } catch (MessagingException e) {
-                System.out.println("MessagingException");
+                Order order = new Order(userName, userSurname, email, SERVICE, mark, AFTER_INSPECTION, phone, date, UNREAD);
+                orderService.addOrder(order);
+                try {
+                    Mail.sendServiceOrder(email, mark, date, AFTER_INSPECTION, req);
+                } catch (IOException | MessagingException e) {
+                    LOGGER.error(e.getMessage());
+                }
+                req.setAttribute(EMAIL, email);
+                req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
+            } catch (ServiceException e) {
+                throw new ControllerException(e);
             }
-            req.setAttribute("email", email);
-            req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
         }
-        catch (ServiceException e){
-            throw new ControllerException(e);
-        }
-        return "thanks";
+        return page;
     }
 }

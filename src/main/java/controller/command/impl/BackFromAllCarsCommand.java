@@ -7,14 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class BackFromAllCarsCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(BackFromAllCarsCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(BackFromAllCarsCommand.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        logger.info("We got to BackFromAllCarsCommand");
-        if (Objects.isNull(req.getSession().getAttribute("nameAccount")))return "index";
-        else return "registratedIndex";
+        LOGGER.info("We got to BackFromAllCarsCommand");
+        String page;
+        if (Objects.isNull(req.getSession().getAttribute(NAME_ACCOUNT))) {
+            page = INDEX_PAGE;
+        } else {
+            page = JSP_USER + REGISTRATED_INDEX_PAGE;
+        }
+        return page;
     }
 }

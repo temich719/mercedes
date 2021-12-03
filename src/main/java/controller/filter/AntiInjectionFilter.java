@@ -4,6 +4,8 @@ import javax.servlet.*;
 import java.io.IOException;
 import java.util.Map;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AntiInjectionFilter implements Filter {
 
     private static final String DOES_NOT_CONTAIN = "^((?!<|>|script).)*$";
@@ -22,7 +24,7 @@ public class AntiInjectionFilter implements Filter {
         }
         if (stringBuilder.toString().trim().matches(DOES_NOT_CONTAIN))
             filterChain.doFilter(servletRequest, servletResponse);
-        else servletRequest.getRequestDispatcher("antiInjection.jsp").forward(servletRequest, servletResponse);
+        else servletRequest.getRequestDispatcher(WEB_INF + ERRORS + ANTI_INJECTION + JSP).forward(servletRequest, servletResponse);
     }
 
     @Override

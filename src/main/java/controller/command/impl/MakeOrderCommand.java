@@ -18,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class MakeOrderCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(MakeOrderCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(MakeOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
     private final OrderService orderService = serviceFactory.getOrderService();
@@ -28,77 +30,69 @@ public class MakeOrderCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to MakeOrderCommand");
-        final String name = req.getParameter("name");
-        final String surname = req.getParameter("surname");
-        final String email = req.getParameter("email");
-        final String phone = req.getParameter("phone");
-        final String imagePath = req.getParameter("img");
+        LOGGER.info("We got to MakeOrderCommand");
+        String page = JSP_USER + THANKS_PAGE;
+        boolean isRight = true;
+        final String name = req.getParameter(NAME);
+        final String surname = req.getParameter(SURNAME);
+        final String email = req.getParameter(EMAIL);
+        final String phone = req.getParameter(PHONE);
+        final String imagePath = req.getParameter(PICTURE);
         try {
             String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
             if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
-                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Заполните все обязательные поля!");
-                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "請填寫所有必填字段！");
-                else req.setAttribute("error", "Please fill in all required fields! ");
-                req.setAttribute("img", imagePath);
-                if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
-                else req.setAttribute("price", markAndPrice[1]);
-                req.setAttribute("mark", markAndPrice[0]);
-                return "formOfOrder";
+                req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
+                req.setAttribute(PICTURE, imagePath);
+                if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
+                else req.setAttribute(PRICE, markAndPrice[1]);
+                req.setAttribute(MARK, markAndPrice[0]);
+                isRight = false;
+                page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
-            if (!Validator.validateEmail(email)){
-                if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Неверный email!");
-                else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "不合規電郵！ ");
-                else req.setAttribute("error", "Invalid email! ");
-                req.setAttribute("img", imagePath);
-                if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
-                else req.setAttribute("price", markAndPrice[1]);
-                req.setAttribute("mark", markAndPrice[0]);
-                return "formOfOrder";
+            if (!Validator.validateEmail(email) && isRight) {
+                req.setAttribute(ERROR, INVALID_EMAIL);
+                req.setAttribute(PICTURE, imagePath);
+                if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
+                else req.setAttribute(PRICE, markAndPrice[1]);
+                req.setAttribute(MARK, markAndPrice[0]);
+                isRight = false;
+                page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
-            if (Objects.nonNull(req.getSession().getAttribute("nameAccount"))) {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && isRight) {
                 if (!name.equals(userService.getName(email).getFirst()) || !surname.equals(userService.getName(email).getSecond())) {
-                    if (req.getSession().getAttribute("locale").equals("ru"))
-                        req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
-                    else if (req.getSession().getAttribute("locale").equals("ch"))
-                        req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
-                    else
-                        req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
-                    req.setAttribute("img", imagePath);
-                    if (Objects.isNull(markAndPrice[1])) req.setAttribute("money", markAndPrice[2]);
-                    else req.setAttribute("price", markAndPrice[1]);
-                    req.setAttribute("mark", markAndPrice[0]);
-                    return "formOfOrder";
+                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
+                    req.setAttribute(PICTURE, imagePath);
+                    if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
+                    else req.setAttribute(PRICE, markAndPrice[1]);
+                    req.setAttribute(MARK, markAndPrice[0]);
+                    isRight = false;
+                    page = JSP_USER + FORM_OF_ORDER_PAGE;
                 }
             }
-            if (Objects.isNull(markAndPrice[1])) {
-                orderService.addOrder(
-                        new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[2], phone, null, "unread")
-                );
-                sendMessage(email, markAndPrice[0], markAndPrice[2], req);
+            if (isRight) {
+                if (Objects.isNull(markAndPrice[1])) {
+                    Order order = new Order(name, surname, email, CAR_BUYING, markAndPrice[0], markAndPrice[2], phone, null, UNREAD);
+                    orderService.addOrder(order);
+                    sendMessage(email, markAndPrice[0], markAndPrice[2], req);
+                } else {
+                    Order order = new Order(name, surname, email, CAR_BUYING, markAndPrice[0], markAndPrice[1], phone, null, UNREAD);
+                    orderService.addOrder(order);
+                    sendMessage(email, markAndPrice[0], markAndPrice[1], req);
+                }
+                req.setAttribute(EMAIL, email);
+                req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
             }
-            else {
-                orderService.addOrder(
-                        new Order(name, surname, email, "buying_a_car", markAndPrice[0], markAndPrice[1], phone, null, "unread")
-                );
-                sendMessage(email, markAndPrice[0], markAndPrice[1], req);
-            }
-            req.setAttribute("email", email);
-            req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "thanks";
+        return page;
     }
 
-    private void sendMessage(String email, String mark, String price, HttpServletRequest req){
+    private void sendMessage(String email, String mark, String price, HttpServletRequest req) {
         try {
             Mail.sendOrder(email, mark, price, req);
-        } catch (IOException e) {
-            System.out.println("IOException");
-        } catch (MessagingException e) {
-            System.out.println("MessageException");
+        } catch (IOException | MessagingException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 

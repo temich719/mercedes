@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminGoToAddCarPageCommand implements ICommand {
+public class GoToPageCommand implements ICommand {
 
-    private static final Logger LOGGER = Logger.getLogger(AdminGoToAddCarPageCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(GoToPageCommand.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        LOGGER.info("We got to AdminGoToCarPageCommand");
-        return JSP_ADMIN + ADMIN_ADD_PRODUCT_PAGE;
+        LOGGER.info("We got to GoToPageCommand");
+        return req.getParameter(PAGE_NAME);
     }
 }

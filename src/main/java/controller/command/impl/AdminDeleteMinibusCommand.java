@@ -10,22 +10,23 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AdminDeleteMinibusCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(AdminDeleteMinibusCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminDeleteMinibusCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AdminDeleteMinibusCommand");
-        final String mark = req.getParameter("selectName");
+        LOGGER.info("We got to AdminDeleteMinibusCommand");
+        final String mark = req.getParameter(SELECT_NAME);
         try {
             carService.deleteMinibus(mark);
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "adminPage";
+        return JSP_ADMIN + ADMIN_PAGE;
     }
 }

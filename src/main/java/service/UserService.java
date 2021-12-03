@@ -28,7 +28,7 @@ public interface UserService {
      * @param user is the user who will be registered
      * @throws ServiceException is a module exception
      */
-    void registration(User user)throws ServiceException;
+    void register(User user)throws ServiceException;
 
     /**
      * finds emails and pairs

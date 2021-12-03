@@ -18,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class MakeTestDriveOrderCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(MakeTestDriveOrderCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(MakeTestDriveOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
     private final OrderService orderService = serviceFactory.getOrderService();
@@ -28,91 +30,87 @@ public class MakeTestDriveOrderCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to MakeTestDriveOrderCommand");
-        final String userName = req.getParameter("name");
-        final String userSurname = req.getParameter("surname");
-        final String email = req.getParameter("email");
-        final String phone = req.getParameter("phone");
-        final String date = req.getParameter("date");
-        final String sel = req.getParameter("sel");
-        final String def = req.getParameter("defImage");
-        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("")
-                || date.equals("")){
-            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Заполните все обязательные поля!");
-            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "請填寫所有必填字段！");
-            else req.setAttribute("error", "Please fill in all required fields! ");
-            if (Objects.nonNull(sel)){
-                req.setAttribute("select", "true");
-                req.setAttribute("defImage", def);
+        LOGGER.info("We got to MakeTestDriveOrderCommand");
+        String page = JSP_USER + THANKS_PAGE;
+        boolean isRight = true;
+        final String userName = req.getParameter(NAME);
+        final String userSurname = req.getParameter(SURNAME);
+        final String email = req.getParameter(EMAIL);
+        final String phone = req.getParameter(PHONE);
+        final String date = req.getParameter(DATE);
+        final String sel = req.getParameter(DEFINITE_CAR);
+        final String def = req.getParameter(DEFINITE_IMAGE);
+        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
+            req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
+            if (Objects.nonNull(sel)) {
+                req.setAttribute(SELECT, "true");
+                req.setAttribute(DEFINITE_IMAGE, def);
                 try {
-                    req.setAttribute("sel", carService.getCarMarkByImage(def));
+                    req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(def));
                 } catch (ServiceException e) {
                     throw new ControllerException(e);
                 }
             }
-            return "testDriveOrder";
+            isRight = false;
+            page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
         }
-        if (!Validator.validateEmail(email)){
-            if (req.getSession().getAttribute("locale").equals("ru")) req.setAttribute("error", "Неверный email!");
-            else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "不合規電郵！ ");
-            else req.setAttribute("error", "Invalid email! ");
-            if (Objects.nonNull(sel)){
-                req.setAttribute("select", "true");
-                req.setAttribute("defImage", def);
+        if (!Validator.validateEmail(email) && isRight) {
+            req.setAttribute(ERROR, INVALID_EMAIL);
+            if (Objects.nonNull(sel)) {
+                req.setAttribute(SELECT, "true");
+                req.setAttribute(DEFINITE_IMAGE, def);
                 try {
-                    req.setAttribute("sel", carService.getCarMarkByImage(def));
+                    req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(def));
                 } catch (ServiceException e) {
                     throw new ControllerException(e);
                 }
             }
-            return "testDriveOrder";
+            isRight = false;
+            page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
         }
         try {
-            if (Objects.nonNull(req.getSession().getAttribute("nameAccount"))) {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && isRight) {
                 if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
-                    if (req.getSession().getAttribute("locale").equals("ru"))
-                        req.setAttribute("error", "Имя или фамилия не совпадают с данными пользователя с данной почтой");
-                    else if (req.getSession().getAttribute("locale").equals("ch"))
-                        req.setAttribute("error", "名字或姓氏與此郵件的用戶數據不匹配 ");
-                    else
-                        req.setAttribute("error", "The first or last name does not match the user's data with this mail ");
+                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     if (Objects.nonNull(sel)) {
-                        req.setAttribute("select", "true");
-                        req.setAttribute("defImage", def);
+                        req.setAttribute(SELECT, "true");
+                        req.setAttribute(DEFINITE_IMAGE, def);
                         try {
-                            req.setAttribute("sel", carService.getCarMarkByImage(def));
+                            req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(def));
                         } catch (ServiceException e) {
                             throw new ControllerException(e);
                         }
                     }
-                    return "testDriveOrder";
+                    isRight = false;
+                    page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
                 }
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        String mark;
-        String image;
-        try {
-            if (Objects.isNull(req.getParameter("selectName"))) {
-                image = req.getParameter("defImage");
-                System.out.println(image);
-                mark = carService.getCarMarkByImage(image);
-            } else mark = req.getParameter("selectName");
-            orderService.addOrder(new Order(userName, userSurname, email, "test-drive", mark, "20$", phone, date, "unread"));
+        if (isRight) {
+            String mark;
+            String image;
             try {
-                Mail.sendTestDriveOrder(email, mark, date, "20$", req);
-            } catch (IOException e) {
-                System.out.println("IOException");
-            } catch (MessagingException e) {
-                System.out.println("MessageException");
+                if (Objects.isNull(req.getParameter(SELECT_NAME))) {
+                    image = req.getParameter(DEFINITE_IMAGE);
+                    mark = carService.getCarMarkByImage(image);
+                } else {
+                    mark = req.getParameter(SELECT_NAME);
+                }
+                Order order = new Order(userName, userSurname, email, TEST_DRIVE, mark, TEST_DRIVE_PRICE, phone, date, UNREAD);
+                orderService.addOrder(order);
+                try {
+                    Mail.sendTestDriveOrder(email, mark, date, TEST_DRIVE_PRICE, req);
+                } catch (IOException | MessagingException e) {
+                    LOGGER.error(e.getMessage());
+                }
+                req.setAttribute(EMAIL, email);
+                req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
+            } catch (ServiceException e) {
+                throw new ControllerException(e);
             }
-            req.setAttribute("email", email);
-            req.getSession().setAttribute("count", orderService.getCountOfUnreadOrders(email));
         }
-        catch (ServiceException e){
-            throw new ControllerException(e);
-        }
-        return "thanks";
+        return page;
     }
 }

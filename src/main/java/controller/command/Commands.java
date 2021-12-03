@@ -40,6 +40,8 @@ public enum Commands {
     CHANGE_INFO_COMMAND(new AdminChangeInfoCommand()),
     DELETE_USER_FROM_ADMIN_COMMAND(new AdminDeleteUserCommand()),
     DELETE_ORDER_FROM_ADMIN_COMMAND(new AdminDeleteOrderCommand()),
+    GO_TO_PAGE_COMMAND(new GoToPageCommand()),
+    ERROR_COMMAND(new ErrorPageCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;

@@ -11,20 +11,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AccountPageCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(AccountPageCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(AccountPageCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AccountPageCommand");
+        LOGGER.info("We got to AccountPageCommand");
         try {
-            final String avatarPath = userService.getAvatarPathByEmail(req.getSession().getAttribute("emailAccount").toString());
-            if (Objects.isNull(avatarPath))req.setAttribute("avatarImage", "img/avatar.jpg");
-            else req.setAttribute("avatarImage", "img/" + avatarPath);
-            return "account";
+            final String avatarPath = userService.getAvatarPathByEmail(req.getSession().getAttribute(EMAIL_ACCOUNT).toString());
+            if (Objects.isNull(avatarPath)) {
+                req.setAttribute(AVATAR_IMAGE, DEFAULT_AVATAR_IMAGE);
+            } else {
+                req.setAttribute(AVATAR_IMAGE, IMG + avatarPath);
+            }
+            return JSP_USER + ACCOUNT_PAGE;
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }

@@ -6,17 +6,19 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class FirstStepCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(FirstStepCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(FirstStepCommand.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        logger.info("We got to FirstStepCommand");
-        final String name = req.getParameter("name");
-        final String surname = req.getParameter("surname");
-        req.getSession().setAttribute("name", name);
-        req.getSession().setAttribute("surname", surname);
-        return "registration";
+        LOGGER.info("We got to FirstStepCommand");
+        final String name = req.getParameter(NAME);
+        final String surname = req.getParameter(SURNAME);
+        req.getSession().setAttribute(NAME, name);
+        req.getSession().setAttribute(SURNAME, surname);
+        return JSP_USER + REGISTRATION;
     }
 }

@@ -14,38 +14,40 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
+import static controller.ControllerStringsStorage.*;
+
 public class EnterCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(EnterCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(EnterCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
     private final OrderService orderService = serviceFactory.getOrderService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to EnterCommand");
-        Pair pair = new Pair(req.getParameter("email"), req.getParameter("password"));
+        LOGGER.info("We got to EnterCommand");
+        Pair pair = new Pair(req.getParameter(EMAIL), req.getParameter(PASSWORD));
         try {
             ArrayList<Pair> arrayList = userService.getEmailAndPassword();
             for (Pair value : arrayList) {
                 if (value.getFirst().equals(pair.getFirst()) && value.getSecond().equals(pair.getSecond())) {
                     Pair names = userService.getName(pair.getFirst());
                     HttpSession session = req.getSession(true);
-                    session.setAttribute("nameAccount", names.getFirst() + " " + names.getSecond());
-                    session.setAttribute("accountName", names.getFirst());
-                    session.setAttribute("accountSurname", names.getSecond());
-                    session.setAttribute("emailAccount", pair.getFirst());
-                    session.setAttribute("count", orderService.getCountOfUnreadOrders(pair.getFirst()));
-                    return "registratedIndex";
+                    session.setAttribute(NAME_ACCOUNT, names.getFirst() + " " + names.getSecond());
+                    session.setAttribute(ACCOUNT_NAME, names.getFirst());
+                    session.setAttribute(ACCOUNT_SURNAME, names.getSecond());
+                    session.setAttribute(EMAIL_ACCOUNT, pair.getFirst());
+                    session.setAttribute(COUNT, orderService.getCountOfUnreadOrders(pair.getFirst()));
+                    return JSP_USER + REGISTRATED_INDEX_PAGE;
                 }
             }
         }
         catch (ServiceException e){
             throw new ControllerException(e);
         }
-        if (req.getSession().getAttribute("locale").equals("ru"))req.setAttribute("error", "Неверный адрес электронной почты или пароль.");
-        else if (req.getSession().getAttribute("locale").equals("ch"))req.setAttribute("error", "無效的電子郵件或密碼。 ");
-        else req.setAttribute("error", "Invalid email or password.");
-        return "enter";
+        if (req.getSession().getAttribute(LOCALE).equals("ru"))req.setAttribute(ERROR, "Неверный адрес электронной почты или пароль.");
+        else if (req.getSession().getAttribute(LOCALE).equals("ch"))req.setAttribute(ERROR, "無效的電子郵件或密碼。 ");
+        else req.setAttribute(ERROR, "Invalid email or password.");
+        return JSP_USER + ENTER_PAGE;
     }
 }

@@ -10,23 +10,25 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class DefiniteTestDriveCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(DefiniteTestDriveCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(DefiniteTestDriveCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to DefiniteTestDriveCommand");
-        final String img = req.getParameter("markToList");
+        LOGGER.info("We got to DefiniteTestDriveCommand");
+        final String img = req.getParameter(MARK_TO_ORDER);
         try {
-            req.setAttribute("sel", carService.getCarMarkByImage(img));
-            req.setAttribute("defImage", img);
+            req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(img));
+            req.setAttribute(DEFINITE_IMAGE, img);
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        req.setAttribute("select", img);
-        return "testDriveOrder";
+        req.setAttribute(WHETHER_LIST_OF_CARS_OR_DEFINITE_CAR, img);
+        return JSP_USER + TEST_DRIVE_ORDER_PAGE;
     }
 }

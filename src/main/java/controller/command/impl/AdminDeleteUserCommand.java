@@ -12,29 +12,30 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AdminDeleteUserCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(AdminDeleteUserCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminDeleteUserCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
     private final OrderService orderService = serviceFactory.getOrderService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AdminDeleteUserCommand");
-        final String name = req.getParameter("name");
-        final String surname = req.getParameter("surname");
-        final String email = req.getParameter("email");
-        final String accessType = req.getParameter("accessType");
+        LOGGER.info("We got to AdminDeleteUserCommand");
+        final String name = req.getParameter(NAME);
+        final String surname = req.getParameter(SURNAME);
+        final String email = req.getParameter(EMAIL);
+        final String accessType = req.getParameter(ACCESS_TYPE);
         final User user = new User(name, surname, accessType, email, "");
         try {
             userService.deleteUser(user);
             orderService.deleteOrdersOfDeletedUser(user);
-            req.setAttribute("users", userService.getListOfUsers());
-        }
-        catch (ServiceException e){
+            req.setAttribute(USERS, userService.getListOfUsers());
+        } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "adminAllUsers";
+        return JSP_ADMIN + ADMIN_ALL_USERS_PAGE;
     }
 }

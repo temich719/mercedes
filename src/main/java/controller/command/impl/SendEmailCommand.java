@@ -12,29 +12,31 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static controller.ControllerStringsStorage.*;
+
 public class SendEmailCommand implements ICommand {
 
-    private final static Logger logger = Logger.getLogger(SendEmailCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(SendEmailCommand.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        logger.info("We got to SendEmailCommand");
-        final String email = req.getParameter("email");
-        if (!Validator.validateEmail(email)){
-            if (req.getSession().getAttribute("locale").equals("ru"))req.setAttribute("error", "Неверный email!");
-            else if (req.getSession().getAttribute("locale").equals("ch")) req.setAttribute("error", "不合規電郵！");
-            else req.setAttribute("error", "Wrong email");
-            return "codeConfirmNewPassword";
+        LOGGER.info("We got to SendEmailCommand");
+        String page = JSP_USER + CONFIRMATION_OF_NEW_PASSWORD;
+        final String email = req.getParameter(EMAIL);
+        if (!Validator.validateEmail(email)) {
+            req.setAttribute(ERROR, WRONG_EMAIL);
+            page = JSP_USER + CODE_CONFIRM_NEW_PASSWORD;
+        } else {
+            try {
+                String code = CodeConfirmGenerator.generateCode();
+                HttpSession session = req.getSession(true);
+                session.setAttribute(CODE_OF_CONFIRM, code);
+                session.setAttribute(EMAIL_UPDATE, email);
+                Mail.sendMessage(email, code, req);
+            } catch (IOException | MessagingException e) {
+                LOGGER.error(e.getMessage());
+            }
         }
-        try {
-            String code = CodeConfirmGenerator.generateCode();
-            HttpSession session = req.getSession(true);
-            session.setAttribute("codeOfConfirm", code);
-            session.setAttribute("emailUpdate", email);
-            Mail.sendMessage(email, code, req);
-        } catch (IOException | MessagingException e) {
-            e.printStackTrace();
-        }
-        return "confirmationOfNewPassword";
+        return page;
     }
 }

@@ -10,20 +10,22 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static controller.ControllerStringsStorage.*;
+
 public class AdminGoToEditDescriptionCommand implements ICommand {
 
-    private static final Logger logger = Logger.getLogger(AdminGoToEditDescriptionCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminGoToEditDescriptionCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        logger.info("We got to AdminGoToEditDescriptionCommand");
+        LOGGER.info("We got to AdminGoToEditDescriptionCommand");
         try {
-            req.setAttribute("cars", carService.getCars());
+            req.setAttribute(CARS, carService.getCars());
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return "adminEditDescription";
+        return JSP_ADMIN + ADMIN_EDIT_DESCRIPTION;
     }
 }
