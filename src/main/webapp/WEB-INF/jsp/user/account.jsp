@@ -28,14 +28,13 @@
         <div id="topMenu">
             <ul>
                 <li>
-                    <a href="registratedIndex.jsp"> <c:out value="${toMain}" /> </a>
+                    <a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/registratedIndex"> <c:out value="${toMain}" /> </a>
                 </li>
             </ul>
         </div>
             <div id="files" style="margin-top: 10%;">
                 <form method="get" action="FrontController" enctype="multipart/data">
                     <input type="hidden" name="command" value="UPLOAD_AVATAR_COMMAND">
-                    <!--<label for="ava"><img style="width:400px;height:400px;" src="img/avatar.jpg" id="avatar" /></label>-->
                     <label for="ava"><img style="width:400px;height:400px;" src="${requestScope.avatarImage}" id="avatar" /></label>
                     <input type="file" id="ava" name="ava" /><br/>
                     <input type="hidden" name="command" value="UPLOAD_AVATAR_COMMAND">

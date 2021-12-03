@@ -67,14 +67,14 @@
                   <li>
                       <a href=""> <c:out value="${otherSections}" /> </a>
                       <ul>
-                          <li><a href="cars.jsp"> <c:out value="${cars}" /> </a></li>
-                          <li><a href="truck.jsp"> <c:out value="${trucks}"/> </a></li>
+                          <li><a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/cars"> <c:out value="${cars}" /> </a></li>
+                          <li><a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/truck"> <c:out value="${trucks}"/> </a></li>
                       </ul>
                     </li>
-                  <li><a href="allCars.jsp"> <c:out value="${allCars}"/> </a></li>
-                  <li><a href="contacts.jsp"> <c:out value="${contacts}" /> </a></li>
-                  <li><a href="enter.jsp"><c:out value="${enter}" /></a></li>
-                  <li><a style="border: none;" href="firstStep.jsp"> <c:out value="${registration}" /> </a></li>
+                  <li><a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/allCars"> <c:out value="${allCars}"/> </a></li>
+                  <li><a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/contacts"> <c:out value="${contacts}" /> </a></li>
+                  <li><a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/enter"><c:out value="${enter}" /></a></li>
+                  <li><a style="border: none;" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/firstStep"> <c:out value="${registration}" /> </a></li>
               </ul>
          </nav>
 
@@ -95,9 +95,9 @@
                         <th> <img pip="false" src="img/gruz.jpg" alt="" height="210px" width="330px"></th>
                     </tr>
                     <tr>
-                        <th><a class="ref" href="cars.jsp"><c:out value="${cars}" /></a></th>
-                        <th style="font-size: 19px;"><a class="ref" href="minibus.jsp"><c:out value="${minibus}" /></a></th>
-                        <th><a class="ref" href="truck.jsp"><c:out value="${trucks}" /></a></th>
+                        <th><a class="ref" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/cars"><c:out value="${cars}" /></a></th>
+                        <th style="font-size: 19px;"><a class="ref" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/minibus"><c:out value="${minibus}" /></a></th>
+                        <th><a class="ref" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/truck"><c:out value="${trucks}" /></a></th>
                     </tr>
                 </table>
                 <p style="margin-left: 9%;color: #A9A9A9;">
@@ -110,9 +110,9 @@
                         <th> <img pip="false" src="img/service.png" alt="" height="210px" width="330px"></th>
                     </tr>
                     <tr>
-                        <th><a class="ref" href="contacts.jsp"><c:out value="${contacts}" /></a></th>
-                        <th style="font-size: 19px;"><a class="ref" href="testDriveOrder.jsp"><c:out value="${testDrive}" /></a></th>
-                        <th><a class="ref" href="serviceOrder.jsp"><c:out value="${service}" /></a></th>
+                        <th><a class="ref" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/contacts"><c:out value="${contacts}" /></a></th>
+                        <th style="font-size: 19px;"><a class="ref" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/testDriveOrder"><c:out value="${testDrive}" /></a></th>
+                        <th><a class="ref" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/serviceOrder"><c:out value="${service}" /></a></th>
                     </tr>
                 </table>
                 <p style="margin-left: 9%;color: #A9A9A9;">

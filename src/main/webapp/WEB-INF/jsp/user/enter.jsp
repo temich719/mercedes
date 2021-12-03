@@ -30,13 +30,13 @@
             <input id="firstInput" name="email" placeholder="example@gmail.com"><br>
             <br><br>
             <input id="secondInput" type="password" name="password" placeholder="${password}" maxlength="16">
-            <p><a href="codeConfirmNewPassword.jsp"><c:out value="${forgot}" /></a></p>
+            <p><a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/codeConfirmNewPassword"><c:out value="${forgot}" /></a></p>
             <br><br>
             <input type="hidden" name="command" value="ENTER_COMMAND">
             <p style="color: red;">${requestScope.error}</p>
             <button id="button" name="submit" type="submit"><c:out value="${toEnter}" /></button>
             <br><br>
-            <i><p style="font-size: 13px;"><c:out value="${notRegYet}" /><a id="hre" href="firstStep.jsp"><c:out value="${registration}" /></a></p></i>
+            <i><p style="font-size: 13px;"><c:out value="${notRegYet}" /><a id="hre" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/firstStep"><c:out value="${registration}" /></a></p></i>
         </form>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>

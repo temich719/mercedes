@@ -82,6 +82,6 @@
                 </tr>
             </c:forEach>
         </table>
-        <a href="adminPage.jsp" style="display:block;text-decoration:none;width:300px;height:30px;background:orange;color:white;text-align:center;margin-top:3%;margin-left:39%;padding-top:1%;">Назад</a>
+        <a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/admin/adminPage" style="display:block;text-decoration:none;width:300px;height:30px;background:orange;color:white;text-align:center;margin-top:3%;margin-left:39%;padding-top:1%;">Назад</a>
     </body>
 </html>

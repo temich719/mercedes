@@ -7,10 +7,10 @@
 
       <c:choose>
          <c:when test="${empty account}">
-             <c:set var="backLink" scope="request" value="index.jsp" />
+             <c:set var="backLink" scope="request" value="FrontController?command=GO_TO_PAGE_COMMAND&pageName=index" />
          </c:when>
          <c:otherwise>
-             <c:set var="backLink" scope="request" value="registratedIndex.jsp" />
+             <c:set var="backLink" scope="request" value="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/registratedIndex" />
          </c:otherwise>
       </c:choose>
 

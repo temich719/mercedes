@@ -36,15 +36,15 @@
                 </div>
                 <div style="float:left;margin-right:3%;">
                     <h3>Объем двигателя</h3>
-                    <input type="text" name="engine" value=${requestScope.engine}>
+                    <input type="text" name="engineVolume" value=${requestScope.engine}>
                 </div>
                 <div style="float:left;margin-right:3%;">
                     <h3>Объем бака</h3>
-                    <input type="text" name="tank" value=${requestScope.tank}>
+                    <input type="text" name="tankVolume" value=${requestScope.tank}>
                 </div>
                 <div style="float:left;margin-right:3%;">
                     <h3>Объем багажника</h3>
-                    <input type="text" name="trunk" value=${requestScope.trunk}>
+                    <input type="text" name="trunkVolume" value=${requestScope.trunk}>
                 </div>
                 <div style="float:left;margin-right:3%;">
                     <h3>Макс. скорость</h3>

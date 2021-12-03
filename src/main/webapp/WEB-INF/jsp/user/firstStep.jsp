@@ -34,7 +34,7 @@
                 <c:out value="${further}" />
             </button>
             <br><br><br><br>
-            <i><p style="font-size: 13px;"><c:out value="${regAlready}" /><a id="hre" href="enter.jsp"><c:out value="${enter}" /></a></p></i>
+            <i><p style="font-size: 13px;"><c:out value="${regAlready}" /><a id="hre" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/enter"><c:out value="${enter}" /></a></p></i>
         </form>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>

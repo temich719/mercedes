@@ -17,26 +17,26 @@
         <fmt:message bundle="${loc}" key="local.minsk" var="minsk" />
         <fmt:message bundle="${loc}" key="local.legServ" var="legServ" />
         <fmt:message bundle="${loc}" key="local.grServ" var="grServ" />
-                <fmt:message bundle="${loc}" key="local.spare" var="spare" />
-                <fmt:message bundle="${loc}" key="local.servicePhone" var="servicePhone" />
-                <fmt:message bundle="${loc}" key="local.email" var="email" />
-                <fmt:message bundle="${loc}" key="local.hours" var="hours" />
-                <fmt:message bundle="${loc}" key="local.opened" var="opened" />
-                <fmt:message bundle="${loc}" key="local.monday" var="monday" />
-                <fmt:message bundle="${loc}" key="local.tuesday" var="tuesday" />
-                <fmt:message bundle="${loc}" key="local.wednesday" var="wednesday" />
-                <fmt:message bundle="${loc}" key="local.thursday" var="thursday" />
-                <fmt:message bundle="${loc}" key="local.friday" var="friday" />
-                <fmt:message bundle="${loc}" key="local.saturday" var="saturday" />
-                <fmt:message bundle="${loc}" key="local.sunday" var="sunday" />
-                <fmt:message bundle="${loc}" key="local.friday" var="friday" />
-                <fmt:message bundle="${loc}" key="local.howToFindUs" var="howToFindUs" />
-                <fmt:message bundle="${loc}" key="local.street" var="street" />
-                <fmt:message bundle="${loc}" key="local.cityCode" var="cityCode" />
-                <fmt:message bundle="${loc}" key="local.phone" var="phone" />
-                <fmt:message bundle="${loc}" key="local.belarus" var="belarus" />
-                <fmt:message bundle="${loc}" key="local.script" var="script" />
-                <fmt:message bundle="${loc}" key="local.how" var="how" />
+        <fmt:message bundle="${loc}" key="local.spare" var="spare" />
+        <fmt:message bundle="${loc}" key="local.servicePhone" var="servicePhone" />
+        <fmt:message bundle="${loc}" key="local.email" var="email" />
+        <fmt:message bundle="${loc}" key="local.hours" var="hours" />
+        <fmt:message bundle="${loc}" key="local.opened" var="opened" />
+        <fmt:message bundle="${loc}" key="local.monday" var="monday" />
+        <fmt:message bundle="${loc}" key="local.tuesday" var="tuesday" />
+        <fmt:message bundle="${loc}" key="local.wednesday" var="wednesday" />
+        <fmt:message bundle="${loc}" key="local.thursday" var="thursday" />
+        <fmt:message bundle="${loc}" key="local.friday" var="friday" />
+        <fmt:message bundle="${loc}" key="local.saturday" var="saturday" />
+        <fmt:message bundle="${loc}" key="local.sunday" var="sunday" />
+        <fmt:message bundle="${loc}" key="local.friday" var="friday" />
+        <fmt:message bundle="${loc}" key="local.howToFindUs" var="howToFindUs" />
+        <fmt:message bundle="${loc}" key="local.street" var="street" />
+        <fmt:message bundle="${loc}" key="local.cityCode" var="cityCode" />
+        <fmt:message bundle="${loc}" key="local.phone" var="phone" />
+        <fmt:message bundle="${loc}" key="local.belarus" var="belarus" />
+        <fmt:message bundle="${loc}" key="local.script" var="script" />
+        <fmt:message bundle="${loc}" key="local.how" var="how" />
     </head>
     <body>
        <div id="menu">
@@ -83,9 +83,9 @@
             <div style="height: 50px;background-color: white;margin-left: 40%;">
                 <table>
                     <tr>
-                        <th><a href=""><img src="img/facebook.png" height="45px" width="40px" alt=""></a></th>
-                        <th><a href=""><img src="img/in.jpg" height="47px" width="49px" alt=""></a></th>
-                        <th><a href=""><img src="img/yot.jpg" height="43px" width="49px" alt=""></a></th>
+                        <th><a href="https://www.facebook.com/mbbelarus"><img src="img/facebook.png" height="45px" width="40px" alt=""></a></th>
+                        <th><a href="https://www.instagram.com/mbbelarus/"><img src="img/in.jpg" height="47px" width="49px" alt=""></a></th>
+                        <th><a href="https://www.youtube.com/user/mbbelarus"><img src="img/yot.jpg" height="43px" width="49px" alt=""></a></th>
                     </tr>
                 </table>
             </div>

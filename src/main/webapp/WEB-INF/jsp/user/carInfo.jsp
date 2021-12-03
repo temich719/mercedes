@@ -36,7 +36,7 @@
                     <li>
                         <form action="FrontController" class="ft">
                             <button class="types">
-                                <a style="text-decoration:none;color:white;" href="cars.jsp"><c:out value="${auto}" /></a>
+                                <a style="text-decoration:none;color:white;" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/cars"><c:out value="${auto}" /></a>
                             </button>
                         </form>
                     </li>
@@ -69,14 +69,14 @@
                 <span style="color: grey;position: absolute;margin-top: 17%;margin-left: 10%;font-size: 20px;"><c:out value="${consumption}" /></span>
                 <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 10%;">${requestScope.consumption} <c:out value="${liter}" /></span>
                 <span style="color: grey;position: absolute;font-size: 20px;margin-top: 17%;margin-left: 25%;"><c:out value="${engine}" /></span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 25%;">${requestScope.engine} <c:out value="${liter}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 25%;">${requestScope.engineVolume} <c:out value="${liter}" /></span>
                 <span style="color: grey;position: absolute;font-size: 20px;margin-top: 17%;margin-left: 40%;"><c:out value="${tank}" /></span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 40%;">${requestScope.tank} <c:out value="${liter}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 19%;margin-left: 40%;">${requestScope.tankVolume} <c:out value="${liter}" /></span>
 
                 <span style="color: grey;position: absolute;margin-top: 22%;margin-left: 10%;font-size: 20px;"><c:out value="${trunk}" /></span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 10%;">${requestScope.trunk} <c:out value="${liter}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 10%;">${requestScope.trunkVolume} <c:out value="${liter}" /></span>
                 <span style="color: grey;position: absolute;font-size: 20px;margin-top: 22%;margin-left: 25%;"><c:out value="${speed}" /></span>
-                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 25%;">${requestScope.speed} <c:out value="${kmh}" /></span>
+                <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 25%;">${requestScope.maxSpeed} <c:out value="${kmh}" /></span>
                 <span style="color: grey;position: absolute;font-size: 20px;margin-top: 22%;margin-left: 40%;"><c:out value="${type}" /></span>
                 <span style="color: black;position: absolute;font-size: 20px;margin-top: 24%;margin-left: 40%;">${requestScope.type}</span>
 
