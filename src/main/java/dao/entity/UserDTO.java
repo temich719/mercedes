@@ -2,31 +2,26 @@ package dao.entity;
 
 import java.util.Objects;
 
-// TODO: 06.11.2021 изменить password на char[], добавить equals hashCode toString
-public class User {
-
+public class UserDTO {
     private int id;
     private final String name;
     private final String surname;
     private final String accessType;
     private final String email;
-    private final String password;
 
-    public User(String name, String surname, String accessType, String email, String password) {
+    public UserDTO(String name, String surname, String email, String accessType) {
         this.name = name;
         this.surname = surname;
         this.accessType = accessType;
         this.email = email;
-        this.password = password;
     }
 
-    public User(int id, String name, String surname, String accessType, String email, String password) {
+    public UserDTO(int id, String name, String surname, String accessType, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.accessType = accessType;
         this.email = email;
-        this.password = password;
     }
 
     public int getId() {
@@ -49,23 +44,18 @@ public class User {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        UserDTO userDTO = (UserDTO) o;
 
-        if (id != user.id) return false;
-        if (!Objects.equals(name, user.name)) return false;
-        if (!Objects.equals(surname, user.surname)) return false;
-        if (!Objects.equals(accessType, user.accessType)) return false;
-        if (!Objects.equals(email, user.email)) return false;
-        return Objects.equals(password, user.password);
+        if (id != userDTO.id) return false;
+        if (!Objects.equals(name, userDTO.name)) return false;
+        if (!Objects.equals(surname, userDTO.surname)) return false;
+        if (!Objects.equals(accessType, userDTO.accessType)) return false;
+        return Objects.equals(email, userDTO.email);
     }
 
     @Override
@@ -75,19 +65,17 @@ public class User {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (accessType != null ? accessType.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", accessType='" + accessType + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }
