@@ -31,58 +31,51 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             " consumption = ?, engine_volume = ?, tank_volume = ?, trunk_volume = ?, max_speed = ?, image_path = ?, type = ? where" +
             " name_of_mark = ?;";
     private static final String SELECT_TYPES = "select * from types;";
+    private static final String SELECT_TYPE = "select * from types where type = ?";
 
-    public CarDAOImpl(ConnectionPool connectionPool){
+    public CarDAOImpl(ConnectionPool connectionPool) {
         super(connectionPool);
     }
 
     public static ArrayList<Car> getCars() throws DAOException {
         logger.info("Go to car page");
-        return DaoFactory.getINSTANCE().getDataBase().getCars();
+        return DaoFactory.getINSTANCE().getJSPDao().getCars();
     }
 
     public static ArrayList<Minibus> getMinibuses() throws DAOException {
         logger.info("Go to minibus page");
-        return DaoFactory.getINSTANCE().getDataBase().getMinibuses();
+        return DaoFactory.getINSTANCE().getJSPDao().getMinibuses();
     }
 
     public static ArrayList<Truck> getTrucks() throws DAOException {
         logger.info("Go to truck page");
-        return DaoFactory.getINSTANCE().getDataBase().getTrucks();
+        return DaoFactory.getINSTANCE().getJSPDao().getTrucks();
     }
 
     public static ArrayList<AbstractCar> getAllCars() throws DAOException {
         logger.info("Go to all cars page");
-        return DaoFactory.getINSTANCE().getDataBase().getAllCars();
+        return DaoFactory.getINSTANCE().getJSPDao().getAllCars();
     }
 
-    private boolean isExistsInCarNames(Connection connection, Car car)throws SQLException{
+    private boolean isExistsInCarNames(Connection connection, Car car) throws SQLException {
         ResultSet resultSet;
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_ALL_CARS);
         resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()){
-            if (resultSet.getString(1).equals(car.getNameOfMark()))return true;
+        while (resultSet.next()) {
+            if (resultSet.getString(1).equals(car.getNameOfMark())) return true;
         }
         return false;
     }
 
-    private boolean isExistsInCarNames(Connection connection, Minibus minibus)throws SQLException{
+    private boolean isExistsInCarNames(Connection connection, Minibus minibus) throws SQLException {
         ResultSet resultSet;
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_ALL_CARS);
         resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()){
-            if (resultSet.getString(1).equals(minibus.getNameOfMark()))return true;
+        while (resultSet.next()) {
+            if (resultSet.getString(1).equals(minibus.getNameOfMark())) return true;
         }
         return false;
     }
-
-    /*private String getMinibusMarkByImage(String imagePath) throws DAOException {
-        String mark = null;
-        for (Minibus minibus:getMinibuses()){
-            if (minibus.getImagePath().equals(imagePath))mark = minibus.getNameOfMark();
-        }
-        return mark;
-    }*/
 
     @Override
     public boolean isAllowedCarType(String type) throws DAOException {
@@ -92,52 +85,74 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             connection = connectionPool.provide();
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_TYPES);
-            while (resultSet.next()){
-                if (resultSet.getString(2).equals(type))return true;
+            while (resultSet.next()) {
+                if (resultSet.getString(2).equals(type)) return true;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
         return false;
     }
 
     @Override
-    public void updateCarInfo(Car car) throws DAOException {
+    public Minibus getMinibusByImage(String imagePath) throws DAOException {
+        Minibus minibus = null;
+        for (Minibus i:getMinibuses()) {
+            if (i.getImagePath().equals(imagePath)) {
+                minibus = i;
+                break;
+            }
+        }
+        return minibus;
+    }
+
+    @Override
+    public boolean updateCarInfo(Car car) throws DAOException {
         Connection connection = null;
-        PreparedStatement preparedStatement;
+        PreparedStatement updateStatement = null;
+        PreparedStatement getCarTypeStatement = null;
+        ResultSet resultSet = null;
+        boolean isUpdated = true;
         try {
             connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(UPDATE_CAR_INFO);
-            preparedStatement.setString(1, car.getPrice());
-            preparedStatement.setString(2, car.getPower());
-            preparedStatement.setString(3, car.getAccelerationTillHundred());
-            preparedStatement.setString(4, car.getConsumption());
-            preparedStatement.setString(5, car.getEngineVolume());
-            preparedStatement.setString(6, car.getTankVolume());
-            preparedStatement.setString(7, car.getTrunkVolume());
-            preparedStatement.setString(8, car.getMaxSpeed());
-            preparedStatement.setString(9, car.getImagePath());
-            preparedStatement.setString(10, car.getType());
-            preparedStatement.setString(11, car.getNameOfMark());
-            preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+            connection.setAutoCommit(false);
+            getCarTypeStatement = connection.prepareStatement(SELECT_TYPE);
+            getCarTypeStatement.setString(1, car.getType());
+            resultSet = getCarTypeStatement.executeQuery();
+            if (resultSet.next()) {
+                updateStatement = connection.prepareStatement(UPDATE_CAR_INFO);
+                updateStatement.setString(1, car.getPrice());
+                updateStatement.setString(2, car.getPower());
+                updateStatement.setString(3, car.getAccelerationTillHundred());
+                updateStatement.setString(4, car.getConsumption());
+                updateStatement.setString(5, car.getEngineVolume());
+                updateStatement.setString(6, car.getTankVolume());
+                updateStatement.setString(7, car.getTrunkVolume());
+                updateStatement.setString(8, car.getMaxSpeed());
+                updateStatement.setString(9, car.getImagePath());
+                updateStatement.setString(10, car.getType());
+                updateStatement.setString(11, car.getNameOfMark());
+                updateStatement.executeUpdate();
+            } else {
+                isUpdated = false;
+            }
+            connection.commit();
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
+            close(resultSet, getCarTypeStatement, updateStatement);
             connectionPool.retrieve(connection);
         }
+        return isUpdated;
     }
 
     @Override
     public Car getCarByMark(String mark) throws DAOException {
         Car result = null;
-        for (Car car:getCars()) {
-            if (car.getNameOfMark().equals(mark))result = car;
+        for (Car car : getCars()) {
+            if (car.getNameOfMark().equals(mark)) result = car;
         }
         return result;
     }
@@ -145,8 +160,8 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public Car getCarByImage(String imagePath) throws DAOException {
         Car result = null;
-        for (Car car:getCars()) {
-            if (car.getImagePath().equals(imagePath))result = car;
+        for (Car car : getCars()) {
+            if (car.getImagePath().equals(imagePath)) result = car;
         }
         return result;
     }
@@ -163,11 +178,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             preparedStatement = connection.prepareStatement(DELETE_CAR_NAME);
             preparedStatement.setString(1, mark);
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -184,11 +197,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             preparedStatement = connection.prepareStatement(DELETE_CAR_NAME);
             preparedStatement.setString(1, mark);
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -199,7 +210,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         PreparedStatement preparedStatement;
         try {
             connection = connectionPool.provide();
-            if (!isExistsInCarNames(connection, minibus)){
+            if (!isExistsInCarNames(connection, minibus)) {
                 preparedStatement = connection.prepareStatement(INSERT_CAR_NAME);
                 preparedStatement.setString(1, minibus.getNameOfMark());
                 preparedStatement.executeUpdate();
@@ -211,22 +222,20 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             preparedStatement.setString(4, minibus.getFullLoad());
             preparedStatement.setString(5, minibus.getCurbWeight());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
 
     @Override
-    public void addCar(Car car)throws DAOException{
+    public void addCar(Car car) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement;
         try {
             connection = connectionPool.provide();
-            if (!isExistsInCarNames(connection, car)){
+            if (!isExistsInCarNames(connection, car)) {
                 preparedStatement = connection.prepareStatement(INSERT_CAR_NAME);
                 preparedStatement.setString(1, car.getNameOfMark());
                 preparedStatement.executeUpdate();
@@ -244,11 +253,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             preparedStatement.setString(10, car.getImagePath());
             preparedStatement.setString(11, car.getType());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -256,8 +263,8 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public String getCarMarkByImage(String imagePath) throws DAOException {
         String mark = null;
-        for (Car car:getCars()){
-            if (car.getImagePath().equals(imagePath))mark = car.getNameOfMark();
+        for (Car car : getCars()) {
+            if (car.getImagePath().equals(imagePath)) mark = car.getNameOfMark();
         }
         return mark;
     }
@@ -265,8 +272,8 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public ArrayList<Car> getCarListByType(String type) throws DAOException {
         ArrayList<Car> cars = new ArrayList<>();
-        for (Car car:getCars()){
-            if (car.getType().equals(type))cars.add(car);
+        for (Car car : getCars()) {
+            if (car.getType().equals(type)) cars.add(car);
         }
         return cars;
     }
@@ -281,24 +288,23 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
                 break;
             }
         }
-        if (Objects.nonNull(car)){
+        if (Objects.nonNull(car)) {
             resultSet[0] = car.getNameOfMark();
             resultSet[1] = car.getPrice();
         }
         Minibus minibus = null;
-        if (Objects.isNull(car)){
-            for (Minibus i: getMinibuses()) {
-                if (i.getImagePath().equals(imagePath)){
+        if (Objects.isNull(car)) {
+            for (Minibus i : getMinibuses()) {
+                if (i.getImagePath().equals(imagePath)) {
                     minibus = i;
                     break;
                 }
             }
         }
-        if (Objects.nonNull(minibus)){
+        if (Objects.nonNull(minibus)) {
             resultSet[0] = minibus.getNameOfMark();
             resultSet[2] = minibus.getPrice();
-        }
-        else if (Objects.isNull(car)){
+        } else if (Objects.isNull(car)) {
             resultSet[0] = "Actros";
             resultSet[2] = "73 000$";
         }

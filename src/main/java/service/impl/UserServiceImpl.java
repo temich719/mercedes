@@ -4,6 +4,7 @@ import dao.UserDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Pair;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 import dao.impl.UserDAOImpl;
 import service.UserService;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 public class UserServiceImpl implements UserService {
 
-    private final UserDAO userDAO = DaoFactory.getINSTANCE().getUserDAOTime();
+    private final UserDAO userDAO = DaoFactory.getINSTANCE().getUserDAO();
 
     public UserServiceImpl(){}
 
@@ -31,6 +32,15 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.addAvatar(avatarPath, email);
         } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public UserDTO enter(String email, String password) throws ServiceException {
+        try {
+            return userDAO.enter(email, password);
+        }catch (DAOException e){
             throw new ServiceException(e);
         }
     }

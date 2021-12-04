@@ -16,7 +16,8 @@ public class CarServiceImpl implements CarService {
 
     private final CarDAO carDAO = DaoFactory.getINSTANCE().getCarDAO();
 
-    public CarServiceImpl(){}
+    public CarServiceImpl() {
+    }
 
     @Override
     public String getCarMarkByImage(String imagePath) throws ServiceException {
@@ -40,6 +41,15 @@ public class CarServiceImpl implements CarService {
     public ArrayList<Truck> getTrucks() throws ServiceException {
         try {
             return CarDAOImpl.getTrucks();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Minibus getMinibusByImage(String imagePath) throws ServiceException {
+        try {
+            return carDAO.getMinibusByImage(imagePath);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -76,18 +86,16 @@ public class CarServiceImpl implements CarService {
     public Car getCarByMark(String mark) throws ServiceException {
         try {
             return carDAO.getCarByMark(mark);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void updateCarInfo(Car car) throws ServiceException {
+    public boolean updateCarInfo(Car car) throws ServiceException {
         try {
-            carDAO.updateCarInfo(car);
-        }
-        catch (DAOException e){
+            return carDAO.updateCarInfo(car);
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -96,8 +104,7 @@ public class CarServiceImpl implements CarService {
     public boolean isAllowedCarType(String type) throws ServiceException {
         try {
             return carDAO.isAllowedCarType(type);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -106,8 +113,7 @@ public class CarServiceImpl implements CarService {
     public Car getCarByImage(String imagePath) throws ServiceException {
         try {
             return carDAO.getCarByImage(imagePath);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -116,8 +122,7 @@ public class CarServiceImpl implements CarService {
     public void deleteMinibus(String mark) throws ServiceException {
         try {
             carDAO.deleteMinibus(mark);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -126,8 +131,7 @@ public class CarServiceImpl implements CarService {
     public void deleteCar(String mark) throws ServiceException {
         try {
             carDAO.deleteCar(mark);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -136,8 +140,7 @@ public class CarServiceImpl implements CarService {
     public void addMinibus(Minibus minibus) throws ServiceException {
         try {
             carDAO.addMinibus(minibus);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -146,8 +149,7 @@ public class CarServiceImpl implements CarService {
     public void addCar(Car car) throws ServiceException {
         try {
             carDAO.addCar(car);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }

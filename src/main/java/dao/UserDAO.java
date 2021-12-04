@@ -2,6 +2,7 @@ package dao;
 
 import dao.entity.Pair;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 
 import java.sql.ResultSet;
@@ -82,4 +83,13 @@ public interface UserDAO {
      * @throws DAOException is a module exception
      */
     void addAvatar(String imagePath, String email)throws DAOException;
+
+    /**
+     * log-in
+     * @param email is the email of user
+     * @param password is the user's password
+     * @return UserDTO if log-in was successful and null if not
+     * @throws DAOException is a module exception
+     */
+    UserDTO enter(String email, String password)throws DAOException;
 }

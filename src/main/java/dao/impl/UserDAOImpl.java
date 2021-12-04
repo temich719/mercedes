@@ -5,6 +5,7 @@ import dao.ConnectionPool;
 import dao.UserDAO;
 import dao.entity.Pair;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 
 import java.sql.*;
@@ -16,6 +17,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SELECT_FROM_SURNAMES = "select * from surnames;";
     private static final String SELECT_FROM_ACCESS_TYPES = "select * from access_types;";
     private static final String SELECT_FROM_USERS = "select * from users;";
+    private static final String LOGIN_QUERY = "select user_name, user_surname, email, access_type from users where email = ? && password = ?;";
     private static final String ADD_AVATAR = "update users set avatar = ? where email = ?;";
     private static final String ADD_USER_NAME = "insert into names(user_name) values(?);";
     private static final String ADD_SURNAME = "insert into surnames(user_surname) values(?);";
@@ -47,6 +49,31 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         finally {
             connectionPool.retrieve(connection);
         }
+    }
+
+    @Override
+    public UserDTO enter(String email, String password) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        UserDTO userDTO = null;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(LOGIN_QUERY);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                userDTO = new UserDTO(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+            }
+        }catch (SQLException e){
+            throw new DAOException(e);
+        }
+        finally {
+            close(resultSet, preparedStatement);
+            connectionPool.retrieve(connection);
+        }
+        return userDTO;
     }
 
     @Override
