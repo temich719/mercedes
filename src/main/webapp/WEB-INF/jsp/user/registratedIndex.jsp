@@ -4,6 +4,7 @@
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
         <c:set var="count" scope="session" value="${sessionScope.count}" />
+        <c:set var="isAdmin" scope="session" value="${sessionScope.isAdmin}" />
 
 <html>
     <head>
@@ -143,7 +144,7 @@
                <br>
                    <table style="margin-left: 7%;">
                    <tr>
-                       <th style="width: 350px;text-align:left;vertical-align:top;">
+                       <th style="width: 470px;text-align:left;vertical-align:top;">
                         <div style="margin-left: 10%;">
                             <p  style="color: white;"><c:out value="${autoHouse}" /></p>
                             <p  style="color: white;"><c:out value="${spare}" />:<span style="color: deepskyblue;">&nbsp;+375 17 3099999</span></p>
@@ -179,9 +180,24 @@
                <p style="margin-left: 9%;color: #A9A9A9;">
                 ________________________________________________________________________________________________________________________________________
            </p>
-           <p style="margin-left: 9%;">©Mercedes-Benz <c:out value="${belarus}" />, 2021</p>
+           <p style="margin-left: 9%;display:inline;">©Mercedes-Benz <c:out value="${belarus}" />, 2021</p>
         </span>
         </div>
+
+        <c:choose>
+             <c:when test="${empty isAdmin}">
+
+             </c:when>
+             <c:otherwise>
+                    <div style = "margin-left:70%;display:inline;position:absolute;margin-top:-1.4%;">
+                         <a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/admin/adminPage" style="text-decoration:none;cursor: pointer;width:25%;color:white;background-color:black;border:none;border-bottom:1px solid white;display:inline;">
+                              Редактировать сайт
+                         </a>
+                    </div>
+             </c:otherwise>
+        </c:choose>
+        <br><br>
+
     </div>
     ${script}
     </body>
