@@ -1,7 +1,9 @@
 package dao;
 
+import dao.entity.AbstractCar;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
+import dao.entity.car.Truck;
 import dao.exception.DAOException;
 
 import java.util.ArrayList;
@@ -109,4 +111,37 @@ public interface CarDAO {
      * @throws DAOException is a module exception
      */
     Minibus getMinibusByImage(String imagePath) throws DAOException;
+
+    /**
+     * find cars
+     *
+     * @return list of cars
+     * @throws DAOException is module exception
+     */
+    ArrayList<Car> getCars() throws DAOException;
+
+    /**
+     * find minibuses
+     *
+     * @return list of minibuses
+     * @throws DAOException is module exception
+     */
+    ArrayList<Minibus> getMinibuses() throws DAOException;
+
+    /**
+     * find trucks
+     *
+     * @return list of trucks
+     * @throws DAOException is module exception
+     */
+    ArrayList<Truck> getTrucks() throws DAOException;
+
+    /**
+     * find all cars including cars, minibuses and trucks
+     *
+     * @return list of all cars
+     * @throws DAOException is module exception
+     */
+    ArrayList<AbstractCar> getAllCars() throws DAOException;
+
 }

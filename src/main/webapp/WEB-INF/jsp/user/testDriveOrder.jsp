@@ -2,9 +2,8 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-     <%@ page import="dao.impl.CarDAOImpl" %>
 
-     <c:set var="cars" scope="request" value="<%=CarDAOImpl.getAllCars()%>" />
+     <c:set var="cars" scope="request" value="${requestScope.allCars}" />
      <c:set var="select" scope="request" value="${requestScope.select}" />
      <c:set var="sel" scope="request" value="${requestScope.sel}" />
      <c:set var="def" scope="request" value="${requestScope.defImage}" />

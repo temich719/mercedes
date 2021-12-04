@@ -71,6 +71,9 @@ public class ControllerStringsStorage {
     public static final String REGISTERED = "registered";
     public static final String PASSWORD = "password";
     public static final String MARK_TO_ORDER = "markToList";
+    public static final String ALL_CARS = "allCars";
+    public static final String AUTOMOBILES = "automobiles";
+    public static final String MINI_BUS = "miniBus";
     public static final String DEFINITE_CAR = "sel";
     public static final String DEFINITE_IMAGE = "defImage";
     public static final String WHETHER_LIST_OF_CARS_OR_DEFINITE_CAR = "select";

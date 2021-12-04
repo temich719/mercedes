@@ -1,5 +1,6 @@
 package service;
 
+import dao.entity.AbstractCar;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
@@ -136,4 +137,13 @@ public interface CarService {
      * @throws ServiceException is a module exception
      */
     Minibus getMinibusByImage(String imagePath) throws ServiceException;
+
+
+    /**
+     * find all cars including cars, minibuses and trucks
+     *
+     * @return list of all cars
+     * @throws ServiceException is module exception
+     */
+    ArrayList<AbstractCar> getAllCars() throws ServiceException;
 }

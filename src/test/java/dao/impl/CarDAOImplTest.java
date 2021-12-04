@@ -50,7 +50,7 @@ public class CarDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getCars();
+        carDAO.getCars();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -104,7 +104,7 @@ public class CarDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getCars();
+        carDAO.getCars();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -150,7 +150,7 @@ public class CarDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getMinibuses();
+        carDAO.getMinibuses();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -190,7 +190,7 @@ public class CarDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getMinibuses();
+        carDAO.getMinibuses();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -225,7 +225,7 @@ public class CarDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getTrucks();
+        carDAO.getTrucks();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -256,7 +256,7 @@ public class CarDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getTrucks();
+        carDAO.getTrucks();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -314,7 +314,7 @@ public class CarDAOImplTest {
         Mockito.when(trucks.add(new Truck(resultSet.getString(2), "73 000$", "img/truck.jpg"))).thenReturn(Boolean.TRUE, Boolean.FALSE);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        CarDAOImpl.getAllCars();
+        carDAO.getAllCars();
 
         Mockito.verify(connectionPool, Mockito.times(3)).provide();
 

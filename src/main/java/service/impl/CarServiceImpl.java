@@ -2,11 +2,11 @@ package service.impl;
 
 import dao.CarDAO;
 import dao.daoFactory.DaoFactory;
+import dao.entity.AbstractCar;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
 import dao.exception.DAOException;
-import dao.impl.CarDAOImpl;
 import service.CarService;
 import service.exception.ServiceException;
 
@@ -31,7 +31,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public ArrayList<Car> getCars() throws ServiceException {
         try {
-            return CarDAOImpl.getCars();
+            return carDAO.getCars();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -40,7 +40,16 @@ public class CarServiceImpl implements CarService {
     @Override
     public ArrayList<Truck> getTrucks() throws ServiceException {
         try {
-            return CarDAOImpl.getTrucks();
+            return carDAO.getTrucks();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<AbstractCar> getAllCars() throws ServiceException {
+        try {
+            return carDAO.getAllCars();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -58,7 +67,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public ArrayList<Minibus> getMinibuses() throws ServiceException {
         try {
-            return CarDAOImpl.getMinibuses();
+            return carDAO.getMinibuses();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
