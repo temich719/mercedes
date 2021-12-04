@@ -27,7 +27,7 @@ public class CarDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -81,7 +81,7 @@ public class CarDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenThrow(SQLException.class);
@@ -135,7 +135,7 @@ public class CarDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_MINIBUSES)).thenReturn(resultSet);
@@ -175,7 +175,7 @@ public class CarDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_MINIBUSES)).thenThrow(SQLException.class);
@@ -215,7 +215,7 @@ public class CarDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_TRUCKS)).thenReturn(resultSet);
@@ -246,7 +246,7 @@ public class CarDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_TRUCKS)).thenThrow(SQLException.class);
@@ -282,7 +282,7 @@ public class CarDAOImplTest {
         String SELECT_FROM_MINIBUSES = "select * from minibuses";
         String SELECT_FROM_CARS = "select * from cars";
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(jspDAO.getAllCars()).thenReturn(abstractCars);
 
@@ -496,7 +496,7 @@ public class CarDAOImplTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -552,7 +552,7 @@ public class CarDAOImplTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -928,7 +928,7 @@ public class CarDAOImplTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -984,7 +984,7 @@ public class CarDAOImplTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);

@@ -44,7 +44,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
 
     public static ArrayList<Order> getListOfOrders()throws DAOException{
         logger.info("List of orders");
-        return DaoFactory.getINSTANCE().getDataBase().getListOfOrders();
+        return DaoFactory.getINSTANCE().getJSPDao().getListOfOrders();
     }
 
     public static String getCountOfUnreadOrders(String email)throws DAOException{

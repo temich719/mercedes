@@ -1,7 +1,11 @@
 package controller.filter;
 
+import controller.ControllerStringsStorage;
+
 import javax.servlet.*;
 import java.io.IOException;
+
+import static controller.ControllerStringsStorage.ENCODING;
 
 public class EncodingFilter implements Filter {
 
@@ -9,7 +13,7 @@ public class EncodingFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        String encoding = filterConfig.getInitParameter("encoding");
+        String encoding = filterConfig.getInitParameter(ControllerStringsStorage.ENCODING);
         if (encoding != null)ENCODING = encoding;
     }
 

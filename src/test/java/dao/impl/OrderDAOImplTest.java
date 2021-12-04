@@ -26,7 +26,7 @@ public class OrderDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ArrayList<Order> orders = Mockito.mock(ArrayList.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_ORDERS)).thenReturn(resultSet);
@@ -70,7 +70,7 @@ public class OrderDAOImplTest {
         Statement statement = Mockito.mock(Statement.class);
         ArrayList<Order> orders = Mockito.mock(ArrayList.class);
 
-        Mockito.when(daoFactory.getDataBase()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_ORDERS)).thenThrow(SQLException.class);

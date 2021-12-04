@@ -14,11 +14,11 @@ import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import static dao.DAOFinals.*;
+import static dao.DAOFinalsStorage.*;
 
 public class ConnectionPoolImpl implements ConnectionPool{
 
-    private final static Logger logger = Logger.getLogger(ConnectionPoolImpl.class);
+    private final static Logger LOGGER = Logger.getLogger(ConnectionPoolImpl.class);
     private final String DRIVER;
     private static boolean driverIsLoaded = false;
     private final int connections = 50;
@@ -42,8 +42,8 @@ public class ConnectionPoolImpl implements ConnectionPool{
                 availableConnections.add(getConnection(url, user, password));
             }
         } catch (DAOException e) {
-            logger.info("availableConnections.size() is " + availableConnections.size());
-            logger.info("takenConnections.size() is " + takenConnections.size());
+            LOGGER.info("availableConnections.size() is " + availableConnections.size());
+            LOGGER.info("takenConnections.size() is " + takenConnections.size());
         }
     }
 
@@ -56,9 +56,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
         } catch (InterruptedException e) {
             throw new DAOException(e);
         }
-        logger.info("ConnectionPool.provide()");
-        logger.info("ConnectionPool.availableConnections.size() is " + availableConnections.size());
-        logger.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
+        LOGGER.info("ConnectionPool.provide()");
+        LOGGER.info("ConnectionPool.availableConnections.size() is " + availableConnections.size());
+        LOGGER.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
         return newConnection;
     }
 
@@ -68,48 +68,39 @@ public class ConnectionPoolImpl implements ConnectionPool{
             takenConnections.remove(connection);
             availableConnections.add(connection);
         } else {
-            logger.info("ConnectionPool.retrieve(Connection connection)");
-            logger.info("connection is NULL");
+            LOGGER.info("ConnectionPool.retrieve(Connection connection)");
+            LOGGER.info("connection is NULL");
         }
-        logger.info("ConnectionPool.availableConnections.size() is " + availableConnections.size());
-        logger.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
+        LOGGER.info("ConnectionPool.availableConnections.size() is " + availableConnections.size());
+        LOGGER.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
     }
 
-    /**
-     * creates a connection
-     */
     private Connection getConnection(String url, String user, String password) throws DAOException{
         Connection connection;
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            logger.error("Could not connect to database");
+            LOGGER.error("Could not connect to database");
             shutdownTomcat();
             throw new DAOException("Connection to database failed", e);
         }
         return connection;
     }
 
-    /**
-     * method loads database driver
-     */
     private void getJDBCDriver() throws DAOException {
         if (!driverIsLoaded) {
             try {
                 Class.forName(DRIVER);
                 driverIsLoaded = true;
-                logger.info("MySQL driver is loaded");
+                LOGGER.info("MySQL driver is loaded");
             } catch (ClassNotFoundException e) {
-                logger.error("MySQL driver is not loaded");
+                LOGGER.error("MySQL driver is not loaded");
                 shutdownTomcat();
                 throw new DAOException("MySQL driver is not loaded", e);
             }
         }
     }
 
-    /**
-     * in case of errors we can stop tomcat
-     */
     private static void shutdownTomcat() throws DAOException{
         try {
             Socket socket = new Socket("localhost", 8080);

@@ -38,9 +38,9 @@ public class DaoFactory {
         return orderDAO;
     }
 
-    public UserDAO getUserDAOTime() {
+    public UserDAO getUserDAO() {
         return userDAO;
     }
 
-    public JspDAOImpl getDataBase(){return jspDAO;}
+    public JspDAOImpl getJSPDao(){return jspDAO;}
 }

@@ -83,6 +83,11 @@ public class ControllerStringsStorage {
     public static final String NEW_PASSWORD = "newPassword";
     public static final String EMAIL_UPDATE = "emailUpdate";
     public static final String ERR = "err";
+    public static final String ENCODING = "encoding";
+    public static final String IS_ADMIN = "isAdmin";
+    public static final String ADMIN = "admin";
+    public static final String INVALID_EMAIL_OR_PASSWORD_MESSAGE = "Invalid email or password.";
+    public static final String WRONG_CAR_TYPE = "Неподдерживаемый тип машины!";
     public static final String EASY_PASSWORD_ERROR_MESSAGE = "The password must contain an upper and lower case Latin letter, " +
             "a number, a special character and have a length of 8 to 16 characters ";
     public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
