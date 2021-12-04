@@ -32,7 +32,7 @@ public class MakeOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MakeOrderCommand");
         String page = JSP_USER + THANKS_PAGE;
-        boolean isRight = true;
+        boolean inputDataIsRight = true;
         final String name = req.getParameter(NAME);
         final String surname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
@@ -46,30 +46,30 @@ public class MakeOrderCommand implements ICommand {
                 if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
                 else req.setAttribute(PRICE, markAndPrice[1]);
                 req.setAttribute(MARK, markAndPrice[0]);
-                isRight = false;
+                inputDataIsRight = false;
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
-            if (!Validator.validateEmail(email) && isRight) {
+            if (!Validator.validateEmail(email) && inputDataIsRight) {
                 req.setAttribute(ERROR, INVALID_EMAIL);
                 req.setAttribute(PICTURE, imagePath);
                 if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
                 else req.setAttribute(PRICE, markAndPrice[1]);
                 req.setAttribute(MARK, markAndPrice[0]);
-                isRight = false;
+                inputDataIsRight = false;
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
-            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && isRight) {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
                 if (!name.equals(userService.getName(email).getFirst()) || !surname.equals(userService.getName(email).getSecond())) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(PICTURE, imagePath);
                     if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
                     else req.setAttribute(PRICE, markAndPrice[1]);
                     req.setAttribute(MARK, markAndPrice[0]);
-                    isRight = false;
+                    inputDataIsRight = false;
                     page = JSP_USER + FORM_OF_ORDER_PAGE;
                 }
             }
-            if (isRight) {
+            if (inputDataIsRight) {
                 if (Objects.isNull(markAndPrice[1])) {
                     Order order = new Order(name, surname, email, CAR_BUYING, markAndPrice[0], markAndPrice[2], phone, null, UNREAD);
                     orderService.addOrder(order);

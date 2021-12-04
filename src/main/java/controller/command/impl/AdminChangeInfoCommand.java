@@ -22,6 +22,7 @@ public class AdminChangeInfoCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to AdminChangeInfoCommand");
+        String returnPageName = JSP_ADMIN + ADMIN_PAGE;
         try {
             final String oldImagePath = req.getParameter(OLD_IMAGE_PATH);
             final String imagePath = req.getParameter(IMAGE_PATH);
@@ -35,7 +36,8 @@ public class AdminChangeInfoCommand implements ICommand {
             final String trunk = req.getParameter(TRUNK_VOLUME);
             final String maxSpeed = req.getParameter(MAX_SPEED);
             final String type = req.getParameter(TYPE);
-            if (!carService.isAllowedCarType(type)) {
+            Car car = new Car(mark, makePricePrettier(price), power, acceleration, consumption, engine, tank, trunk, maxSpeed, imagePath, type);
+            if (!carService.updateCarInfo(car)) {
                 req.setAttribute(MARK, mark);
                 req.setAttribute(PRICE, price);
                 req.setAttribute(POWER, power);
@@ -48,15 +50,13 @@ public class AdminChangeInfoCommand implements ICommand {
                 req.setAttribute(TYPE, type);
                 req.setAttribute(IMAGE_PATH, imagePath);
                 req.setAttribute(OLD_IMAGE_PATH, oldImagePath);
-                req.setAttribute(ERROR, "Неподдерживаемый тип машины!");
-                return JSP_ADMIN + "adminCarDescription";
+                req.setAttribute(ERROR, WRONG_CAR_TYPE);
+                returnPageName = JSP_ADMIN + ADMIN_CAR_DESCRIPTION_PAGE;
             }
-            Car car = new Car(mark, makePricePrettier(price), power, acceleration, consumption, engine, tank, trunk, maxSpeed, imagePath, type);
-            carService.updateCarInfo(car);
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return JSP_ADMIN + "adminPage";
+        return returnPageName;
     }
 
     private String makePricePrettier(String price) {

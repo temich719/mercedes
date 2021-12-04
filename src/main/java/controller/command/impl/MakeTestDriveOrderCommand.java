@@ -32,7 +32,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MakeTestDriveOrderCommand");
         String page = JSP_USER + THANKS_PAGE;
-        boolean isRight = true;
+        boolean inputDataIsRight = true;
         final String userName = req.getParameter(NAME);
         final String userSurname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
@@ -51,10 +51,10 @@ public class MakeTestDriveOrderCommand implements ICommand {
                     throw new ControllerException(e);
                 }
             }
-            isRight = false;
+            inputDataIsRight = false;
             page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
         }
-        if (!Validator.validateEmail(email) && isRight) {
+        if (!Validator.validateEmail(email) && inputDataIsRight) {
             req.setAttribute(ERROR, INVALID_EMAIL);
             if (Objects.nonNull(sel)) {
                 req.setAttribute(SELECT, "true");
@@ -65,11 +65,11 @@ public class MakeTestDriveOrderCommand implements ICommand {
                     throw new ControllerException(e);
                 }
             }
-            isRight = false;
+            inputDataIsRight = false;
             page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
         }
         try {
-            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && isRight) {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
                 if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     if (Objects.nonNull(sel)) {
@@ -81,14 +81,14 @@ public class MakeTestDriveOrderCommand implements ICommand {
                             throw new ControllerException(e);
                         }
                     }
-                    isRight = false;
+                    inputDataIsRight = false;
                     page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
                 }
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        if (isRight) {
+        if (inputDataIsRight) {
             String mark;
             String image;
             try {

@@ -19,6 +19,7 @@ public class LogOffCommand implements ICommand {
         req.getSession().setAttribute(EMAIL_ACCOUNT, null);
         req.getSession().setAttribute(ACCOUNT_NAME, null);
         req.getSession().setAttribute(ACCOUNT_SURNAME, null);
+        req.getSession().setAttribute(IS_ADMIN, null);
         return INDEX_PAGE;
     }
 }

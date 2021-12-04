@@ -11,6 +11,8 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Objects;
+
 import static controller.ControllerStringsStorage.*;
 
 public class MinibusOrderCommand implements ICommand {
@@ -22,14 +24,14 @@ public class MinibusOrderCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MinibusOrderCommand");
+        String returnPageName = JSP_USER + FORM_OF_ORDER_PAGE;
         final String imagePath = req.getParameter(PICTURE);
-        Minibus minibus = null;
+        Minibus minibus;
         try {
-            for (Minibus i : carService.getMinibuses()) {
-                if (i.getImagePath().equals(imagePath)) {
-                    minibus = i;
-                    break;
-                }
+            minibus = carService.getMinibusByImage(imagePath);
+            if (Objects.isNull(minibus)){
+                returnPageName = JSP_ERRORS;
+                LOGGER.error("Minibus is null");
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
@@ -37,6 +39,6 @@ public class MinibusOrderCommand implements ICommand {
         req.setAttribute(MARK, minibus.getNameOfMark());
         req.setAttribute(MONEY, minibus.getPrice());
         req.setAttribute(PICTURE, imagePath);
-        return JSP_USER + FORM_OF_ORDER_PAGE;
+        return returnPageName;
     }
 }

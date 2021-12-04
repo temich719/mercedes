@@ -30,7 +30,7 @@ public class MakeServiceOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MakeServiceOrderCommand");
         String page = JSP_USER + THANKS_PAGE;
-        boolean isRight = true;
+        boolean inputDataIsRight = true;
         final String userName = req.getParameter(NAME);
         final String userSurname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
@@ -40,28 +40,28 @@ public class MakeServiceOrderCommand implements ICommand {
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
             req.setAttribute(SELECT, select);
-            isRight = false;
+            inputDataIsRight = false;
             page = JSP_USER + SERVICE_ORDER_PAGE;
         }
-        if (!Validator.validateEmail(email) && isRight) {
+        if (!Validator.validateEmail(email) && inputDataIsRight) {
             req.setAttribute(ERROR, INVALID_EMAIL);
             req.setAttribute(SELECT, select);
-            isRight = false;
+            inputDataIsRight = false;
             page = JSP_USER + SERVICE_ORDER_PAGE;
         }
         try {
-            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && isRight) {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
                 if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(SELECT, select);
-                    isRight = false;
+                    inputDataIsRight = false;
                     page = JSP_USER + SERVICE_ORDER_PAGE;
                 }
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        if (isRight) {
+        if (inputDataIsRight) {
             final String mark;
             if (Objects.isNull(req.getParameter(SELECT_NAME))) mark = req.getParameter(MARK);
             else mark = req.getParameter(SELECT_NAME);

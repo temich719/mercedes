@@ -28,34 +28,33 @@ public class RegistrationCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to RegistrationCommand");
         String page = JSP_USER + CONFIRMATION_PAGE;
-        boolean isRight = true;
+        boolean inputDataIsRight = true;
         final String email = req.getParameter(EMAIL);
         try {
             if (userService.isExistingEmail(email.trim())) {
                 req.setAttribute(ERROR, EMAIL_ALREADY_EXISTS);
                 page = JSP_USER + REGISTRATION_PAGE;
-                isRight = false;
+                inputDataIsRight = false;
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        // TODO: 06.11.2021 password in char[]
         final String password = req.getParameter(PASSWORD);
-        if (Validator.validateEmail(email.trim()) && isRight) {
+        if (Validator.validateEmail(email.trim()) && inputDataIsRight) {
             if (Validator.validatePassword(password)) {
                 req.getSession().setAttribute(EMAIL, email);
                 req.getSession().setAttribute(PASSWORD, password);
             } else {
                 req.setAttribute(ERR, PASSWORD_REQUIREMENTS);
                 page = JSP_USER + REGISTRATION_PAGE;
-                isRight = false;
+                inputDataIsRight = false;
             }
-        } else if (isRight) {
+        } else if (inputDataIsRight) {
             req.setAttribute(ERROR, INVALID_EMAIL);
             page = JSP_USER + REGISTRATION_PAGE;
-            isRight = false;
+            inputDataIsRight = false;
         }
-        if (isRight) {
+        if (inputDataIsRight) {
             try {
                 String code = CodeConfirmGenerator.generateCode();
                 HttpSession session = req.getSession(true);
