@@ -34,7 +34,7 @@ public class EnterCommand implements ICommand {
             userDTO = userService.enter(email, password);
             if (Objects.nonNull(userDTO)) {
                 HttpSession session = req.getSession(true);
-                session.setAttribute(NAME_ACCOUNT, userDTO.getName() + userDTO.getSurname());
+                session.setAttribute(NAME_ACCOUNT, userDTO.getName() + " " + userDTO.getSurname());
                 session.setAttribute(ACCOUNT_NAME, userDTO.getName());
                 session.setAttribute(ACCOUNT_SURNAME, userDTO.getSurname());
                 session.setAttribute(EMAIL_ACCOUNT, userDTO.getEmail());
