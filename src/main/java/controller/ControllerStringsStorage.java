@@ -11,6 +11,7 @@ public class ControllerStringsStorage {
     public static final String ERROR_COMMAND = "ERROR_COMMAND";
     public static final String EMAIL_ACCOUNT = "emailAccount";
     public static final String NAME_ACCOUNT = "nameAccount";
+    public static final String ORDER = "ord";
     public static final String ACCOUNT_NAME = "accountName";
     public static final String ACCOUNT_SURNAME = "accountSurname";
     public static final String SURNAME_ACCOUNT = "surnameAccount";

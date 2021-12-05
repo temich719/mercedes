@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
+import service.OrderService;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
@@ -18,6 +19,7 @@ public class AccountPageCommand implements ICommand {
     private static final Logger LOGGER = Logger.getLogger(AccountPageCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
+    private final OrderService orderService = serviceFactory.getOrderService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
@@ -29,6 +31,7 @@ public class AccountPageCommand implements ICommand {
             } else {
                 req.setAttribute(AVATAR_IMAGE, IMG + avatarPath);
             }
+            req.setAttribute(ORDER, orderService.getListOfOrders());
             return JSP_USER + ACCOUNT_PAGE;
         } catch (ServiceException e) {
             throw new ControllerException(e);

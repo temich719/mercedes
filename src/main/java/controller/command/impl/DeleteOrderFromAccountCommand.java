@@ -35,6 +35,7 @@ public class DeleteOrderFromAccountCommand implements ICommand {
         try {
             Order order = new Order(name, surname, email, service, mark, price, phone, date, UNREAD);
             orderService.deleteOrder(order);
+            req.setAttribute(ORDER, orderService.getListOfOrders());
             req.setAttribute(AVATAR_IMAGE, IMG + userService.getAvatarPathByEmail(email));
             req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
         } catch (ServiceException e) {

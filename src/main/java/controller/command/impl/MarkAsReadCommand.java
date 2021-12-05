@@ -31,6 +31,7 @@ public class MarkAsReadCommand implements ICommand {
         final String date = req.getParameter(DATE);
         try {
             orderService.markAsRead(name, surname, email, service, mark, date);
+            req.setAttribute(ORDER, orderService.getListOfOrders());
             req.setAttribute(AVATAR_IMAGE, IMG + userService.getAvatarPathByEmail(email));
             req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
         } catch (ServiceException e) {
