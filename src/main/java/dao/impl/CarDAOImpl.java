@@ -3,7 +3,6 @@ package dao.impl;
 import dao.AbstractDAO;
 import dao.CarDAO;
 import dao.ConnectionPool;
-import dao.daoFactory.DaoFactory;
 import dao.entity.AbstractCar;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
@@ -32,6 +31,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             " name_of_mark = ?;";
     private static final String SELECT_TYPES = "select * from types;";
     private static final String SELECT_TYPE = "select * from types where type = ?";
+    private static final String SELECT_FROM_MINIBUSES = "select * from minibuses";
+    private static final String SELECT_FROM_CARS = "select * from cars";
+    private static final String SELECT_FROM_TRUCKS = "select * from trucks";
 
     public CarDAOImpl(ConnectionPool connectionPool) {
         super(connectionPool);
@@ -40,25 +42,75 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public ArrayList<Car> getCars() throws DAOException {
         LOGGER.info("Go to car page");
-        return DaoFactory.getINSTANCE().getJSPDao().getCars();
+        Connection connection = null;
+        ArrayList<Car> cars = new ArrayList<>();
+        try {
+            connection = connectionPool.provide();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_FROM_CARS);
+            while (resultSet.next()) {
+                cars.add(new Car(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getString(5), resultSet.getString(6), resultSet.getString(7),
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getString(10),
+                        resultSet.getString(11), resultSet.getString(12)));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("DAO exception", e);
+        } finally {
+            connectionPool.retrieve(connection);
+        }
+        return cars;
     }
 
     @Override
     public ArrayList<Minibus> getMinibuses() throws DAOException {
         LOGGER.info("Go to minibus page");
-        return DaoFactory.getINSTANCE().getJSPDao().getMinibuses();
+        Connection connection = null;
+        ArrayList<Minibus> minibuses = new ArrayList<>();
+        try {
+            connection = connectionPool.provide();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_FROM_MINIBUSES);
+            while (resultSet.next()) {
+                minibuses.add(new Minibus(resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getString(6)));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("DAO exception", e);
+        } finally {
+            connectionPool.retrieve(connection);
+        }
+        return minibuses;
     }
 
     @Override
     public ArrayList<Truck> getTrucks() throws DAOException {
         LOGGER.info("Go to truck page");
-        return DaoFactory.getINSTANCE().getJSPDao().getTrucks();
+        Connection connection = null;
+        ArrayList<Truck> trucks = new ArrayList<>();
+        try {
+            connection = connectionPool.provide();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_FROM_TRUCKS);
+            while (resultSet.next()) {
+                trucks.add(new Truck(resultSet.getString(2), "73 000$", "img/truck.jpg"));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("DAO exception", e);
+        } finally {
+            connectionPool.retrieve(connection);
+        }
+        return trucks;
     }
 
     @Override
     public ArrayList<AbstractCar> getAllCars() throws DAOException {
         LOGGER.info("Go to all cars page");
-        return DaoFactory.getINSTANCE().getJSPDao().getAllCars();
+        ArrayList<AbstractCar> allCars = new ArrayList<>();
+        allCars.addAll(getCars());
+        allCars.addAll(getMinibuses());
+        allCars.addAll(getTrucks());
+        return allCars;
     }
 
     @Override

@@ -23,11 +23,11 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -77,11 +77,11 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenThrow(SQLException.class);
@@ -131,11 +131,11 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Minibus> minibuses = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_MINIBUSES)).thenReturn(resultSet);
@@ -171,11 +171,11 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Minibus> minibuses = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_MINIBUSES)).thenThrow(SQLException.class);
@@ -211,11 +211,11 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Truck> trucks = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_TRUCKS)).thenReturn(resultSet);
@@ -242,11 +242,11 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Truck> trucks = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_TRUCKS)).thenThrow(SQLException.class);
@@ -275,16 +275,16 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         String SELECT_FROM_TRUCKS = "select * from trucks";
         String SELECT_FROM_MINIBUSES = "select * from minibuses";
         String SELECT_FROM_CARS = "select * from cars";
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(jspDAO.getAllCars()).thenReturn(abstractCars);
+        Mockito.when(carDAOImpl.getAllCars()).thenReturn(abstractCars);
 
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -491,12 +491,12 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -547,12 +547,12 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -923,12 +923,12 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
@@ -979,12 +979,12 @@ public class CarDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
         ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);

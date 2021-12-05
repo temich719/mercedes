@@ -20,13 +20,13 @@ public class OrderDAOImplTest {
         String SELECT_FROM_ORDERS = "select * from orders;";
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Connection connection = Mockito.mock(Connection.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Statement statement = Mockito.mock(Statement.class);
         ArrayList<Order> orders = Mockito.mock(ArrayList.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_ORDERS)).thenReturn(resultSet);
@@ -46,7 +46,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.getListOfOrders();
+        orderDAO.getListOfOrders();
 
         Mockito.verify(resultSet, Mockito.times(2)).getString(2);
         Mockito.verify(resultSet, Mockito.times(2)).getString(3);
@@ -64,13 +64,13 @@ public class OrderDAOImplTest {
         String SELECT_FROM_ORDERS = "select * from orders;";
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        JspDAOImpl jspDAO = Mockito.mock(JspDAOImpl.class);
+        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Connection connection = Mockito.mock(Connection.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Statement statement = Mockito.mock(Statement.class);
         ArrayList<Order> orders = Mockito.mock(ArrayList.class);
 
-        Mockito.when(daoFactory.getJSPDao()).thenReturn(jspDAO);
+        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_ORDERS)).thenThrow(SQLException.class);
@@ -90,7 +90,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.getListOfOrders();
+        orderDAO.getListOfOrders();
 
         Mockito.verify(resultSet, Mockito.times(1)).getString(2);
         Mockito.verify(resultSet, Mockito.times(1)).getString(3);
@@ -119,7 +119,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.getCountOfUnreadOrders(email);
+        orderDAO.getCountOfUnreadOrders(email);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(SELECT_STATUS_IN_ACCOUNT);
@@ -144,7 +144,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.getCountOfUnreadOrders(email);
+        orderDAO.getCountOfUnreadOrders(email);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(SELECT_STATUS_IN_ACCOUNT);
@@ -182,7 +182,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.markAsRead(name, surname, email, service, mark, date);
+        orderDAO.markAsRead(name, surname, email, service, mark, date);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(MAKE_ORDER_STATUS_READ_WHERE_DATE_NON_NULL);
@@ -225,7 +225,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.markAsRead(name, surname, email, service, mark, date);
+        orderDAO.markAsRead(name, surname, email, service, mark, date);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(preparedStatement, Mockito.times(1)).setString(1, name);
@@ -266,7 +266,7 @@ public class OrderDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         OrderDAO orderDAO = new OrderDAOImpl(connectionPool);
-        OrderDAOImpl.markAsRead(name, surname, email, service, mark, date);
+        orderDAO.markAsRead(name, surname, email, service, mark, date);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(preparedStatement, Mockito.times(1)).setString(1, name);

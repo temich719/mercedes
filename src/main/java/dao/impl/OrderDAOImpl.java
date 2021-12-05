@@ -3,7 +3,6 @@ package dao.impl;
 import dao.AbstractDAO;
 import dao.ConnectionPool;
 import dao.OrderDAO;
-import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
 import dao.entity.User;
 import dao.exception.DAOException;
@@ -11,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
@@ -24,6 +24,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             "user_surname = ? && email = ? && service = ? && car_name = ?;";
     private static final String INSERT_NAME = "insert into names(user_name) values(?);";
     private static final String INSERT_SURNAME = "insert into surnames(user_surname) values(?);";
+    private static final String SELECT_FROM_ORDERS = "select * from orders;";
     private static final String INSERT_INTO_ORDERS_WHEN_DATE_IS_NULL = "insert into orders" +
             "(user_name,user_surname,email,service,car_name,price,phone,status_in_account) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?);";
@@ -36,18 +37,38 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             "email = ? && service = ? && car_name = ? && price = ? && date = ? && phone = ?;";
     private static final String DELETE_ORDER_OF_DELETED_USER = "delete from orders where user_name = ? && user_surname = ? && email = ?;";
 
-    private static final Logger logger = Logger.getLogger(OrderDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(OrderDAOImpl.class);
 
-    public OrderDAOImpl(ConnectionPool connectionPool){
+    public OrderDAOImpl(ConnectionPool connectionPool) {
         super(connectionPool);
     }
 
-    public static ArrayList<Order> getListOfOrders()throws DAOException{
-        logger.info("List of orders");
-        return DaoFactory.getINSTANCE().getJSPDao().getListOfOrders();
+    @Override
+    public ArrayList<Order> getListOfOrders() throws DAOException {
+        LOGGER.info("List of orders");
+        Connection connection = null;
+        ResultSet resultSet;
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            connection = connectionPool.provide();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery(SELECT_FROM_ORDERS);
+            while (resultSet.next()) {
+                orders.add(new Order(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getString(5), resultSet.getString(6), resultSet.getString(7),
+                        resultSet.getString(8), resultSet.getString(9), resultSet.getString(10)));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("DAO exception", e);
+        } finally {
+            connectionPool.retrieve(connection);
+        }
+        Collections.reverse(orders);
+        return orders;
     }
 
-    public static String getCountOfUnreadOrders(String email)throws DAOException{
+    @Override
+    public String getCountOfUnreadOrders(String email) throws DAOException {
         Connection connection = null;
         ResultSet resultSet;
         int size = 0;
@@ -57,20 +78,19 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             preparedStatement = connection.prepareStatement(SELECT_STATUS_IN_ACCOUNT);
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                if (resultSet.getString(1).equals("unread"))size++;
+            while (resultSet.next()) {
+                if (resultSet.getString(1).equals("unread")) size++;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
-        return size+"";
+        return size + "";
     }
 
-    public static void markAsRead(String name, String surname, String email, String service, String mark, String date)throws DAOException{
+    @Override
+    public void markAsRead(String name, String surname, String email, String service, String mark, String date) throws DAOException {
         Connection connection = null;
         try {
             connection = connectionPool.provide();
@@ -83,8 +103,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(4, service);
                 preparedStatement.setString(5, mark);
                 preparedStatement.setString(6, date);
-            }
-            else {
+            } else {
                 preparedStatement = connection.prepareStatement(MAKE_ORDER_STATUS_READ);
                 preparedStatement.setString(1, name);
                 preparedStatement.setString(2, surname);
@@ -93,11 +112,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(5, mark);
             }
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -108,17 +125,17 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         try {
             connection = connectionPool.provide();
             PreparedStatement preparedStatement;
-            if (!isAlreadyExistsInDatabase(order.getName(), SELECT_FROM_NAMES, connection)){
+            if (!isAlreadyExistsInDatabase(order.getName(), SELECT_FROM_NAMES, connection)) {
                 preparedStatement = connection.prepareStatement(INSERT_NAME);
                 preparedStatement.setString(1, order.getName());
                 preparedStatement.executeUpdate();
             }
-            if (!isAlreadyExistsInDatabase(order.getSurname(), SELECT_FROM_SURNAMES, connection)){
+            if (!isAlreadyExistsInDatabase(order.getSurname(), SELECT_FROM_SURNAMES, connection)) {
                 preparedStatement = connection.prepareStatement(INSERT_SURNAME);
                 preparedStatement.setString(1, order.getSurname());
                 preparedStatement.executeUpdate();
             }
-            if (Objects.isNull(order.getDate())){
+            if (Objects.isNull(order.getDate())) {
                 preparedStatement = connection.prepareStatement(INSERT_INTO_ORDERS_WHEN_DATE_IS_NULL);
                 preparedStatement.setString(1, order.getName());
                 preparedStatement.setString(2, order.getSurname());
@@ -128,8 +145,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(6, order.getPrice());
                 preparedStatement.setString(7, order.getPhone());
                 preparedStatement.setString(8, order.getStatus());
-            }
-            else {
+            } else {
                 preparedStatement = connection.prepareStatement(INSERT_INTO_ORDERS);
                 preparedStatement.setString(1, order.getName());
                 preparedStatement.setString(2, order.getSurname());
@@ -142,22 +158,20 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(9, order.getStatus());
             }
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
 
     @Override
-    public void deleteOrder(Order order) throws DAOException{
+    public void deleteOrder(Order order) throws DAOException {
         Connection connection = null;
         try {
             connection = connectionPool.provide();
             PreparedStatement preparedStatement;
-            if (Objects.isNull(order.getDate()) || order.getDate().equals("")){
+            if (Objects.isNull(order.getDate()) || order.getDate().equals("")) {
                 preparedStatement = connection.prepareStatement(DELETE_FROM_ORDERS_WHEN_DATE_IS_NULL);
                 preparedStatement.setString(1, order.getName());
                 preparedStatement.setString(2, order.getSurname());
@@ -166,8 +180,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(5, order.getMark());
                 preparedStatement.setString(6, order.getPrice());
                 preparedStatement.setString(7, order.getPhone());
-            }
-            else {
+            } else {
                 preparedStatement = connection.prepareStatement(DELETE_FROM_ORDERS);
                 preparedStatement.setString(1, order.getName());
                 preparedStatement.setString(2, order.getSurname());
@@ -179,11 +192,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                 preparedStatement.setString(8, order.getPhone());
             }
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -199,11 +210,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }

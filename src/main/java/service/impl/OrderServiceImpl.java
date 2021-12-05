@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String getCountOfUnreadOrders(String email) throws ServiceException {
         try {
-            return OrderDAOImpl.getCountOfUnreadOrders(email);
+            return orderDAO.getCountOfUnreadOrders(email);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void markAsRead(String name, String surname, String email, String service, String mark, String date) throws ServiceException {
         try {
-            OrderDAOImpl.markAsRead(name, surname, email, service, mark, date);
+            orderDAO.markAsRead(name, surname, email, service, mark, date);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ArrayList<Order> getListOfOrders() throws ServiceException {
         try {
-            return OrderDAOImpl.getListOfOrders();
+            return orderDAO.getListOfOrders();
         }
         catch (DAOException e){
             throw new ServiceException(e);
