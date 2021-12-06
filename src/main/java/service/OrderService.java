@@ -53,4 +53,8 @@ public interface OrderService {
      * @throws ServiceException is a module exception
      */
     void deleteOrdersOfDeletedUser(User user)throws ServiceException;
+
+    ArrayList<Order> getOrderInfoForOnePage(String pageNumber)throws ServiceException;
+
+    ArrayList<String> getCountOfOrders()throws ServiceException;
 }

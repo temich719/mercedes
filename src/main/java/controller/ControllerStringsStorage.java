@@ -12,6 +12,9 @@ public class ControllerStringsStorage {
     public static final String EMAIL_ACCOUNT = "emailAccount";
     public static final String NAME_ACCOUNT = "nameAccount";
     public static final String ORDER = "ord";
+    public static final String NUMBERS = "numbers";
+    public static final String DEFAULT_PAGE_NUMBER = "1";
+    public static final String NUMBER_OF_PAGE = "number_of_page";
     public static final String ACCOUNT_NAME = "accountName";
     public static final String ACCOUNT_SURNAME = "accountSurname";
     public static final String SURNAME_ACCOUNT = "surnameAccount";

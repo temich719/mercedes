@@ -42,6 +42,7 @@ public enum Commands {
     DELETE_ORDER_FROM_ADMIN_COMMAND(new AdminDeleteOrderCommand()),
     GO_TO_PAGE_COMMAND(new GoToPageCommand()),
     ERROR_COMMAND(new ErrorPageCommand()),
+    NUMBER_OF_PAGE_COMMAND(new SelectPageAllOrdersCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;

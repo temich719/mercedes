@@ -36,6 +36,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     private static final String DELETE_FROM_ORDERS = "delete from orders where user_name = ? && user_surname = ? &&" +
             "email = ? && service = ? && car_name = ? && price = ? && date = ? && phone = ?;";
     private static final String DELETE_ORDER_OF_DELETED_USER = "delete from orders where user_name = ? && user_surname = ? && email = ?;";
+    private static final String SELECT_INFO_FOR_ONE_ORDER_PAGE = "SELECT * FROM orders ORDER BY orders_id LIMIT ? OFFSET ?;";
+    private static final String SELECT_COUNT_OF_ORDERS = "select count(*) from orders";
+    private static final int LIMIT = 10;
 
     private static final Logger LOGGER = Logger.getLogger(OrderDAOImpl.class);
 
@@ -64,6 +67,62 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             connectionPool.retrieve(connection);
         }
         Collections.reverse(orders);
+        return orders;
+    }
+
+    @Override
+    public ArrayList<String> getCountOfOrders() throws DAOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        ArrayList<String> pageNumbers = new ArrayList<>();
+        int count;
+        int countOfPages;
+        try {
+            connection = connectionPool.provide();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(SELECT_COUNT_OF_ORDERS);
+            resultSet.next();
+            count = resultSet.getInt(1);
+            countOfPages = (int)Math.ceil((double) count/LIMIT);
+            for (int i = 1;i <= countOfPages;i++){
+                pageNumbers.add(Integer.toString(i));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, statement);
+            connectionPool.retrieve(connection);
+        }
+        return pageNumbers;
+    }
+
+    @Override
+    public ArrayList<Order> getOrderInfoForOnePage(String pageNumber) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<Order> orders = new ArrayList<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(SELECT_INFO_FOR_ONE_ORDER_PAGE);
+            preparedStatement.setInt(1, LIMIT);
+            preparedStatement.setInt(2, offset);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Order order = new Order(resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getString(6),
+                        resultSet.getString(7), resultSet.getString(8), resultSet.getString(9),
+                        resultSet.getString(10));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, preparedStatement);
+            connectionPool.retrieve(connection);
+        }
         return orders;
     }
 

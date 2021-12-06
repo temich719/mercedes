@@ -12,17 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminAllOrdersCommand implements ICommand {
+public class SelectPageAllOrdersCommand implements ICommand {
 
-    private static final Logger LOGGER = Logger.getLogger(AdminAllOrdersCommand.class);
+    private final static Logger LOGGER = Logger.getLogger(SelectPageAllOrdersCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final OrderService orderService = serviceFactory.getOrderService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        LOGGER.info("We got to AdminAllUsersCommand");
+        LOGGER.info("We got to SelectPageCommand");
+        final String numberOfPage = req.getParameter(NUMBER_OF_PAGE);
         try {
-            req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(DEFAULT_PAGE_NUMBER));
+            req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
             req.setAttribute(NUMBERS, orderService.getCountOfOrders());
         } catch (ServiceException e) {
             throw new ControllerException(e);

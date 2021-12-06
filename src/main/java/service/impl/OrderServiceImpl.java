@@ -5,7 +5,6 @@ import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
 import dao.entity.User;
 import dao.exception.DAOException;
-import dao.impl.OrderDAOImpl;
 import service.OrderService;
 import service.exception.ServiceException;
 
@@ -15,13 +14,23 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO = DaoFactory.getINSTANCE().getOrderDAO();
 
-    public OrderServiceImpl(){}
+    public OrderServiceImpl() {
+    }
 
     @Override
     public void deleteOrder(Order order) throws ServiceException {
         try {
             orderDAO.deleteOrder(order);
         } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<String> getCountOfOrders() throws ServiceException {
+        try {
+            return orderDAO.getCountOfOrders();
+        }catch (DAOException e){
             throw new ServiceException(e);
         }
     }
@@ -45,6 +54,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public ArrayList<Order> getOrderInfoForOnePage(String pageNumber) throws ServiceException {
+        try {
+            return orderDAO.getOrderInfoForOnePage(pageNumber);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void markAsRead(String name, String surname, String email, String service, String mark, String date) throws ServiceException {
         try {
             orderDAO.markAsRead(name, surname, email, service, mark, date);
@@ -57,8 +75,7 @@ public class OrderServiceImpl implements OrderService {
     public ArrayList<Order> getListOfOrders() throws ServiceException {
         try {
             return orderDAO.getListOfOrders();
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -67,8 +84,7 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrdersOfDeletedUser(User user) throws ServiceException {
         try {
             orderDAO.deleteOrdersOfDeletedUser(user);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }

@@ -60,4 +60,8 @@ public interface OrderDAO {
      * @throws DAOException is a module exception
      */
     void markAsRead(String name, String surname, String email, String service, String mark, String date) throws DAOException;
+
+    ArrayList<Order> getOrderInfoForOnePage(String pageNumber)throws DAOException;
+
+    ArrayList<String> getCountOfOrders()throws DAOException;
 }

@@ -1,0 +1,6 @@
+.pages:hover{
+    color: purple;
+    font-size: 30px;
+    text-decoration: underline;
+    cursor: pointer;
+}
