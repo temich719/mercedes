@@ -43,6 +43,7 @@ public enum Commands {
     GO_TO_PAGE_COMMAND(new GoToPageCommand()),
     ERROR_COMMAND(new ErrorPageCommand()),
     NUMBER_OF_PAGE_COMMAND(new SelectPageAllOrdersCommand()),
+    UPGRADE_USER_TO_ADMIN_COMMAND(new UpgradeUserToAdminCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;

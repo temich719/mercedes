@@ -51,6 +51,19 @@
                             </button>
                         </form>
                     </th>
+                    <th style="width: 300px;height:50px;text-align: center;">
+                        <form action="FrontController" method="get">
+                            <input type="hidden" name="name" value="${user.getName()}">
+                            <input type="hidden" name="surname" value="${user.getSurname()}">
+                            <input type="hidden" name="email" value="${user.getEmail()}">
+                            <input type="hidden" name="id" value="${user.getId()}">
+                            <input type="hidden" name="accessType" value="${user.getAccessType()}">
+                            <input type="hidden" name="command" value="UPGRADE_USER_TO_ADMIN_COMMAND">
+                            <button>
+                                <span>Повысить до администратора</span>
+                            </button>
+                        </form>
+                    </th>
                 </tr>
             </c:forEach>
         </table>

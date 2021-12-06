@@ -27,13 +27,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String GET_NAME_AND_SURNAME = "select * from users where email = ?;";
     private static final String GET_AVATAR_BY_IMAGE = "select avatar from users where email = ?;";
     private static final String DELETE_USER = "delete from users where user_name = ? && user_surname = ? && email = ? && access_type = ?;";
+    private static final String UPDATE_ACCESS_TYPE = "update users set access_type = ? where id = ?;";
 
-    public UserDAOImpl(ConnectionPool connectionPool){
+    public UserDAOImpl(ConnectionPool connectionPool) {
         super(connectionPool);
     }
 
     @Override
-    public void addAvatar(String avatarPath, String email)throws DAOException{
+    public void addAvatar(String avatarPath, String email) throws DAOException {
         Connection connection = null;
         try {
             connection = connectionPool.provide();
@@ -42,11 +43,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             preparedStatement.setString(1, avatarPath);
             preparedStatement.setString(2, email);
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -63,13 +62,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 userDTO = new UserDTO(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             close(resultSet, preparedStatement);
             connectionPool.retrieve(connection);
         }
@@ -83,17 +81,17 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             connection = connectionPool.provide();
             PreparedStatement preparedStatement;
             final String access = "registered";
-            if (!isAlreadyExistsInDatabase(user.getName(), SELECT_FROM_NAMES, connection)){
+            if (!isAlreadyExistsInDatabase(user.getName(), SELECT_FROM_NAMES, connection)) {
                 preparedStatement = connection.prepareStatement(ADD_USER_NAME);
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.executeUpdate();
             }
-            if (!isAlreadyExistsInDatabase(user.getSurname(), SELECT_FROM_SURNAMES, connection)){
+            if (!isAlreadyExistsInDatabase(user.getSurname(), SELECT_FROM_SURNAMES, connection)) {
                 preparedStatement = connection.prepareStatement(ADD_SURNAME);
                 preparedStatement.setString(1, user.getSurname());
                 preparedStatement.executeUpdate();
             }
-            if (!isAlreadyExistsInDatabase(access, SELECT_FROM_ACCESS_TYPES, connection)){
+            if (!isAlreadyExistsInDatabase(access, SELECT_FROM_ACCESS_TYPES, connection)) {
                 preparedStatement = connection.prepareStatement(ADD_ACCESS_TYPE);
                 preparedStatement.setString(1, access);
                 preparedStatement.executeUpdate();
@@ -105,11 +103,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, user.getAccessType());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -118,15 +114,13 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public ResultSet getResultSetOfAllUsers() throws DAOException {
         Connection connection = null;
         ResultSet resultSet;
-        try{
+        try {
             connection = connectionPool.provide();
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(SELECT_FROM_USERS);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
         return resultSet;
@@ -142,11 +136,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             preparedStatement.setString(1, password);
             preparedStatement.setString(2, email);
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }
@@ -164,11 +156,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             pair = new Pair(resultSet.getString(2), resultSet.getString(3));
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
         return pair;
@@ -184,8 +174,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 Pair pair = new Pair(resultSet.getString(4), resultSet.getString(5));
                 arrayList.add(pair);
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         }
         return arrayList;
@@ -199,8 +188,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 if (email.equals(resultSet.getString(4))) return true;
             }
             return false;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         }
     }
@@ -218,37 +206,52 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             result = resultSet.getString(1);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
         return result;
     }
 
     @Override
-    public ArrayList<User> getListOfUsers()throws DAOException {
+    public ArrayList<UserDTO> getListOfUsers() throws DAOException {
         Connection connection = null;
         ResultSet resultSet;
-        ArrayList<User> users = new ArrayList<>();
+        ArrayList<UserDTO> users = new ArrayList<>();
         try {
             connection = connectionPool.provide();
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(SELECT_FROM_USERS);
-            while (resultSet.next()){
-                users.add(new User(resultSet.getString(2), resultSet.getString(3),resultSet.getString(6),
-                        resultSet.getString(4), ""));
+            while (resultSet.next()) {
+                UserDTO userDTO = new UserDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(6), resultSet.getString(4));
+                users.add(userDTO);
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
         return users;
+    }
+
+    @Override
+    public void upgradeUserToAdmin(int userId) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(UPDATE_ACCESS_TYPE);
+            preparedStatement.setString(1, "admin");
+            preparedStatement.setInt(2, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(preparedStatement);
+            connectionPool.retrieve(connection);
+        }
     }
 
     @Override
@@ -263,11 +266,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getAccessType());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DAOException(e);
-        }
-        finally {
+        } finally {
             connectionPool.retrieve(connection);
         }
     }

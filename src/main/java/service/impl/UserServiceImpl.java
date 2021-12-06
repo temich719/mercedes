@@ -16,7 +16,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO = DaoFactory.getINSTANCE().getUserDAO();
 
-    public UserServiceImpl(){}
+    public UserServiceImpl() {
+    }
 
     @Override
     public String getAvatarPathByEmail(String email) throws ServiceException {
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO enter(String email, String password) throws ServiceException {
         try {
             return userDAO.enter(email, password);
-        }catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -91,11 +92,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ArrayList<User> getListOfUsers() throws ServiceException {
+    public ArrayList<UserDTO> getListOfUsers() throws ServiceException {
         try {
             return userDAO.getListOfUsers();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
         }
-        catch (DAOException e){
+    }
+
+    @Override
+    public void upgradeUserToAdmin(int userId) throws ServiceException {
+        try {
+            userDAO.upgradeUserToAdmin(userId);
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -104,8 +113,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(User user) throws ServiceException {
         try {
             userDAO.deleteUser(user);
-        }
-        catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }

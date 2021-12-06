@@ -67,7 +67,7 @@ public interface UserDAO {
      * @return list of registrated users
      * @throws DAOException is a module exception
      */
-    ArrayList<User> getListOfUsers()throws DAOException;
+    ArrayList<UserDTO> getListOfUsers()throws DAOException;
 
     /**
      * deletes user
@@ -92,4 +92,6 @@ public interface UserDAO {
      * @throws DAOException is a module exception
      */
     UserDTO enter(String email, String password)throws DAOException;
+
+    void upgradeUserToAdmin(int userId)throws DAOException;
 }

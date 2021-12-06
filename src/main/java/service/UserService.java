@@ -68,7 +68,7 @@ public interface UserService {
      * @return list of registered users
      * @throws ServiceException is a module exception
      */
-    ArrayList<User> getListOfUsers() throws ServiceException;
+    ArrayList<UserDTO> getListOfUsers() throws ServiceException;
 
     /**
      * deletes user
@@ -85,4 +85,6 @@ public interface UserService {
      * @throws ServiceException is a module exception
      */
     UserDTO enter(String email, String password)throws ServiceException;
+
+    void upgradeUserToAdmin(int userId)throws ServiceException;
 }
