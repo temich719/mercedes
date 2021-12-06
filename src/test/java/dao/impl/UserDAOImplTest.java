@@ -295,7 +295,7 @@ public class UserDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.getName(email);
+        userDAO.getNameAndSurname(email);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(GET_NAME_AND_SURNAME);
@@ -324,7 +324,7 @@ public class UserDAOImplTest {
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.getName(email);
+        userDAO.getNameAndSurname(email);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(GET_NAME_AND_SURNAME);

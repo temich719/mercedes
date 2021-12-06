@@ -37,7 +37,7 @@ public interface UserDAO {
      * @return pair of name and surname
      * @throws DAOException is a module exception
      */
-    Pair getName(String email) throws DAOException;
+    Pair getNameAndSurname(String email) throws DAOException;
 
     /**
      * finds email and password

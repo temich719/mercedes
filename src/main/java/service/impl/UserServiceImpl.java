@@ -6,7 +6,6 @@ import dao.entity.Pair;
 import dao.entity.User;
 import dao.entity.UserDTO;
 import dao.exception.DAOException;
-import dao.impl.UserDAOImpl;
 import service.UserService;
 import service.exception.ServiceException;
 
@@ -83,9 +82,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pair getName(String email) throws ServiceException {
+    public Pair getNameAndSurname(String email) throws ServiceException {
         try {
-            return userDAO.getName(email);
+            return userDAO.getNameAndSurname(email);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

@@ -144,7 +144,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     }
 
     @Override
-    public Pair getName(String email) throws DAOException {
+    public Pair getNameAndSurname(String email) throws DAOException {
         Connection connection = null;
         ResultSet resultSet;
         Pair pair;

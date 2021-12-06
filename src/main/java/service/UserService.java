@@ -61,7 +61,7 @@ public interface UserService {
      * @return pair of name and surname
      * @throws ServiceException is a module exception
      */
-    Pair getName(String email)throws ServiceException;
+    Pair getNameAndSurname(String email)throws ServiceException;
 
     /**
      * finds list of registered users

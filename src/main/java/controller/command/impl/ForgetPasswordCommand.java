@@ -38,7 +38,7 @@ public class ForgetPasswordCommand implements ICommand {
             } else {
                 try {
                     userService.updatePassword(email, newPassword);
-                    Pair pair = userService.getName(email);
+                    Pair pair = userService.getNameAndSurname(email);
                     HttpSession session = req.getSession(true);
                     session.setAttribute(NAME_ACCOUNT, pair.getFirst() + " " + pair.getSecond());
                     session.setAttribute(EMAIL_ACCOUNT, email);

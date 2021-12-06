@@ -51,7 +51,7 @@ public class MakeServiceOrderCommand implements ICommand {
         }
         try {
             if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-                if (!userName.equals(userService.getName(email).getFirst()) || !userSurname.equals(userService.getName(email).getSecond())) {
+                if (!userName.equals(userService.getNameAndSurname(email).getFirst()) || !userSurname.equals(userService.getNameAndSurname(email).getSecond())) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(SELECT, select);
                     inputDataIsRight = false;

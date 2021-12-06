@@ -21,7 +21,7 @@ public class UpgradeUserToAdminCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to UpgradeUserToAdminCommand");
-        final int id = Integer.parseInt(req.getParameter("id"));
+        final int id = Integer.parseInt(req.getParameter(ID));
         try {
             userService.upgradeUserToAdmin(id);
             req.setAttribute(USERS, userService.getListOfUsers());
