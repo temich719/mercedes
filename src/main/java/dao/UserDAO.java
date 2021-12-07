@@ -1,5 +1,6 @@
 package dao;
 
+import dao.entity.AbstractCar;
 import dao.entity.Pair;
 import dao.entity.User;
 import dao.entity.UserDTO;
@@ -94,4 +95,8 @@ public interface UserDAO {
     UserDTO enter(String email, String password)throws DAOException;
 
     void upgradeUserToAdmin(int userId)throws DAOException;
+
+    ArrayList<String> getCountOfUserPages() throws DAOException;
+
+    ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws DAOException;
 }

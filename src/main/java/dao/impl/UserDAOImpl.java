@@ -3,9 +3,7 @@ package dao.impl;
 import dao.AbstractDAO;
 import dao.ConnectionPool;
 import dao.UserDAO;
-import dao.entity.Pair;
-import dao.entity.User;
-import dao.entity.UserDTO;
+import dao.entity.*;
 import dao.exception.DAOException;
 
 import java.sql.*;
@@ -28,6 +26,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String GET_AVATAR_BY_IMAGE = "select avatar from users where email = ?;";
     private static final String DELETE_USER = "delete from users where user_name = ? && user_surname = ? && email = ? && access_type = ?;";
     private static final String UPDATE_ACCESS_TYPE = "update users set access_type = ? where id = ?;";
+    private static final String SELECT_COUNT_OF_USERS = "select count(*) from users;";
+    private static final String SELECT_USER_INFO_FOR_ONE_PAGE = "select id, user_name, user_surname, email, access_type from users order by id limit ? offset ?;";
+    private static final int LIMIT = 10;
 
     public UserDAOImpl(ConnectionPool connectionPool) {
         super(connectionPool);
@@ -162,6 +163,62 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             connectionPool.retrieve(connection);
         }
         return pair;
+    }
+
+    @Override
+    public ArrayList<String> getCountOfUserPages() throws DAOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        ArrayList<String> pageNumbers = new ArrayList<>();
+        int count;
+        int countOfPages;
+        try {
+            connection = connectionPool.provide();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(SELECT_COUNT_OF_USERS);
+            resultSet.next();
+            count = resultSet.getInt(1);
+            countOfPages = (int)Math.ceil((double) count/LIMIT);
+            for (int i = 1;i <= countOfPages;i++){
+                pageNumbers.add(Integer.toString(i));
+            }
+            if (pageNumbers.size() == 1){
+                pageNumbers.clear();
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, statement);
+            connectionPool.retrieve(connection);
+        }
+        return pageNumbers;
+    }
+
+    @Override
+    public ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<UserDTO> users = new ArrayList<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(SELECT_USER_INFO_FOR_ONE_PAGE);
+            preparedStatement.setInt(1, LIMIT);
+            preparedStatement.setInt(2, offset);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                UserDTO userDTO = new UserDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),resultSet.getString(5), resultSet.getString(4));
+                users.add(userDTO);
+            }
+        }catch (SQLException e){
+            throw new DAOException(e);
+        }finally {
+            close(resultSet, preparedStatement);
+            connectionPool.retrieve(connection);
+        }
+        return users;
     }
 
     @Override

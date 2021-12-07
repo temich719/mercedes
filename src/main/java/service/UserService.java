@@ -87,4 +87,8 @@ public interface UserService {
     UserDTO enter(String email, String password)throws ServiceException;
 
     void upgradeUserToAdmin(int userId)throws ServiceException;
+
+    ArrayList<String> getCountOfUserPages() throws ServiceException;
+
+    ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws ServiceException;
 }

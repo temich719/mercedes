@@ -67,6 +67,21 @@
                 </tr>
             </c:forEach>
         </table>
-        <a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/admin/adminPage" style="display:block;text-decoration:none;width:300px;height:30px;background:orange;color:white;text-align:center;margin-top:3%;margin-left:36%;padding-top:1%;">Назад</a>
+
+         <div style="margin-top: 2%;margin-left: 41%;align-items: center;align-content: center;">
+            <div style="align-items: center;align-content: center;text-align: center;">
+                <c:forEach var="pageNumber" items="${requestScope.numbers}" >
+                    <form action="FrontController" method="get" style="float:left;margin-right: 2%;background-color:white;">
+                        <input type="hidden" name="command" value="USERS_NUMBER_OF_PAGE_COMMAND">
+                        <input type="hidden" name="number_of_page" value="${pageNumber}">
+                        <button class="pages" type="submit" style="border: none;font-size: 20px;background-color:white;">
+                            <c:out value="${pageNumber}" />
+                        </button>
+                    </form>
+                </c:forEach>
+         </div>
+         <br><br><br>
+
+        <a href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/admin/adminPage" style="display:block;text-decoration:none;width:300px;height:30px;background:orange;color:white;text-align:center;margin-top:3%;margin-left:0%;padding-top:1%;">Назад</a>
     </body>
 </html>

@@ -109,6 +109,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ArrayList<String> getCountOfUserPages() throws ServiceException {
+        try {
+            return userDAO.getCountOfUserPages();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws ServiceException {
+        try {
+            return userDAO.getUsersInfoForOnePage(pageNumber);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void deleteUser(User user) throws ServiceException {
         try {
             userDAO.deleteUser(user);
