@@ -88,6 +88,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             for (int i = 1;i <= countOfPages;i++){
                 pageNumbers.add(Integer.toString(i));
             }
+            if (pageNumbers.size() == 1){
+                pageNumbers.clear();
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

@@ -160,6 +160,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             for (int i = 1; i <= countOfPages; i++) {
                 pageNumbers.add(Integer.toString(i));
             }
+            if (pageNumbers.size() == 1){
+                pageNumbers.clear();
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -187,6 +190,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             for (int i = 1; i <= countOfPages; i++) {
                 pageNumbers.add(Integer.toString(i));
             }
+            if (pageNumbers.size() == 1){
+                pageNumbers.clear();
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -213,6 +219,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             countOfPages = (int) Math.ceil((double) count / LIMIT);
             for (int i = 1; i <= countOfPages; i++) {
                 pageNumbers.add(Integer.toString(i));
+            }
+            if (pageNumbers.size() == 1){
+                pageNumbers.clear();
             }
         } catch (SQLException e) {
             throw new DAOException(e);
