@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
+import static dao.DAOFinalsStorage.*;
+
 public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
 
     private static final String SELECT_FROM_NAMES = "select * from names;";
@@ -50,11 +52,12 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     public ArrayList<Order> getListOfOrders() throws DAOException {
         LOGGER.info("List of orders");
         Connection connection = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
+        Statement statement = null;
         ArrayList<Order> orders = new ArrayList<>();
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             resultSet = statement.executeQuery(SELECT_FROM_ORDERS);
             while (resultSet.next()) {
                 orders.add(new Order(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
@@ -64,6 +67,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         } catch (SQLException e) {
             throw new DAOException("DAO exception", e);
         } finally {
+            close(statement, resultSet);
             connectionPool.retrieve(connection);
         }
         Collections.reverse(orders);
@@ -84,11 +88,11 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             resultSet = statement.executeQuery(SELECT_COUNT_OF_ORDERS);
             resultSet.next();
             count = resultSet.getInt(1);
-            countOfPages = (int)Math.ceil((double) count/LIMIT);
-            for (int i = 1;i <= countOfPages;i++){
+            countOfPages = (int) Math.ceil((double) count / LIMIT);
+            for (int i = 1; i <= countOfPages; i++) {
                 pageNumbers.add(Integer.toString(i));
             }
-            if (pageNumbers.size() == 1){
+            if (pageNumbers.size() == 1) {
                 pageNumbers.clear();
             }
         } catch (SQLException e) {
@@ -132,20 +136,21 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     @Override
     public String getCountOfUnreadOrders(String email) throws DAOException {
         Connection connection = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
         int size = 0;
         try {
             connection = connectionPool.provide();
-            PreparedStatement preparedStatement;
             preparedStatement = connection.prepareStatement(SELECT_STATUS_IN_ACCOUNT);
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                if (resultSet.getString(1).equals("unread")) size++;
+                if (resultSet.getString(1).equals(UNREAD)) size++;
             }
         } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         } finally {
+            close(preparedStatement, resultSet);
             connectionPool.retrieve(connection);
         }
         return size + "";
@@ -154,9 +159,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     @Override
     public void markAsRead(String name, String surname, String email, String service, String mark, String date) throws DAOException {
         Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.provide();
-            PreparedStatement preparedStatement;
             if (!date.equals("")) {
                 preparedStatement = connection.prepareStatement(MAKE_ORDER_STATUS_READ_WHERE_DATE_NON_NULL);
                 preparedStatement.setString(1, name);
@@ -177,6 +182,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         } finally {
+            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
     }
@@ -184,45 +190,50 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     @Override
     public void addOrder(Order order) throws DAOException {
         Connection connection = null;
+        PreparedStatement nameStatement = null;
+        PreparedStatement surnameStatement = null;
+        PreparedStatement insertStatement = null;
         try {
             connection = connectionPool.provide();
-            PreparedStatement preparedStatement;
+            connection.setAutoCommit(false);
             if (!isAlreadyExistsInDatabase(order.getName(), SELECT_FROM_NAMES, connection)) {
-                preparedStatement = connection.prepareStatement(INSERT_NAME);
-                preparedStatement.setString(1, order.getName());
-                preparedStatement.executeUpdate();
+                nameStatement = connection.prepareStatement(INSERT_NAME);
+                nameStatement.setString(1, order.getName());
+                nameStatement.executeUpdate();
             }
             if (!isAlreadyExistsInDatabase(order.getSurname(), SELECT_FROM_SURNAMES, connection)) {
-                preparedStatement = connection.prepareStatement(INSERT_SURNAME);
-                preparedStatement.setString(1, order.getSurname());
-                preparedStatement.executeUpdate();
+                surnameStatement = connection.prepareStatement(INSERT_SURNAME);
+                surnameStatement.setString(1, order.getSurname());
+                surnameStatement.executeUpdate();
             }
             if (Objects.isNull(order.getDate())) {
-                preparedStatement = connection.prepareStatement(INSERT_INTO_ORDERS_WHEN_DATE_IS_NULL);
-                preparedStatement.setString(1, order.getName());
-                preparedStatement.setString(2, order.getSurname());
-                preparedStatement.setString(3, order.getEmail());
-                preparedStatement.setString(4, order.getService());
-                preparedStatement.setString(5, order.getMark());
-                preparedStatement.setString(6, order.getPrice());
-                preparedStatement.setString(7, order.getPhone());
-                preparedStatement.setString(8, order.getStatus());
+                insertStatement = connection.prepareStatement(INSERT_INTO_ORDERS_WHEN_DATE_IS_NULL);
+                insertStatement.setString(1, order.getName());
+                insertStatement.setString(2, order.getSurname());
+                insertStatement.setString(3, order.getEmail());
+                insertStatement.setString(4, order.getService());
+                insertStatement.setString(5, order.getMark());
+                insertStatement.setString(6, order.getPrice());
+                insertStatement.setString(7, order.getPhone());
+                insertStatement.setString(8, order.getStatus());
             } else {
-                preparedStatement = connection.prepareStatement(INSERT_INTO_ORDERS);
-                preparedStatement.setString(1, order.getName());
-                preparedStatement.setString(2, order.getSurname());
-                preparedStatement.setString(3, order.getEmail());
-                preparedStatement.setString(4, order.getService());
-                preparedStatement.setString(5, order.getMark());
-                preparedStatement.setString(6, order.getPrice());
-                preparedStatement.setString(7, order.getPhone());
-                preparedStatement.setString(8, order.getDate());
-                preparedStatement.setString(9, order.getStatus());
+                insertStatement = connection.prepareStatement(INSERT_INTO_ORDERS);
+                insertStatement.setString(1, order.getName());
+                insertStatement.setString(2, order.getSurname());
+                insertStatement.setString(3, order.getEmail());
+                insertStatement.setString(4, order.getService());
+                insertStatement.setString(5, order.getMark());
+                insertStatement.setString(6, order.getPrice());
+                insertStatement.setString(7, order.getPhone());
+                insertStatement.setString(8, order.getDate());
+                insertStatement.setString(9, order.getStatus());
             }
-            preparedStatement.executeUpdate();
+            insertStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         } finally {
+            close(insertStatement, surnameStatement, nameStatement);
             connectionPool.retrieve(connection);
         }
     }
@@ -230,9 +241,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     @Override
     public void deleteOrder(Order order) throws DAOException {
         Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.provide();
-            PreparedStatement preparedStatement;
             if (Objects.isNull(order.getDate()) || order.getDate().equals("")) {
                 preparedStatement = connection.prepareStatement(DELETE_FROM_ORDERS_WHEN_DATE_IS_NULL);
                 preparedStatement.setString(1, order.getName());
@@ -257,6 +268,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         } finally {
+            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
     }
@@ -264,7 +276,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     @Override
     public void deleteOrdersOfDeletedUser(User user) throws DAOException {
         Connection connection = null;
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(DELETE_ORDER_OF_DELETED_USER);
@@ -275,6 +287,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
     }

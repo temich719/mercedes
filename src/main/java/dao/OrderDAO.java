@@ -3,7 +3,6 @@ package dao;
 import dao.entity.Order;
 import dao.entity.User;
 import dao.exception.DAOException;
-import service.exception.ServiceException;
 
 import java.util.ArrayList;
 
@@ -61,7 +60,20 @@ public interface OrderDAO {
      */
     void markAsRead(String name, String surname, String email, String service, String mark, String date) throws DAOException;
 
-    ArrayList<Order> getOrderInfoForOnePage(String pageNumber)throws DAOException;
+    /**
+     * finds as much order information as can fit on one page
+     *
+     * @param pageNumber is the number of page that will be illustrated
+     * @return list of objects that contains order information
+     * @throws DAOException is a module exception
+     */
+    ArrayList<Order> getOrderInfoForOnePage(String pageNumber) throws DAOException;
 
-    ArrayList<String> getCountOfOrdersPages()throws DAOException;
+    /**
+     * calculates how much pages do we need to illustrate it in UI
+     *
+     * @return list of strings that has the size equals to amount of pages
+     * @throws DAOException is a module exception
+     */
+    ArrayList<String> getCountOfOrdersPages() throws DAOException;
 }

@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     public ArrayList<String> getCountOfOrdersPages() throws ServiceException {
         try {
             return orderDAO.getCountOfOrdersPages();
-        }catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }

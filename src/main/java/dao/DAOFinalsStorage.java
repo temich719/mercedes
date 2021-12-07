@@ -6,4 +6,5 @@ public class DAOFinalsStorage {
     public static final String DB_LOGIN = "jdbc.username";
     public static final String DB_PASSWORD = "jdbc.password";
     public static final String ADMIN = "admin";
+    public static final String UNREAD = "unread";
 }
