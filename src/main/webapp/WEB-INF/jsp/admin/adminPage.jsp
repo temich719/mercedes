@@ -42,6 +42,11 @@
                 <button style="width: 70%;height: 70px;text-align: center;" class="but">Изменить описание товара</button>
             </form>
         </div>
+         <div style="margin-top: 40%;margin-left: 40%;position:absolute;width: 100%;">
+            <a style="padding-top:1%;display:block;background:orange;color:white;text-decoration:none;width: 250px;height: 40px;text-align: center;" class="but" href="FrontController?command=GO_TO_PAGE_COMMAND&pageName=jsp/user/registratedIndex">
+                Назад
+            </a>
+         </div>
         <script src="js/noScroll.js"></script>
     </body>
 </html>
