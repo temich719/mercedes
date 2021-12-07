@@ -37,7 +37,8 @@ public class GoToPageCommand implements ICommand {
                     req.setAttribute(NUMBERS, carService.getCountOfCarPages());
                     break;
                 case JSP_USER + MINIBUS:
-                    req.setAttribute(MINI_BUS, carService.getMinibuses());
+                    req.setAttribute(MINI_BUS, carService.getMinibusesInfoForOnePage(DEFAULT_PAGE_NUMBER));
+                    req.setAttribute(NUMBERS, carService.getCountOfMinibusPages());
                     break;
             }
         } catch (ServiceException e) {

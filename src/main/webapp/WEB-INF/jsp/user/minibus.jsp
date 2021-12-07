@@ -20,6 +20,7 @@
         <title>Minibus</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/minibus.css" type="text/css">
+        <link rel="stylesheet" href="css/adminAllOrders.css" type="text/css">
         <fmt:setLocale value="${sessionScope.locale}" />
         <fmt:setBundle basename="localization.local" var="loc" />
         <fmt:message bundle="${loc}" key="local.backToMain" var="backToMain" />
@@ -71,6 +72,19 @@
                             </button>
                         </form>
                     </div>
+                </c:forEach>
+            </div>
+        </div>
+        <div style="margin-top: 35%;margin-left: 40%;align-items: center;align-content: center;">
+            <div style="align-items: center;align-content: center;text-align: center;">
+                <c:forEach var="pageNumber" items="${requestScope.numbers}" >
+                    <form action="FrontController" method="get" style="float:left;margin-right: 2%;">
+                        <input type="hidden" name="command" value = "MINIBUS_NUMBER_OF_PAGE">
+                        <input type="hidden" name="number_of_page" value="${pageNumber}">
+                        <button class="pages" type="submit" style="border: none;font-size: 20px;">
+                            <c:out value="${pageNumber}" />
+                        </button>
+                    </form>
                 </c:forEach>
             </div>
         </div>

@@ -49,6 +49,7 @@ public enum Commands {
     MINIBUSES_NUMBER_OF_PAGE_COMMAND(new SelectPageMinibusCommand()),
     CAR_TYPES_NUMBER_OF_PAGE_COMMAND(new SelectPageCarTypeCommand()),
     FILTER_CAR_TYPES_NUMBER_OF_PAGE_COMMAND(new SelectPageFilterCarTypesCommand()),
+    MINIBUS_NUMBER_OF_PAGE(new SelectPageMinibusesCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;
