@@ -27,9 +27,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ArrayList<String> getCountOfOrders() throws ServiceException {
+    public ArrayList<String> getCountOfOrdersPages() throws ServiceException {
         try {
-            return orderDAO.getCountOfOrders();
+            return orderDAO.getCountOfOrdersPages();
         }catch (DAOException e){
             throw new ServiceException(e);
         }

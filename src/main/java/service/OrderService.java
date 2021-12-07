@@ -56,5 +56,5 @@ public interface OrderService {
 
     ArrayList<Order> getOrderInfoForOnePage(String pageNumber)throws ServiceException;
 
-    ArrayList<String> getCountOfOrders()throws ServiceException;
+    ArrayList<String> getCountOfOrdersPages()throws ServiceException;
 }

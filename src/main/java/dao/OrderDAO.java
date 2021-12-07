@@ -63,5 +63,5 @@ public interface OrderDAO {
 
     ArrayList<Order> getOrderInfoForOnePage(String pageNumber)throws DAOException;
 
-    ArrayList<String> getCountOfOrders()throws DAOException;
+    ArrayList<String> getCountOfOrdersPages()throws DAOException;
 }

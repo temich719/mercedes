@@ -71,7 +71,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     }
 
     @Override
-    public ArrayList<String> getCountOfOrders() throws DAOException {
+    public ArrayList<String> getCountOfOrdersPages() throws DAOException {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;

@@ -88,7 +88,7 @@
             <div style="align-items: center;align-content: center;text-align: center;">
                 <c:forEach var="pageNumber" items="${requestScope.numbers}" >
                     <form action="FrontController" method="get" style="float:left;margin-right: 2%;background-color:white;">
-                        <input type="hidden" name="command" value="NUMBER_OF_PAGE_COMMAND">
+                        <input type="hidden" name="command" value="ORDERS_NUMBER_OF_PAGE_COMMAND">
                         <input type="hidden" name="number_of_page" value="${pageNumber}">
                         <button class="pages" type="submit" style="border: none;font-size: 20px;background-color:white;">
                             <c:out value="${pageNumber}" />

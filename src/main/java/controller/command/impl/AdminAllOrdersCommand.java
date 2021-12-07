@@ -23,7 +23,7 @@ public class AdminAllOrdersCommand implements ICommand {
         LOGGER.info("We got to AdminAllUsersCommand");
         try {
             req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(DEFAULT_PAGE_NUMBER));
-            req.setAttribute(NUMBERS, orderService.getCountOfOrders());
+            req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
