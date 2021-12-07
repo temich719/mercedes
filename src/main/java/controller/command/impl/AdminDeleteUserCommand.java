@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
@@ -28,9 +29,10 @@ public class AdminDeleteUserCommand implements ICommand {
         final String surname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
         final String accessType = req.getParameter(ACCESS_TYPE);
+        final UserDTO userDTO = new UserDTO(name, surname, email, accessType);
         final User user = new User(name, surname, accessType, email, "");
         try {
-            userService.deleteUser(user);
+            userService.deleteUser(userDTO);
             orderService.deleteOrdersOfDeletedUser(user);
             req.setAttribute(USERS, userService.getListOfUsers());
         } catch (ServiceException e) {

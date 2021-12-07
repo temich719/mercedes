@@ -59,7 +59,7 @@ public class MakeOrderCommand implements ICommand {
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
             if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-                if (!name.equals(userService.getNameAndSurname(email).getFirst()) || !surname.equals(userService.getNameAndSurname(email).getSecond())) {
+                if (!name.equals(userService.getUserNameByEmail(email)) || !surname.equals(userService.getUserSurnameByEmail(email))) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(PICTURE, imagePath);
                     if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);

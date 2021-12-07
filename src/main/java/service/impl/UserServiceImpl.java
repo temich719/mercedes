@@ -2,7 +2,6 @@ package service.impl;
 
 import dao.UserDAO;
 import dao.daoFactory.DaoFactory;
-import dao.entity.Pair;
 import dao.entity.User;
 import dao.entity.UserDTO;
 import dao.exception.DAOException;
@@ -55,15 +54,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ArrayList<Pair> getEmailAndPassword() throws ServiceException {
-        try {
-            return userDAO.selectDataForEnter();
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public void updatePassword(String email, String password) throws ServiceException {
         try {
             userDAO.updatePassword(email, password);
@@ -82,9 +72,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pair getNameAndSurname(String email) throws ServiceException {
+    public String getUserNameByEmail(String email) throws ServiceException {
         try {
-            return userDAO.getNameAndSurname(email);
+            return userDAO.getUserNameByEmail(email);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public String getUserSurnameByEmail(String email) throws ServiceException {
+        try {
+            return userDAO.getUserSurnameByEmail(email);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -127,9 +126,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(User user) throws ServiceException {
+    public void deleteUser(UserDTO userDTO) throws ServiceException {
         try {
-            userDAO.deleteUser(user);
+            userDAO.deleteUser(userDTO);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

@@ -3,6 +3,7 @@ package dao.impl;
 import dao.ConnectionPool;
 import dao.UserDAO;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -181,49 +182,6 @@ public class UserDAOImplTest {
     }
 
     @Test
-    public void testGetResultSetOfAllUsers() throws DAOException, SQLException {
-        Connection connection = Mockito.mock(Connection.class);
-        ResultSet resultSet = Mockito.mock(ResultSet.class);
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        Statement statement = Mockito.mock(Statement.class);
-        String SELECT_FROM_USERS = "select * from users;";
-
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(SELECT_FROM_USERS)).thenReturn(resultSet);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.getResultSetOfAllUsers();
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).createStatement();
-        Mockito.verify(statement).executeQuery(SELECT_FROM_USERS);
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test(expected = DAOException.class)
-    public void testGetResultSetOfAllUsers_DAOException() throws DAOException, SQLException{
-        Connection connection = Mockito.mock(Connection.class);
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        Statement statement = Mockito.mock(Statement.class);
-        String SELECT_FROM_USERS = "select * from users;";
-
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(SELECT_FROM_USERS)).thenThrow(SQLException.class);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.getResultSetOfAllUsers();
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).createStatement();
-        Mockito.verify(statement).executeQuery(SELECT_FROM_USERS);
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test
     public void testUpdatePassword() throws DAOException, SQLException {
         String UPDATE_PASSWORD = "update users set password = ? where email = ?;";
         String email = "god@mail.ru";
@@ -274,113 +232,6 @@ public class UserDAOImplTest {
         Mockito.verify(preparedStatement, Mockito.times(1)).setString(1, password);
         Mockito.verify(preparedStatement, Mockito.times(1)).setString(2, email);
         Mockito.verify(preparedStatement).executeUpdate();
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test
-    public void testGetName() throws DAOException, SQLException{
-        String GET_NAME_AND_SURNAME = "select * from users where email = ?;";
-        String email = "cat@mail.ru";
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        Connection connection = Mockito.mock(Connection.class);
-        PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
-        ResultSet resultSet = Mockito.mock(ResultSet.class);
-
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.prepareStatement(GET_NAME_AND_SURNAME)).thenReturn(preparedStatement);
-        Mockito.doNothing().when(preparedStatement).setString(1, email);
-        Mockito.when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        Mockito.when(resultSet.getString(2)).thenReturn(null);
-        Mockito.when(resultSet.getString(3)).thenReturn(null);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.getNameAndSurname(email);
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).prepareStatement(GET_NAME_AND_SURNAME);
-        Mockito.verify(preparedStatement, Mockito.times(1)).setString(1, email);
-        Mockito.verify(preparedStatement).executeQuery();
-        Mockito.verify(resultSet).getString(2);
-        Mockito.verify(resultSet).getString(3);
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test(expected = DAOException.class)
-    public void testGetName_DAOException() throws DAOException, SQLException{
-        String GET_NAME_AND_SURNAME = "select * from users where email = ?;";
-        String email = "cat@mail.ru";
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        Connection connection = Mockito.mock(Connection.class);
-        PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
-        ResultSet resultSet = Mockito.mock(ResultSet.class);
-
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.prepareStatement(GET_NAME_AND_SURNAME)).thenReturn(preparedStatement);
-        Mockito.doNothing().when(preparedStatement).setString(1, email);
-        Mockito.when(preparedStatement.executeQuery()).thenThrow(SQLException.class);
-        Mockito.when(resultSet.getString(2)).thenReturn(null);
-        Mockito.when(resultSet.getString(3)).thenReturn(null);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.getNameAndSurname(email);
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).prepareStatement(GET_NAME_AND_SURNAME);
-        Mockito.verify(preparedStatement, Mockito.times(1)).setString(1, email);
-        Mockito.verify(preparedStatement).executeQuery();
-        Mockito.verify(resultSet).getString(2);
-        Mockito.verify(resultSet).getString(3);
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test
-    public void testSelectDataForEnter()throws DAOException, SQLException{
-        ResultSet resultSet1 = Mockito.mock(ResultSet.class);
-        ResultSet resultSet2 = Mockito.mock(ResultSet.class);
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        Connection connection = Mockito.mock(Connection.class);
-        Statement statement = Mockito.mock(Statement.class);
-        String SELECT_FROM_USERS = "select * from users;";
-
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(SELECT_FROM_USERS)).thenReturn(resultSet2);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        Mockito.when(resultSet1.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.selectDataForEnter();
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).createStatement();
-        Mockito.verify(statement).executeQuery(SELECT_FROM_USERS);
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test(expected = DAOException.class)
-    public void testSelectDataForEnter_DAOException()throws DAOException, SQLException{
-        ResultSet resultSet1 = Mockito.mock(ResultSet.class);
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        Connection connection = Mockito.mock(Connection.class);
-        Statement statement = Mockito.mock(Statement.class);
-        String SELECT_FROM_USERS = "select * from users;";
-
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(SELECT_FROM_USERS)).thenThrow(SQLException.class);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        Mockito.when(resultSet1.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.selectDataForEnter();
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).createStatement();
-        Mockito.verify(statement).executeQuery(SELECT_FROM_USERS);
         Mockito.verify(connectionPool).retrieve(connection);
     }
 
@@ -567,26 +418,26 @@ public class UserDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         String DELETE_USER = "delete from users where user_name = ? && user_surname = ? && email = ? && access_type = ?;";
-        User user = new User("Alex", "Jones", "registered", "mess@mail.ru", "17812hfjN$%");
+        UserDTO userDTO = new UserDTO("Alex", "Jones", "mess@mail.ru", "registered");
 
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.prepareStatement(DELETE_USER)).thenReturn(preparedStatement);
-        Mockito.doNothing().when(preparedStatement).setString(1, user.getName());
-        Mockito.doNothing().when(preparedStatement).setString(2, user.getSurname());
-        Mockito.doNothing().when(preparedStatement).setString(3, user.getEmail());
-        Mockito.doNothing().when(preparedStatement).setString(4, user.getAccessType());
+        Mockito.doNothing().when(preparedStatement).setString(1, userDTO.getName());
+        Mockito.doNothing().when(preparedStatement).setString(2, userDTO.getSurname());
+        Mockito.doNothing().when(preparedStatement).setString(3, userDTO.getEmail());
+        Mockito.doNothing().when(preparedStatement).setString(4, userDTO.getAccessType());
         Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.deleteUser(user);
+        userDAO.deleteUser(userDTO);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(DELETE_USER);
-        Mockito.verify(preparedStatement).setString(1, user.getName());
-        Mockito.verify(preparedStatement).setString(2, user.getSurname());
-        Mockito.verify(preparedStatement).setString(3, user.getEmail());
-        Mockito.verify(preparedStatement).setString(4, user.getAccessType());
+        Mockito.verify(preparedStatement).setString(1, userDTO.getName());
+        Mockito.verify(preparedStatement).setString(2, userDTO.getSurname());
+        Mockito.verify(preparedStatement).setString(3, userDTO.getEmail());
+        Mockito.verify(preparedStatement).setString(4, userDTO.getAccessType());
         Mockito.verify(preparedStatement).executeUpdate();
         Mockito.verify(connectionPool).retrieve(connection);
     }
@@ -597,26 +448,26 @@ public class UserDAOImplTest {
         Connection connection = Mockito.mock(Connection.class);
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         String DELETE_USER = "delete from users where user_name = ? && user_surname = ? && email = ? && access_type = ?;";
-        User user = new User("Alex", "Jones", "registered", "mess@mail.ru", "17812hfjN$%");
+        UserDTO userDTO = new UserDTO("Alex", "Jones", "mess@mail.ru", "registered");
 
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.prepareStatement(DELETE_USER)).thenReturn(preparedStatement);
-        Mockito.doNothing().when(preparedStatement).setString(1, user.getName());
-        Mockito.doNothing().when(preparedStatement).setString(2, user.getSurname());
-        Mockito.doNothing().when(preparedStatement).setString(3, user.getEmail());
-        Mockito.doNothing().when(preparedStatement).setString(4, user.getAccessType());
+        Mockito.doNothing().when(preparedStatement).setString(1, userDTO.getName());
+        Mockito.doNothing().when(preparedStatement).setString(2, userDTO.getSurname());
+        Mockito.doNothing().when(preparedStatement).setString(3, userDTO.getEmail());
+        Mockito.doNothing().when(preparedStatement).setString(4, userDTO.getAccessType());
         Mockito.when(preparedStatement.executeUpdate()).thenThrow(SQLException.class);
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         UserDAO userDAO = new UserDAOImpl(connectionPool);
-        userDAO.deleteUser(user);
+        userDAO.deleteUser(userDTO);
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).prepareStatement(DELETE_USER);
-        Mockito.verify(preparedStatement).setString(1, user.getName());
-        Mockito.verify(preparedStatement).setString(2, user.getSurname());
-        Mockito.verify(preparedStatement).setString(3, user.getEmail());
-        Mockito.verify(preparedStatement).setString(4, user.getAccessType());
+        Mockito.verify(preparedStatement).setString(1, userDTO.getName());
+        Mockito.verify(preparedStatement).setString(2, userDTO.getSurname());
+        Mockito.verify(preparedStatement).setString(3, userDTO.getEmail());
+        Mockito.verify(preparedStatement).setString(4, userDTO.getAccessType());
         Mockito.verify(preparedStatement).executeUpdate();
         Mockito.verify(connectionPool).retrieve(connection);
     }

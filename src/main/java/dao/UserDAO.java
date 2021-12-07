@@ -1,54 +1,32 @@
 package dao;
 
-import dao.entity.AbstractCar;
-import dao.entity.Pair;
 import dao.entity.User;
 import dao.entity.UserDTO;
 import dao.exception.DAOException;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public interface UserDAO {
     /**
      * adds user to database
+     *
      * @param user is a user
      * @throws DAOException is a module exception
      */
     void insertUser(User user) throws DAOException;
 
     /**
-     * finds all users
-     * @return set of all registered users
-     * @throws DAOException is a module exception
-     */
-    ResultSet getResultSetOfAllUsers() throws DAOException;
-
-    /**
      * updates password
-     * @param email is email of user who needs to update password
+     *
+     * @param email    is email of user who needs to update password
      * @param password is a new password
      * @throws DAOException is a module exception
      */
     void updatePassword(String email, String password) throws DAOException;
 
     /**
-     * finds name and surname of user
-     * @param email is email of user
-     * @return pair of name and surname
-     * @throws DAOException is a module exception
-     */
-    Pair getNameAndSurname(String email) throws DAOException;
-
-    /**
-     * finds email and password
-     * @return list of emails and passwords
-     * @throws DAOException is a module exception
-     */
-    ArrayList<Pair> selectDataForEnter() throws DAOException;
-
-    /**
      * checks if email exists
+     *
      * @param email is email
      * @return true if exists and false if not
      * @throws DAOException is a module exception
@@ -57,46 +35,88 @@ public interface UserDAO {
 
     /**
      * finds avatar by email
+     *
      * @param email is email
      * @return avatar path according to email
      * @throws DAOException is a module exception
      */
-    String getAvatarPathByEmail(String email)throws DAOException;
+    String getAvatarPathByEmail(String email) throws DAOException;
 
     /**
      * finds all registrated users
+     *
      * @return list of registrated users
      * @throws DAOException is a module exception
      */
-    ArrayList<UserDTO> getListOfUsers()throws DAOException;
+    ArrayList<UserDTO> getListOfUsers() throws DAOException;
 
     /**
      * deletes user
-     * @param user is a registrated user
+     *
+     * @param userDTO is a registrated user
      * @throws DAOException is a module exception
      */
-    void deleteUser(User user)throws DAOException;
+    void deleteUser(UserDTO userDTO) throws DAOException;
 
     /**
      * updates avatar into user account
+     *
      * @param imagePath is a path of image
-     * @param email is an email of user
+     * @param email     is an email of user
      * @throws DAOException is a module exception
      */
-    void addAvatar(String imagePath, String email)throws DAOException;
+    void addAvatar(String imagePath, String email) throws DAOException;
 
     /**
      * log-in
-     * @param email is the email of user
+     *
+     * @param email    is the email of user
      * @param password is the user's password
      * @return UserDTO if log-in was successful and null if not
      * @throws DAOException is a module exception
      */
-    UserDTO enter(String email, String password)throws DAOException;
+    UserDTO enter(String email, String password) throws DAOException;
 
-    void upgradeUserToAdmin(int userId)throws DAOException;
+    /**
+     * upgrades user access type from 'registered' to 'admin'
+     *
+     * @param userId is the user's id
+     * @throws DAOException is a module exception
+     */
+    void upgradeUserToAdmin(int userId) throws DAOException;
 
+    /**
+     * calculates how much pages do we need to illustrate it in UI
+     *
+     * @return list of strings that has the size equals to amount of pages
+     * @throws DAOException is a module exception
+     */
     ArrayList<String> getCountOfUserPages() throws DAOException;
 
+    /**
+     * finds as much user information as can fit on one page
+     *
+     * @param pageNumber is the number of page that will be illustrated
+     * @return list of objects that contains user information
+     * @throws DAOException is a module exception
+     */
     ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws DAOException;
+
+    /**
+     * finds user name according to his email
+     *
+     * @param email is the user's email
+     * @return name of user that was registered with given email
+     * @throws DAOException is a module exception
+     */
+    String getUserNameByEmail(String email) throws DAOException;
+
+    /**
+     * finds user surname according to his email
+     *
+     * @param email is the user's email
+     * @return surname of user that was registered with given email
+     * @throws DAOException is a module exception
+     */
+    String getUserSurnameByEmail(String email) throws DAOException;
 }

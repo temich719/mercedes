@@ -2,7 +2,6 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
-import dao.entity.Pair;
 import org.apache.log4j.Logger;
 import service.ServiceFactory;
 import service.UserService;
@@ -38,9 +37,10 @@ public class ForgetPasswordCommand implements ICommand {
             } else {
                 try {
                     userService.updatePassword(email, newPassword);
-                    Pair pair = userService.getNameAndSurname(email);
+                    String name = userService.getUserNameByEmail(email);
+                    String surname = userService.getUserSurnameByEmail(email);
                     HttpSession session = req.getSession(true);
-                    session.setAttribute(NAME_ACCOUNT, pair.getFirst() + " " + pair.getSecond());
+                    session.setAttribute(NAME_ACCOUNT, name + " " + surname);
                     session.setAttribute(EMAIL_ACCOUNT, email);
                 } catch (ServiceException e) {
                     throw new ControllerException(e);

@@ -70,7 +70,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
         }
         try {
             if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-                if (!userName.equals(userService.getNameAndSurname(email).getFirst()) || !userSurname.equals(userService.getNameAndSurname(email).getSecond())) {
+                if (!userName.equals(userService.getUserNameByEmail(email)) || !userSurname.equals(userService.getUserSurnameByEmail(email))) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     if (Objects.nonNull(sel)) {
                         req.setAttribute(SELECT, "true");
