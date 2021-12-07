@@ -157,4 +157,8 @@ public interface CarService {
     ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws ServiceException;
 
     ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException;
+
+    ArrayList<String> getCountOfCarPagesAccordingToType(String carType) throws ServiceException;
+
+    ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws ServiceException;
 }
