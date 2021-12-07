@@ -25,6 +25,9 @@ public class GoToPageCommand implements ICommand {
         try {
             switch (pageName) {
                 case JSP_USER + ALL_CARS_PAGE:
+                    req.setAttribute(ALL_CARS, carService.getAllCarsInfoForOnePage(DEFAULT_PAGE_NUMBER));
+                    req.setAttribute(NUMBERS, carService.getCountOfAllCarPages());
+                    break;
                 case JSP_USER + TEST_DRIVE_ORDER_PAGE:
                 case JSP_USER + SERVICE_ORDER_PAGE:
                     req.setAttribute(ALL_CARS, carService.getAllCars());

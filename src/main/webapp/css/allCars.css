@@ -132,3 +132,10 @@
     margin-left: 3%;
     margin-bottom: 2%;
   }
+
+ .pages:hover{
+      color: purple;
+      font-size: 30px;
+      text-decoration: underline;
+      cursor: pointer;
+  }

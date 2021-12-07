@@ -8,6 +8,12 @@ public class AbstractCar {
     protected String price;
     protected String imagePath;
 
+    public AbstractCar(String nameOfMark, String price, String imagePath){
+        this.nameOfMark = nameOfMark;
+        this.price = price;
+        this.imagePath = imagePath;
+    }
+
     public String getNameOfMark() {
         return nameOfMark;
     }

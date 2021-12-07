@@ -29,6 +29,60 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public ArrayList<String> getCountOfAllCarPages() throws ServiceException {
+        try {
+            return carDAO.getCountOfAllCarPages();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<String> getCountOfCarPages() throws ServiceException {
+        try {
+            return carDAO.getCountOfCarPages();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<String> getCountOfMinibusPages() throws ServiceException {
+        try {
+            return carDAO.getCountOfMinibusPages();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws ServiceException {
+        try {
+            return carDAO.getCarsInfoForOnePage(pageNumber);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException {
+        try {
+            return carDAO.getMinibusesInfoForOnePage(pageNumber);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws ServiceException {
+        try {
+            return carDAO.getAllCarsInfoForOnePage(pageNumber);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public ArrayList<Car> getCars() throws ServiceException {
         try {
             return carDAO.getCars();

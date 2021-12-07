@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class Car extends AbstractCar {
 
-    private final String price;
     private final String power;
     private final String accelerationTillHundred;
     private final String consumption;
@@ -17,8 +16,7 @@ public class Car extends AbstractCar {
     private final String type;
 
     public Car(String nameOfMark, String price, String power, String accelerationTillHundred, String consumption, String engineVolume, String tankVolume, String trunkVolume, String maxSpeed, String imagePath, String type) {
-        this.nameOfMark = nameOfMark;
-        this.price = price;
+        super(nameOfMark, price, imagePath);
         this.power = power;
         this.accelerationTillHundred = accelerationTillHundred;
         this.consumption = consumption;
@@ -26,7 +24,6 @@ public class Car extends AbstractCar {
         this.tankVolume = tankVolume;
         this.trunkVolume = trunkVolume;
         this.maxSpeed = maxSpeed;
-        this.imagePath = imagePath;
         this.type = type;
     }
 

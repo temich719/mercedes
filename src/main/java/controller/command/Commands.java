@@ -42,8 +42,11 @@ public enum Commands {
     DELETE_ORDER_FROM_ADMIN_COMMAND(new AdminDeleteOrderCommand()),
     GO_TO_PAGE_COMMAND(new GoToPageCommand()),
     ERROR_COMMAND(new ErrorPageCommand()),
-    NUMBER_OF_PAGE_COMMAND(new SelectPageAllOrdersCommand()),
+    ORDERS_NUMBER_OF_PAGE_COMMAND(new SelectPageAllOrdersCommand()),
     UPGRADE_USER_TO_ADMIN_COMMAND(new UpgradeUserToAdminCommand()),
+    ALL_CARS_NUMBER_OF_PAGE_COMMAND(new SelectPageAllCarsCommand()),
+    CARS_NUMBER_OF_PAGE_COMMAND(new SelectPageCarsCommand()),
+    MINIBUSES_NUMBER_OF_PAGE_COMMAND(new SelectPageMinibusCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
     ICommand iCommand;

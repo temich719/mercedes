@@ -144,4 +144,16 @@ public interface CarDAO {
      */
     ArrayList<AbstractCar> getAllCars() throws DAOException;
 
+    ArrayList<String> getCountOfAllCarPages() throws DAOException;
+
+    ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws DAOException;
+
+    ArrayList<String> getCountOfCarPages() throws DAOException;
+
+    ArrayList<String> getCountOfMinibusPages() throws DAOException;
+
+    ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws DAOException;
+
+    ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws DAOException;
+
 }

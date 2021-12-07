@@ -2,6 +2,7 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
+import dao.entity.AbstractCar;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
@@ -30,11 +31,15 @@ public class FilterAllCarsCommand implements ICommand {
         CssEditor.pressedButton(carType, req);
         try {
             if (carType.equals(CAR)) {
-                ArrayList<Car> cars = carService.getCars();
+                ArrayList<AbstractCar> cars = carService.getCarsInfoForOnePage(DEFAULT_PAGE_NUMBER);
+                req.setAttribute(NUMBERS, carService.getCountOfCarPages());
                 req.setAttribute(FILTERED, cars);
+                req.setAttribute(TYPE_OF_CARS_ON_THIS_PAGE, CARS);
             } else if (carType.equals(MINIBUS)) {
-                ArrayList<Minibus> minibuses = carService.getMinibuses();
+                ArrayList<AbstractCar> minibuses = carService.getMinibusesInfoForOnePage(DEFAULT_PAGE_NUMBER);
+                req.setAttribute(NUMBERS, carService.getCountOfMinibusPages());
                 req.setAttribute(FILTERED, minibuses);
+                req.setAttribute(TYPE_OF_CARS_ON_THIS_PAGE, MINIBUSES);
             } else {
                 ArrayList<Truck> trucks = carService.getTrucks();
                 req.setAttribute(FILTERED, trucks);

@@ -10,9 +10,7 @@ public class Minibus extends AbstractCar {
     private final String curbWeight;
 
     public Minibus(String nameOfMark, String price, String imagePass, String fullLoad, String curbWeight) {
-        this.nameOfMark = nameOfMark;
-        this.price = price;
-        this.imagePath = imagePass;
+        super(nameOfMark, price, imagePass);
         this.fullLoad = fullLoad;
         this.curbWeight = curbWeight;
     }

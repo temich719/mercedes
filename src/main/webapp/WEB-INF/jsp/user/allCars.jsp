@@ -6,6 +6,7 @@
      <c:set var="com" scope="request" value="${requestScope.allCars}" />
      <c:set var="filter" scope="request" value="${requestScope.filtered}" />
      <c:set var="flag" scope="request" value="${requestScope.flag}" />
+     <c:set var="typeOfCarsOnThisPage" scope="request" value="${requestScope.typeOfCarsOnThisPage}" />
 
      <c:choose>
        <c:when test="${empty flag}">
@@ -21,6 +22,7 @@
         <title>Cars</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/allCars.css" type="text/css">
+        <link rel="stylesheet" href="css/adminAllOrders.css" type="text/css">
         <fmt:setLocale value="${sessionScope.locale}" />
         <fmt:setBundle basename="localization.local" var="loc" />
         <fmt:message bundle="${loc}" key="local.cars" var="legk" />
@@ -90,5 +92,37 @@
             </c:forEach>
 
         </div>
+
+         <div style="margin-top: 52%;margin-left: 40%;align-items: center;align-content: center;">
+            <div style="align-items: center;align-content: center;text-align: center;">
+                <c:forEach var="pageNumber" items="${requestScope.numbers}" >
+                    <form action="FrontController" method="get" style="float:left;margin-right: 2%;">
+
+                        <c:choose>
+                            <c:when test="${empty typeOfCarsOnThisPage}">
+                                  <input type="hidden" name="command" value="ALL_CARS_NUMBER_OF_PAGE_COMMAND">
+                            </c:when>
+                            <c:otherwise>
+                                 <c:choose>
+                                    <c:when test="${typeOfCarsOnThisPage == 'cars'}">
+                                        <input type="hidden" name="command" value="CARS_NUMBER_OF_PAGE_COMMAND">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="hidden" name="command" value="MINIBUSES_NUMBER_OF_PAGE_COMMAND">
+                                    </c:otherwise>
+                                 </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <!--<input type="hidden" name="command" value="ALL_CARS_NUMBER_OF_PAGE_COMMAND">-->
+                        <input type="hidden" name="number_of_page" value="${pageNumber}">
+                        <button class="pages" type="submit" style="border: none;background-color: #DCDCDC;font-size: 20px;">
+                            <c:out value="${pageNumber}" />
+                        </button>
+                    </form>
+                </c:forEach>
+            </div>
+         </div>
+
     </body>
 </html>

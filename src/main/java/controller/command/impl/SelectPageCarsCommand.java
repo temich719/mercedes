@@ -3,7 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
-import service.OrderService;
+import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 
@@ -12,22 +12,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class SelectPageAllOrdersCommand implements ICommand {
+public class SelectPageCarsCommand implements ICommand {
 
-    private final static Logger LOGGER = Logger.getLogger(SelectPageAllOrdersCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(SelectPageCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
-    private final OrderService orderService = serviceFactory.getOrderService();
+    private final CarService carService = serviceFactory.getCarService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
-        LOGGER.info("We got to SelectPageCommand");
-        final String numberOfPage = req.getParameter(NUMBER_OF_PAGE);
+        LOGGER.info("We got to SelectPageCarsCommand");
+        final String pageNumber = req.getParameter(NUMBER_OF_PAGE);
         try {
-            req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
-            req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());
+            req.setAttribute(FILTERED, carService.getCarsInfoForOnePage(pageNumber));
+            req.setAttribute(NUMBERS, carService.getCountOfCarPages());
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        return JSP_ADMIN + ADMIN_ALL_ORDERS_PAGE;
+        req.setAttribute(FLAG, "true");
+        req.setAttribute(TYPE_OF_CARS_ON_THIS_PAGE, CARS);
+        return JSP_USER + ALL_CARS_PAGE;
     }
 }

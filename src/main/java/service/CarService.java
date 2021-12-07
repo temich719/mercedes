@@ -4,7 +4,6 @@ import dao.entity.AbstractCar;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
-import dao.exception.DAOException;
 import service.exception.ServiceException;
 
 import java.util.ArrayList;
@@ -146,4 +145,16 @@ public interface CarService {
      * @throws ServiceException is module exception
      */
     ArrayList<AbstractCar> getAllCars() throws ServiceException;
+
+    ArrayList<String> getCountOfAllCarPages() throws ServiceException;
+
+    ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws ServiceException;
+
+    ArrayList<String> getCountOfCarPages() throws ServiceException;
+
+    ArrayList<String> getCountOfMinibusPages() throws ServiceException;
+
+    ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws ServiceException;
+
+    ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException;
 }

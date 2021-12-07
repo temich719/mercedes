@@ -128,4 +128,5 @@ public class ControllerStringsStorage {
     public static final String TRUCK_MARK = "truckMark";
     public static final String AVA = "ava";
     public static final String CAR_INFO_PAGE = "carInfo";
+    public static final String TYPE_OF_CARS_ON_THIS_PAGE = "typeOfCarsOnThisPage";
 }
