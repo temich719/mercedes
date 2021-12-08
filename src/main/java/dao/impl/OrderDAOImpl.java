@@ -20,10 +20,11 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     private static final String SELECT_FROM_NAMES = "select * from names;";
     private static final String SELECT_FROM_SURNAMES = "select * from surnames;";
     private static final String SELECT_STATUS_IN_ACCOUNT = "select status_in_account from orders where email = ?;";
-    private static final String MAKE_ORDER_STATUS_READ_WHERE_DATE_NON_NULL = "update orders set status_in_account = 'read' where user_name= ? && " +
-            "user_surname = ? && email = ? && service = ? && car_name = ? && date = ?;";
-    private static final String MAKE_ORDER_STATUS_READ = "update orders set status_in_account = 'read' where user_name = ? &&" +
-            "user_surname = ? && email = ? && service = ? && car_name = ?;";
+    private static final String MAKE_ORDER_STATUS_READ_WHERE_DATE_NON_NULL = "update orders set status_in_account = 'read' where" +
+            " email = ? && service = ? && car_name = ? && date = ?;";
+    private static final String MAKE_ORDER_STATUS_READ = "update orders set status_in_account = 'read' where" +
+            " email = ? && service = ? && car_name = ?;";
+
     private static final String INSERT_NAME = "insert into names(user_name) values(?);";
     private static final String INSERT_SURNAME = "insert into surnames(user_surname) values(?);";
     private static final String SELECT_FROM_ORDERS = "select * from orders;";
@@ -33,10 +34,11 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     private static final String INSERT_INTO_ORDERS = "insert into orders" +
             "(user_name,user_surname,email,service,car_name,price,phone,date,status_in_account) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String DELETE_FROM_ORDERS_WHEN_DATE_IS_NULL = "delete from orders where user_name = ? &&" +
-            "user_surname = ? && email = ? && service = ? && car_name = ? && price = ? && phone = ?;";
-    private static final String DELETE_FROM_ORDERS = "delete from orders where user_name = ? && user_surname = ? &&" +
-            "email = ? && service = ? && car_name = ? && price = ? && date = ? && phone = ?;";
+
+    private static final String DELETE_FROM_ORDERS_WHEN_DATE_IS_NULL = "delete from orders where" +
+            " email = ? && service = ? && car_name = ? && price = ? && phone = ?;";
+    private static final String DELETE_FROM_ORDERS = "delete from orders where" +
+            " email = ? && service = ? && car_name = ? && price = ? && date = ? && phone = ?;";
     private static final String DELETE_ORDER_OF_DELETED_USER = "delete from orders where user_name = ? && user_surname = ? && email = ?;";
     private static final String SELECT_INFO_FOR_ONE_ORDER_PAGE = "SELECT * FROM orders ORDER BY orders_id LIMIT ? OFFSET ?;";
     private static final String SELECT_COUNT_OF_ORDERS = "select count(*) from orders";
@@ -164,19 +166,15 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             connection = connectionPool.provide();
             if (!date.equals("")) {
                 preparedStatement = connection.prepareStatement(MAKE_ORDER_STATUS_READ_WHERE_DATE_NON_NULL);
-                preparedStatement.setString(1, name);
-                preparedStatement.setString(2, surname);
-                preparedStatement.setString(3, email);
-                preparedStatement.setString(4, service);
-                preparedStatement.setString(5, mark);
-                preparedStatement.setString(6, date);
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, service);
+                preparedStatement.setString(3, mark);
+                preparedStatement.setString(4, date);
             } else {
                 preparedStatement = connection.prepareStatement(MAKE_ORDER_STATUS_READ);
-                preparedStatement.setString(1, name);
-                preparedStatement.setString(2, surname);
-                preparedStatement.setString(3, email);
-                preparedStatement.setString(4, service);
-                preparedStatement.setString(5, mark);
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, service);
+                preparedStatement.setString(3, mark);
             }
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -246,23 +244,19 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             connection = connectionPool.provide();
             if (Objects.isNull(order.getDate()) || order.getDate().equals("")) {
                 preparedStatement = connection.prepareStatement(DELETE_FROM_ORDERS_WHEN_DATE_IS_NULL);
-                preparedStatement.setString(1, order.getName());
-                preparedStatement.setString(2, order.getSurname());
-                preparedStatement.setString(3, order.getEmail());
-                preparedStatement.setString(4, order.getService());
-                preparedStatement.setString(5, order.getMark());
-                preparedStatement.setString(6, order.getPrice());
-                preparedStatement.setString(7, order.getPhone());
+                preparedStatement.setString(1, order.getEmail());
+                preparedStatement.setString(2, order.getService());
+                preparedStatement.setString(3, order.getMark());
+                preparedStatement.setString(4, order.getPrice());
+                preparedStatement.setString(5, order.getPhone());
             } else {
                 preparedStatement = connection.prepareStatement(DELETE_FROM_ORDERS);
-                preparedStatement.setString(1, order.getName());
-                preparedStatement.setString(2, order.getSurname());
-                preparedStatement.setString(3, order.getEmail());
-                preparedStatement.setString(4, order.getService());
-                preparedStatement.setString(5, order.getMark());
-                preparedStatement.setString(6, order.getPrice());
-                preparedStatement.setString(7, order.getDate());
-                preparedStatement.setString(8, order.getPhone());
+                preparedStatement.setString(1, order.getEmail());
+                preparedStatement.setString(2, order.getService());
+                preparedStatement.setString(3, order.getMark());
+                preparedStatement.setString(4, order.getPrice());
+                preparedStatement.setString(5, order.getDate());
+                preparedStatement.setString(6, order.getPhone());
             }
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
