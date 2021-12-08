@@ -155,15 +155,6 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ArrayList<Car> getCarListByType(String type) throws ServiceException {
-        try {
-            return carDAO.getCarListByType(type);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public Car getCarByMark(String mark) throws ServiceException {
         try {
             return carDAO.getCarByMark(mark);
@@ -176,15 +167,6 @@ public class CarServiceImpl implements CarService {
     public boolean updateCarInfo(Car car) throws ServiceException {
         try {
             return carDAO.updateCarInfo(car);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public boolean isAllowedCarType(String type) throws ServiceException {
-        try {
-            return carDAO.isAllowedCarType(type);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

@@ -52,15 +52,6 @@ public interface CarService {
     String[] getMarkAndPriceByImage(String imagePath) throws ServiceException;
 
     /**
-     * finds cars according to type
-     *
-     * @param type is a type of car
-     * @return list of cars by type
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<Car> getCarListByType(String type) throws ServiceException;
-
-    /**
      * adds new car
      *
      * @param car is a car
@@ -120,15 +111,6 @@ public interface CarService {
     boolean updateCarInfo(Car car) throws ServiceException;
 
     /**
-     * checks if type is allowed
-     *
-     * @param type is the type of car
-     * @return true if type is allowed and false if not
-     * @throws ServiceException is a module exception
-     */
-    boolean isAllowedCarType(String type) throws ServiceException;
-
-    /**
      * finds minibus by its image
      *
      * @param imagePath is the path of image
@@ -146,19 +128,73 @@ public interface CarService {
      */
     ArrayList<AbstractCar> getAllCars() throws ServiceException;
 
+    /**
+     * calculates how much pages do we need to illustrate content including all car types on UI
+     *
+     * @return list of strings that has the size equals to amount of pages
+     * @throws ServiceException is a module exception
+     */
     ArrayList<String> getCountOfAllCarPages() throws ServiceException;
 
+    /**
+     * finds as much car information(including all car types) as can fit on one page
+     *
+     * @param pageNumber is the number of page that will be illustrated
+     * @return list of objects that contains car information(including all car types)
+     * @throws ServiceException is a module exception
+     */
     ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws ServiceException;
 
+    /**
+     * calculates how much pages do we need to illustrate car content on UI
+     *
+     * @return list of strings that has the size equals to amount of pages
+     * @throws ServiceException is a module exception
+     */
     ArrayList<String> getCountOfCarPages() throws ServiceException;
 
+    /**
+     * calculates how much pages do we need to illustrate minibus content on UI
+     *
+     * @return list of strings that has the size equals to amount of pages
+     * @throws ServiceException is a module exception
+     */
     ArrayList<String> getCountOfMinibusPages() throws ServiceException;
 
+    /**
+     * finds as much car information as can fit on one page
+     *
+     * @param pageNumber is the number of page that will be illustrated
+     * @return list of objects that contains car information
+     * @throws ServiceException is a module exception
+     */
     ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws ServiceException;
 
+    /**
+     * finds as much minibus information as can fit on one page
+     *
+     * @param pageNumber is the number of page that will be illustrated
+     * @return list of objects that contains minibus information
+     * @throws ServiceException is a module exception
+     */
     ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException;
 
+    /**
+     * calculates how much pages do we need to illustrate car content on UI according to given car type
+     *
+     * @param carType is given car type
+     * @return list of strings that has the size equals to amount of pages
+     * @throws ServiceException is a module exception
+     */
     ArrayList<String> getCountOfCarPagesAccordingToType(String carType) throws ServiceException;
 
+    /**
+     * finds as much car information as can fit on one page according to given car type
+     *
+     * @param pageNumber is the number of page that will be illustrated
+     * @param carType is given car type
+     * @return list of objects that contains car information according to given car type
+     * @throws ServiceException is a module exception
+     */
     ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws ServiceException;
 }
