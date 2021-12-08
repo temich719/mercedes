@@ -32,6 +32,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String UPDATE_ACCESS_TYPE = "update users set access_type = ? where id = ?;";
     private static final String SELECT_COUNT_OF_USERS = "select count(*) from users;";
     private static final String SELECT_USER_INFO_FOR_ONE_PAGE = "select id, user_name, user_surname, email, access_type from users order by id limit ? offset ?;";
+    private static final String SELECT_ACCESS_TYPE_BY_EMAIL = "select access_type from users where email = ?;";
     private static final int LIMIT = 10;
 
     public UserDAOImpl(ConnectionPool connectionPool) {
@@ -90,7 +91,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            final String access = "registered";
+            final String access = REGISTERED;
             if (!isAlreadyExistsInDatabase(user.getName(), SELECT_FROM_NAMES, connection)) {
                 nameStatement = connection.prepareStatement(ADD_USER_NAME);
                 nameStatement.setString(1, user.getName());
@@ -308,6 +309,28 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             connectionPool.retrieve(connection);
         }
         return users;
+    }
+
+    @Override
+    public String getUserAccessTypeByEmail(String email) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String accessType;
+        try {
+            connection = connectionPool.provide();
+            preparedStatement = connection.prepareStatement(SELECT_ACCESS_TYPE_BY_EMAIL);
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            accessType = resultSet.getString(1);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, preparedStatement);
+            connectionPool.retrieve(connection);
+        }
+        return accessType;
     }
 
     @Override

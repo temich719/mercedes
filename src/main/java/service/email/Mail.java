@@ -38,9 +38,15 @@ public class Mail {
         MimeMessage message = new MimeMessage(mailSession);
         message.setFrom(new InternetAddress(internetAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
-        if (req.getSession().getAttribute("locale").equals("ru") || Objects.isNull(req.getSession().getAttribute("locale")))subject = "Код подтверждения";
-        else if (req.getSession().getAttribute("locale").equals("ch"))subject = "驗證碼";
-        else subject = "Confirmation code";
+        if (req.getSession().getAttribute("locale").equals("ru") || Objects.isNull(req.getSession().getAttribute("locale"))){
+            subject = "Код подтверждения";
+        }
+        else if (req.getSession().getAttribute("locale").equals("ch")){
+            subject = "驗證碼";
+        }
+        else {
+            subject = "Confirmation code";
+        }
         message.setSubject(subject);
         message.setText(code);
         doTransport(mailSession, message);

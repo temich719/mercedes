@@ -72,6 +72,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getUserAccessTypeByEmail(String email) throws ServiceException {
+        try {
+            return userDAO.getUserAccessTypeByEmail(email);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public String getUserNameByEmail(String email) throws ServiceException {
         try {
             return userDAO.getUserNameByEmail(email);

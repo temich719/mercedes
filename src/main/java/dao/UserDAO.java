@@ -119,4 +119,13 @@ public interface UserDAO {
      * @throws DAOException is a module exception
      */
     String getUserSurnameByEmail(String email) throws DAOException;
+
+    /**
+     * finds access type of user according to his email
+     *
+     * @param email is the email of user
+     * @return access type(registered or admin)
+     * @throws DAOException is a module exception
+     */
+    String getUserAccessTypeByEmail(String email) throws DAOException;
 }

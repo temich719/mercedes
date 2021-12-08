@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 
@@ -12,7 +13,7 @@
     <fmt:setBundle basename="localization.local" var="loc" />
     <fmt:message bundle="${loc}" key="local.confirmation" var="confirmation" />
     <fmt:message bundle="${loc}" key="local.inputCode" var="inputCode" />
-    <fmt:message bundle="${loc}" key="local.continue" var="continue" />
+    <fmt:message bundle="${loc}" key="local.continue" var="next" />
 </head>
 
 <body style="background-image: url(img/back.jpg);">
@@ -29,7 +30,7 @@
             <br><br><br><br><br>
             <input type="hidden" name="command" value="CHECK_CODE_COMMAND">
             <input type="hidden" name="codeOfConfirm" value=${sessionScope.codeOfConfirm}>
-            <button name="submit" type="submit"><c:out value="${continue}" /></button>
+            <button name="submit" type="submit"><c:out value="${next}" /></button>
             <br><br><br><br>
         </form>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br>

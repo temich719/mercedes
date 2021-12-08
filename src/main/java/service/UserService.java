@@ -119,4 +119,13 @@ public interface UserService {
      * @throws ServiceException is a module exception
      */
     String getUserSurnameByEmail(String email) throws ServiceException;
+
+    /**
+     * finds access type of user according to his email
+     *
+     * @param email is the email of user
+     * @return access type(registered or admin)
+     * @throws ServiceException is a module exception
+     */
+    String getUserAccessTypeByEmail(String email) throws ServiceException;
 }
