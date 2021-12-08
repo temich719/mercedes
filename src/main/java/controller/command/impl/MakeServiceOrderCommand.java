@@ -63,8 +63,11 @@ public class MakeServiceOrderCommand implements ICommand {
         }
         if (inputDataIsRight) {
             final String mark;
-            if (Objects.isNull(req.getParameter(SELECT_NAME))) mark = req.getParameter(MARK);
-            else mark = req.getParameter(SELECT_NAME);
+            if (Objects.isNull(req.getParameter(SELECT_NAME))) {
+                mark = req.getParameter(MARK);
+            } else {
+                mark = req.getParameter(SELECT_NAME);
+            }
             try {
                 Order order = new Order(userName, userSurname, email, SERVICE, mark, AFTER_INSPECTION, phone, date, UNREAD);
                 orderService.addOrder(order);

@@ -43,8 +43,11 @@ public class MakeOrderCommand implements ICommand {
             if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
                 req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
                 req.setAttribute(PICTURE, imagePath);
-                if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
-                else req.setAttribute(PRICE, markAndPrice[1]);
+                if (Objects.isNull(markAndPrice[1])) {
+                    req.setAttribute(MONEY, markAndPrice[2]);
+                } else {
+                    req.setAttribute(PRICE, markAndPrice[1]);
+                }
                 req.setAttribute(MARK, markAndPrice[0]);
                 inputDataIsRight = false;
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
@@ -52,8 +55,11 @@ public class MakeOrderCommand implements ICommand {
             if (!Validator.validateEmail(email) && inputDataIsRight) {
                 req.setAttribute(ERROR, INVALID_EMAIL);
                 req.setAttribute(PICTURE, imagePath);
-                if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
-                else req.setAttribute(PRICE, markAndPrice[1]);
+                if (Objects.isNull(markAndPrice[1])) {
+                    req.setAttribute(MONEY, markAndPrice[2]);
+                } else {
+                    req.setAttribute(PRICE, markAndPrice[1]);
+                }
                 req.setAttribute(MARK, markAndPrice[0]);
                 inputDataIsRight = false;
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
@@ -62,8 +68,11 @@ public class MakeOrderCommand implements ICommand {
                 if (!name.equals(userService.getUserNameByEmail(email)) || !surname.equals(userService.getUserSurnameByEmail(email))) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(PICTURE, imagePath);
-                    if (Objects.isNull(markAndPrice[1])) req.setAttribute(MONEY, markAndPrice[2]);
-                    else req.setAttribute(PRICE, markAndPrice[1]);
+                    if (Objects.isNull(markAndPrice[1])) {
+                        req.setAttribute(MONEY, markAndPrice[2]);
+                    } else {
+                        req.setAttribute(PRICE, markAndPrice[1]);
+                    }
                     req.setAttribute(MARK, markAndPrice[0]);
                     inputDataIsRight = false;
                     page = JSP_USER + FORM_OF_ORDER_PAGE;
