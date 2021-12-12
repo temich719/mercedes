@@ -66,14 +66,8 @@
                     </th>
                     <th style="width: 30px;height:50px;text-align: center;">
                         <form action="FrontController" method="get">
-                            <input type="hidden" name="service" value="${order.getService()}">
-                            <input type="hidden" name="mark" value="${order.getMark()}">
-                            <input type="hidden" name="price" value="${order.getPrice()}">
-                            <input type="hidden" name="date" value="${order.getDate()}">
-                            <input type="hidden" name="phone" value="${order.getPhone()}">
-                            <input type="hidden" name="name" value="${order.getName()}">
-                            <input type="hidden" name="surname" value="${order.getSurname()}">
-                            <input type="hidden" name="email" value="${order.getEmail()}">
+                            <input type="hidden" name="id" value="${order.getId()}">
+                            <input type="hidden" name="pageNumber" value="${requestScope.pageNumber}">
                             <input type="hidden" name="command" value="DELETE_ORDER_FROM_ADMIN_COMMAND">
                             <button>
                                 <span>❌</span>

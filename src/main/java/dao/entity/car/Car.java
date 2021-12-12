@@ -27,7 +27,18 @@ public class Car extends AbstractCar {
         this.type = type;
     }
 
-    @Override
+    public Car(int id, String nameOfMark, String price, String power, String accelerationTillHundred, String consumption, String engineVolume, String tankVolume, String trunkVolume, String maxSpeed, String imagePath, String type) {
+        super(id, nameOfMark, price, imagePath);
+        this.power = power;
+        this.accelerationTillHundred = accelerationTillHundred;
+        this.consumption = consumption;
+        this.engineVolume = engineVolume;
+        this.tankVolume = tankVolume;
+        this.trunkVolume = trunkVolume;
+        this.maxSpeed = maxSpeed;
+        this.type = type;
+    }
+
     public String getPrice() {
         return price;
     }

@@ -22,14 +22,16 @@ public class ViewCarCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to ViewCarCommand");
-        final String nameOfMark = req.getParameter(NAME_OF_MARK);
+        //final String nameOfMark = req.getParameter(NAME_OF_MARK);
+        final String id = req.getParameter(ID);
         Car car;
         try {
-            car = carService.getCarByMark(nameOfMark);
+            //car = carService.getCarByMark(nameOfMark);
+            car = carService.getCarById(Integer.parseInt(id));
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        req.setAttribute(NAME_OF_MARK, nameOfMark);
+        req.setAttribute(NAME_OF_MARK, car.getNameOfMark());
         req.setAttribute(PICTURE, car.getImagePath());
         req.setAttribute(PRICE, car.getPrice());
         req.setAttribute(POWER, car.getPower());
@@ -40,6 +42,7 @@ public class ViewCarCommand implements ICommand {
         req.setAttribute(TRUNK_VOLUME, car.getTrunkVolume());
         req.setAttribute(MAX_SPEED, car.getMaxSpeed());
         req.setAttribute(TYPE, car.getType());
+        req.setAttribute(ID, car.getId());
         return JSP_USER + CAR_INFO_PAGE;
     }
 }

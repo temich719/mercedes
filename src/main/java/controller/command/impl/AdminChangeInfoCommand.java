@@ -26,7 +26,7 @@ public class AdminChangeInfoCommand implements ICommand {
         try {
             final String oldImagePath = req.getParameter(OLD_IMAGE_PATH);
             final String imagePath = req.getParameter(IMAGE_PATH);
-            final String mark = carService.getCarMarkByImage(oldImagePath);
+            final String mark = req.getParameter(MARK);
             final String price = req.getParameter(PRICE);
             final String power = req.getParameter(POWER);
             final String acceleration = req.getParameter(ACCELERATION);

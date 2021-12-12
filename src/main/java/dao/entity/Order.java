@@ -3,6 +3,7 @@ package dao.entity;
 import java.util.Objects;
 
 public class Order {
+    private int id;
     private final String name;
     private final String surname;
     private final String email;
@@ -23,6 +24,23 @@ public class Order {
         this.phone = phone;
         this.date = date;
         this.status = status;
+    }
+
+    public Order(int id ,String name, String surname, String email, String service, String mark, String price, String phone, String date, String status) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.service = service;
+        this.mark = mark;
+        this.price = price;
+        this.phone = phone;
+        this.date = date;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

@@ -20,15 +20,6 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public String getCarMarkByImage(String imagePath) throws ServiceException {
-        try {
-            return carDAO.getCarMarkByImage(imagePath);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public ArrayList<String> getCountOfAllCarPages() throws ServiceException {
         try {
             return carDAO.getCountOfAllCarPages();
@@ -83,6 +74,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public Minibus getMinibusById(int id) throws ServiceException {
+        try {
+            return carDAO.getMinibusById(id);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException {
         try {
             return carDAO.getMinibusesInfoForOnePage(pageNumber);
@@ -128,15 +128,6 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Minibus getMinibusByImage(String imagePath) throws ServiceException {
-        try {
-            return carDAO.getMinibusByImage(imagePath);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public ArrayList<Minibus> getMinibuses() throws ServiceException {
         try {
             return carDAO.getMinibuses();
@@ -146,9 +137,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public String[] getMarkAndPriceByImage(String imagePath) throws ServiceException {
+    public Car getCarById(int id) throws ServiceException {
         try {
-            return carDAO.getMarkAndPriceByImage(imagePath);
+            return carDAO.getCarById(id);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -164,18 +155,18 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public boolean updateCarInfo(Car car) throws ServiceException {
+    public AbstractCar getAnyCarByImage(String imagePath) throws ServiceException {
         try {
-            return carDAO.updateCarInfo(car);
+            return carDAO.getAnyCarByImage(imagePath);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public Car getCarByImage(String imagePath) throws ServiceException {
+    public boolean updateCarInfo(Car car) throws ServiceException {
         try {
-            return carDAO.getCarByImage(imagePath);
+            return carDAO.updateCarInfo(car);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

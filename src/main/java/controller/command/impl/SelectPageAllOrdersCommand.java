@@ -25,6 +25,7 @@ public class SelectPageAllOrdersCommand implements ICommand {
         try {
             req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
             req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());
+            req.setAttribute(PAGE_NUMBER, numberOfPage);
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }

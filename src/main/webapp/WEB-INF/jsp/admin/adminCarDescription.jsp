@@ -17,6 +17,7 @@
                 <div style="float:left;margin-right:3%;">
                     <h3>Марка</h3>
                     <h3><c:out value="${requestScope.mark}" /></h3>
+                    <input type="hidden" name="mark" value="${requestScope.mark}">
                 </div>
                 <div style="float:left;margin-right:3%;">
                     <h3>Цена</h3>

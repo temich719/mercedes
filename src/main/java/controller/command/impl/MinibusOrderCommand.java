@@ -26,9 +26,10 @@ public class MinibusOrderCommand implements ICommand {
         LOGGER.info("We got to MinibusOrderCommand");
         String returnPageName = JSP_USER + FORM_OF_ORDER_PAGE;
         final String imagePath = req.getParameter(PICTURE);
+        final String id = req.getParameter(ID);
         Minibus minibus;
         try {
-            minibus = carService.getMinibusByImage(imagePath);
+            minibus = carService.getMinibusById(Integer.parseInt(id));
             if (Objects.isNull(minibus)){
                 returnPageName = JSP_ERRORS;
                 LOGGER.error("Minibus is null");

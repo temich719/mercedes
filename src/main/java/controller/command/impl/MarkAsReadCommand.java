@@ -23,14 +23,10 @@ public class MarkAsReadCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MarkAsReadCommand");
-        final String service = req.getParameter(SERVICE);
-        final String name = req.getSession().getAttribute(ACCOUNT_NAME).toString();
-        final String surname = req.getSession().getAttribute(ACCOUNT_SURNAME).toString();
         final String email = req.getSession().getAttribute(EMAIL_ACCOUNT).toString();
-        final String mark = req.getParameter(MARK);
-        final String date = req.getParameter(DATE);
+        final String id = req.getParameter(ID);
         try {
-            orderService.markAsRead(name, surname, email, service, mark, date);
+            orderService.markAdRead(Integer.parseInt(id));
             req.setAttribute(ORDER, orderService.getListOfOrders());
             req.setAttribute(AVATAR_IMAGE, IMG + userService.getAvatarPathByEmail(email));
             req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));

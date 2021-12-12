@@ -486,62 +486,6 @@ public class CarDAOImplTest {
     }
 
     @Test
-    public void testGetCarByImage()throws DAOException, SQLException{
-        String imagePath = "img/img.png";
-        String SELECT_FROM_CARS = "select * from cars";
-        DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
-        Connection connection = Mockito.mock(Connection.class);
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
-        Statement statement = Mockito.mock(Statement.class);
-        ResultSet resultSet = Mockito.mock(ResultSet.class);
-        Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
-
-        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
-        Mockito.when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-        Mockito.when(resultSet.getString(2)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(3)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(4)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(5)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(6)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(7)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(8)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(9)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(10)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(11)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(12)).thenReturn("img/img.png");
-        Mockito.when(cars.add(new Car(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
-                resultSet.getString(5), resultSet.getString(6), resultSet.getString(7),
-                resultSet.getString(8), resultSet.getString(9), resultSet.getString(10),
-                resultSet.getString(11), resultSet.getString(12)))).thenReturn(Boolean.TRUE, Boolean.FALSE);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        CarDAO carDAO = new CarDAOImpl(connectionPool);
-        carDAO.getCarByImage(imagePath);
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).createStatement();
-        Mockito.verify(statement).executeQuery(SELECT_FROM_CARS);
-        Mockito.verify(resultSet, Mockito.times(2)).next();
-        Mockito.verify(resultSet, Mockito.times(2)).getString(2);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(3);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(4);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(5);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(6);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(7);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(8);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(9);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(10);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(11);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(12);
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test
     public void testDeleteMinibus()throws DAOException, SQLException{
         String mark = "Vito";
         Connection connection = Mockito.mock(Connection.class);
@@ -858,62 +802,6 @@ public class CarDAOImplTest {
         Mockito.verify(preparedStatement).setString(9, car.getMaxSpeed());
         Mockito.verify(preparedStatement).setString(10, car.getImagePath());
         Mockito.verify(preparedStatement).setString(11, car.getType());
-        Mockito.verify(connectionPool).retrieve(connection);
-    }
-
-    @Test
-    public void testGetCarMarkByImage()throws DAOException, SQLException{
-        String imagePath = "img/img.png";
-        String SELECT_FROM_CARS = "select * from cars";
-        DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
-        Connection connection = Mockito.mock(Connection.class);
-        ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
-        Statement statement = Mockito.mock(Statement.class);
-        ResultSet resultSet = Mockito.mock(ResultSet.class);
-        Car car = new Car("C-Class", "100 000$", "420", "10","12", "5", "50", "300", "220", "img/img.png", "sedan");
-
-        Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
-        Mockito.when(connectionPool.provide()).thenReturn(connection);
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
-        Mockito.when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-        Mockito.when(resultSet.getString(2)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(3)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(4)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(5)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(6)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(7)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(8)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(9)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(10)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(11)).thenReturn("img/img.png");
-        Mockito.when(resultSet.getString(12)).thenReturn("img/img.png");
-        Mockito.when(cars.add(new Car(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
-                resultSet.getString(5), resultSet.getString(6), resultSet.getString(7),
-                resultSet.getString(8), resultSet.getString(9), resultSet.getString(10),
-                resultSet.getString(11), resultSet.getString(12)))).thenReturn(Boolean.TRUE, Boolean.FALSE);
-        Mockito.doNothing().when(connectionPool).retrieve(connection);
-
-        CarDAO carDAO = new CarDAOImpl(connectionPool);
-        carDAO.getCarMarkByImage(imagePath);
-
-        Mockito.verify(connectionPool).provide();
-        Mockito.verify(connection).createStatement();
-        Mockito.verify(statement).executeQuery(SELECT_FROM_CARS);
-        Mockito.verify(resultSet, Mockito.times(2)).next();
-        Mockito.verify(resultSet, Mockito.times(2)).getString(2);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(3);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(4);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(5);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(6);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(7);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(8);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(9);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(10);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(11);
-        Mockito.verify(resultSet, Mockito.times(2)).getString(12);
         Mockito.verify(connectionPool).retrieve(connection);
     }
 

@@ -62,6 +62,7 @@
                         <form action="FrontController" method="get">
                             <input type="hidden" name="command" value="MINIBUS_ORDER_COMMAND">
                             <input type="hidden" name="img" value="${minibus.getImagePath()}">
+                            <input type="hidden" name="id" value="${minibus.getId()}">
                             <button>
                                 <div style="text-align:left;">
                                     <img src="${minibus.getImagePath()}" alt="minibus" class="im">

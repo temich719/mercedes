@@ -2,7 +2,6 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
-import dao.entity.Order;
 import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
@@ -24,17 +23,10 @@ public class DeleteOrderFromAccountCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to DeleteOrderFromAccountCommand");
-        final String name = req.getSession().getAttribute(ACCOUNT_NAME).toString();
-        final String surname = req.getSession().getAttribute(ACCOUNT_SURNAME).toString();
         final String email = req.getSession().getAttribute(EMAIL_ACCOUNT).toString();
-        final String service = req.getParameter(SERVICE);
-        final String mark = req.getParameter(MARK);
-        final String price = req.getParameter(PRICE);
-        final String date = req.getParameter(DATE);
-        final String phone = req.getParameter(PHONE);
+        final String id = req.getParameter(ID);
         try {
-            Order order = new Order(name, surname, email, service, mark, price, phone, date, UNREAD);
-            orderService.deleteOrder(order);
+            orderService.deleteOrder(Integer.parseInt(id));
             req.setAttribute(ORDER, orderService.getListOfOrders());
             req.setAttribute(AVATAR_IMAGE, IMG + userService.getAvatarPathByEmail(email));
             req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));

@@ -76,6 +76,7 @@
             <c:forEach var="car" items="${requestScope.cars}" >
             <form action="FrontController" method="get" class="formCarButton">
                 <input type="hidden" name="command" value="FORM_ORDER_COMMAND">
+                <input type="hidden" name="id" value="${car.getId()}">
                 <input type="hidden" name="img" value=${car.getImagePath()}>
                 <button class="carButton">
                     <div class="car" style="text-align: left;">

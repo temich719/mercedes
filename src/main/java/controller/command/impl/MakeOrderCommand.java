@@ -2,6 +2,7 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
+import dao.entity.AbstractCar;
 import dao.entity.Order;
 import org.apache.log4j.Logger;
 import service.CarService;
@@ -39,28 +40,20 @@ public class MakeOrderCommand implements ICommand {
         final String phone = req.getParameter(PHONE);
         final String imagePath = req.getParameter(PICTURE);
         try {
-            String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
+            AbstractCar abstractCar = carService.getAnyCarByImage(imagePath);
             if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
                 req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
                 req.setAttribute(PICTURE, imagePath);
-                if (Objects.isNull(markAndPrice[1])) {
-                    req.setAttribute(MONEY, markAndPrice[2]);
-                } else {
-                    req.setAttribute(PRICE, markAndPrice[1]);
-                }
-                req.setAttribute(MARK, markAndPrice[0]);
+                req.setAttribute(PRICE, abstractCar.getPrice());
+                req.setAttribute(MARK, abstractCar.getNameOfMark());
                 inputDataIsRight = false;
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
             if (!Validator.validateEmail(email) && inputDataIsRight) {
                 req.setAttribute(ERROR, INVALID_EMAIL);
                 req.setAttribute(PICTURE, imagePath);
-                if (Objects.isNull(markAndPrice[1])) {
-                    req.setAttribute(MONEY, markAndPrice[2]);
-                } else {
-                    req.setAttribute(PRICE, markAndPrice[1]);
-                }
-                req.setAttribute(MARK, markAndPrice[0]);
+                req.setAttribute(PRICE, abstractCar.getPrice());
+                req.setAttribute(MARK, abstractCar.getNameOfMark());
                 inputDataIsRight = false;
                 page = JSP_USER + FORM_OF_ORDER_PAGE;
             }
@@ -68,26 +61,16 @@ public class MakeOrderCommand implements ICommand {
                 if (!name.equals(userService.getUserNameByEmail(email)) || !surname.equals(userService.getUserSurnameByEmail(email))) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(PICTURE, imagePath);
-                    if (Objects.isNull(markAndPrice[1])) {
-                        req.setAttribute(MONEY, markAndPrice[2]);
-                    } else {
-                        req.setAttribute(PRICE, markAndPrice[1]);
-                    }
-                    req.setAttribute(MARK, markAndPrice[0]);
+                    req.setAttribute(PRICE, abstractCar.getPrice());
+                    req.setAttribute(MARK, abstractCar.getNameOfMark());
                     inputDataIsRight = false;
                     page = JSP_USER + FORM_OF_ORDER_PAGE;
                 }
             }
             if (inputDataIsRight) {
-                if (Objects.isNull(markAndPrice[1])) {
-                    Order order = new Order(name, surname, email, CAR_BUYING, markAndPrice[0], markAndPrice[2], phone, null, UNREAD);
-                    orderService.addOrder(order);
-                    sendMessage(email, markAndPrice[0], markAndPrice[2], req);
-                } else {
-                    Order order = new Order(name, surname, email, CAR_BUYING, markAndPrice[0], markAndPrice[1], phone, null, UNREAD);
-                    orderService.addOrder(order);
-                    sendMessage(email, markAndPrice[0], markAndPrice[1], req);
-                }
+                Order order = new Order(name, surname, email, CAR_BUYING, abstractCar.getNameOfMark(), abstractCar.getPrice(), phone, null, UNREAD);
+                orderService.addOrder(order);
+                sendMessage(email, abstractCar.getNameOfMark(), abstractCar.getPrice(), req);
                 req.setAttribute(EMAIL, email);
                 req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
             }

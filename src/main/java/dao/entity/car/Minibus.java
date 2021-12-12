@@ -15,6 +15,12 @@ public class Minibus extends AbstractCar {
         this.curbWeight = curbWeight;
     }
 
+    public Minibus(int id ,String nameOfMark, String price, String imagePass, String fullLoad, String curbWeight) {
+        super(id, nameOfMark, price, imagePass);
+        this.fullLoad = fullLoad;
+        this.curbWeight = curbWeight;
+    }
+
     public String getFullLoad() {
         return fullLoad;
     }

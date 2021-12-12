@@ -7,13 +7,6 @@ import service.exception.ServiceException;
 import java.util.ArrayList;
 
 public interface OrderService {
-    /**
-     * deletes order from database
-     *
-     * @param order is order which will be deleted
-     * @throws ServiceException is a module exception
-     */
-    void deleteOrder(Order order) throws ServiceException;
 
     /**
      * calculates count of unread orders
@@ -31,18 +24,6 @@ public interface OrderService {
      * @throws ServiceException is a module exception
      */
     void addOrder(Order order) throws ServiceException;
-
-    /**
-     * marks order as read according to name, surname, email, service, mark
-     *
-     * @param name    is a name
-     * @param surname is a surname
-     * @param email   is an email
-     * @param service is a service
-     * @param mark    is a mark
-     * @throws ServiceException is a module exception
-     */
-    void markAsRead(String name, String surname, String email, String service, String mark, String date) throws ServiceException;
 
     /**
      * finds all orders
@@ -76,4 +57,20 @@ public interface OrderService {
      * @throws ServiceException is a module exception
      */
     ArrayList<String> getCountOfOrdersPages() throws ServiceException;
+
+    /**
+     * deletes order from database
+     *
+     * @param id is the order id
+     * @throws ServiceException is a module exception
+     */
+    void deleteOrder(int id) throws ServiceException;
+
+    /**
+     * changes status of order from 'unread' to 'read'
+     *
+     * @param id is the order id
+     * @throws ServiceException is a module exception
+     */
+    void markAdRead(int id) throws ServiceException;
 }

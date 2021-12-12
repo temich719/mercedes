@@ -95,6 +95,7 @@
                <form action="FrontController" method="get" class="formCarButton">
                <input type="hidden" name="command" value="VIEW_CAR_COMMAND">
                <input type="hidden" name="nameOfMark" value="${car.getNameOfMark()}">
+               <input type="hidden" name="id" value="${car.getId()}">
                    <button class="carButton">
                         <div class="car" style="text-align: left;">
                              <span class="mark">

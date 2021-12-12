@@ -18,9 +18,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(Order order) throws ServiceException {
+    public void deleteOrder(int id) throws ServiceException {
         try {
-            orderDAO.deleteOrder(order);
+            orderDAO.deleteOrder(id);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -63,18 +63,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void markAsRead(String name, String surname, String email, String service, String mark, String date) throws ServiceException {
+    public ArrayList<Order> getListOfOrders() throws ServiceException {
         try {
-            orderDAO.markAsRead(name, surname, email, service, mark, date);
+            return orderDAO.getListOfOrders();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public ArrayList<Order> getListOfOrders() throws ServiceException {
+    public void markAdRead(int id) throws ServiceException {
         try {
-            return orderDAO.getListOfOrders();
+            orderDAO.markAsRead(id);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

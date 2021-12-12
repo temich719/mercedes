@@ -9,14 +9,6 @@ import service.exception.ServiceException;
 import java.util.ArrayList;
 
 public interface CarService {
-    /**
-     * returns car mark according to image path
-     *
-     * @param imagePath is a path of image
-     * @return car mark
-     * @throws ServiceException is a module exception
-     */
-    String getCarMarkByImage(String imagePath) throws ServiceException;
 
     /**
      * returns cars from dao
@@ -41,15 +33,6 @@ public interface CarService {
      * @throws ServiceException is a module exception
      */
     ArrayList<Minibus> getMinibuses() throws ServiceException;
-
-    /**
-     * returns array with mark and price according to image
-     *
-     * @param imagePath is path of image
-     * @return array of mark and price
-     * @throws ServiceException is a module exception
-     */
-    String[] getMarkAndPriceByImage(String imagePath) throws ServiceException;
 
     /**
      * adds new car
@@ -84,15 +67,6 @@ public interface CarService {
     void deleteMinibus(String mark) throws ServiceException;
 
     /**
-     * finds car by image
-     *
-     * @param imagePath is a path of image
-     * @return Car object according to image
-     * @throws ServiceException is a module exception
-     */
-    Car getCarByImage(String imagePath) throws ServiceException;
-
-    /**
      * finds car by mark
      *
      * @param mark is the mark of car
@@ -109,16 +83,6 @@ public interface CarService {
      * @throws ServiceException is a module exception
      */
     boolean updateCarInfo(Car car) throws ServiceException;
-
-    /**
-     * finds minibus by its image
-     *
-     * @param imagePath is the path of image
-     * @return minibus if it was found and null if not
-     * @throws ServiceException is a module exception
-     */
-    Minibus getMinibusByImage(String imagePath) throws ServiceException;
-
 
     /**
      * find all cars including cars, minibuses and trucks
@@ -192,9 +156,36 @@ public interface CarService {
      * finds as much car information as can fit on one page according to given car type
      *
      * @param pageNumber is the number of page that will be illustrated
-     * @param carType is given car type
+     * @param carType    is given car type
      * @return list of objects that contains car information according to given car type
      * @throws ServiceException is a module exception
      */
     ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws ServiceException;
+
+    /**
+     * finds minibus according to id
+     *
+     * @param id is the minibus id
+     * @return minibus object
+     * @throws ServiceException is a module exception
+     */
+    Minibus getMinibusById(int id) throws ServiceException;
+
+    /**
+     * finds car according to id
+     *
+     * @param id is the car id
+     * @return car object
+     * @throws ServiceException is a module exception
+     */
+    Car getCarById(int id) throws ServiceException;
+
+    /**
+     * finds car not depending on its type(car, minibus or truck)
+     *
+     * @param imagePath is the path of image
+     * @return abstract cat object
+     * @throws ServiceException is a module exception
+     */
+    AbstractCar getAnyCarByImage(String imagePath) throws ServiceException;
 }

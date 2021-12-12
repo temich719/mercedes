@@ -96,20 +96,17 @@
                         </c:choose>
                             <th style="width: 75px;height:50px;text-align: center;font-size: 20px;">
                                 <form action="FrontController" method="get">
-                                    <input type="hidden" name="service" value="${order.getService()}">
+                                    <!--<input type="hidden" name="service" value="${order.getService()}">
                                     <input type="hidden" name="mark" value="${order.getMark()}">
-                                    <input type="hidden" name="date" value="${order.getDate()}">
+                                    <input type="hidden" name="date" value="${order.getDate()}">-->
+                                    <input type="hidden" name="id" value="${order.getId()}">
                                     <input type="hidden" name="command" value="MARK_AS_READ_COMMAND">
                                     <button class="but" data-title="${asRead}"><span>✅</span></button>
                                 </form>
                             </th>
                             <th style="width: 30px;height:50px;text-align: center;font-size: 20px;">
                                 <form action="FrontController" method="get">
-                                <input type="hidden" name="service" value="${order.getService()}">
-                                <input type="hidden" name="mark" value="${order.getMark()}">
-                                <input type="hidden" name="price" value="${order.getPrice()}">
-                                <input type="hidden" name="date" value="${order.getDate()}">
-                                <input type="hidden" name="phone" value="${order.getPhone()}">
+                                <input type="hidden" name="id" value="${order.getId()}">
                                     <input type="hidden" name="command" value="DELETE_ORDER_FROM_ACCOUNT_COMMAND">
                                     <button class="but" data-title="${delete}"><span>❌</span></button>
                                 </form>

@@ -9,23 +9,6 @@ import dao.exception.DAOException;
 import java.util.ArrayList;
 
 public interface CarDAO {
-    /**
-     * finds mark of car by image
-     *
-     * @param imagePath path of image which connected with mark in database
-     * @return mark of car according to imagePath
-     * @throws DAOException is a module exception
-     */
-    String getCarMarkByImage(String imagePath) throws DAOException;
-
-    /**
-     * finds mark and price by image
-     *
-     * @param imagePath path of image which connected with mark in database
-     * @return array with mark and price
-     * @throws DAOException is a module exception
-     */
-    String[] getMarkAndPriceByImage(String imagePath) throws DAOException;
 
     /**
      * adds car to database
@@ -60,15 +43,6 @@ public interface CarDAO {
     void deleteMinibus(String mark) throws DAOException;
 
     /**
-     * finds cars by image
-     *
-     * @param imagePath is a path of image
-     * @return Car object according to image
-     * @throws DAOException is a module exception
-     */
-    Car getCarByImage(String imagePath) throws DAOException;
-
-    /**
      * finds car by mark
      *
      * @param mark is the mark of car
@@ -84,15 +58,6 @@ public interface CarDAO {
      * @throws DAOException is a module exception
      */
     boolean updateCarInfo(Car car) throws DAOException;
-
-    /**
-     * finds minibus by its image
-     *
-     * @param imagePath is the path of image
-     * @return minibus if it was found and null if not
-     * @throws DAOException is a module exception
-     */
-    Minibus getMinibusByImage(String imagePath) throws DAOException;
 
     /**
      * find cars
@@ -190,10 +155,37 @@ public interface CarDAO {
      * finds as much car information as can fit on one page according to given car type
      *
      * @param pageNumber is the number of page that will be illustrated
-     * @param carType is given car type
+     * @param carType    is given car type
      * @return list of objects that contains car information according to given car type
      * @throws DAOException is a module exception
      */
     ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws DAOException;
+
+    /**
+     * finds minibus according to id
+     *
+     * @param id is the minibus id
+     * @return minibus object
+     * @throws DAOException is a module exception
+     */
+    Minibus getMinibusById(int id) throws DAOException;
+
+    /**
+     * finds car according to id
+     *
+     * @param id is the car id
+     * @return car object
+     * @throws DAOException is a module exception
+     */
+    Car getCarById(int id) throws DAOException;
+
+    /**
+     * finds car not depending on its type(car, minibus or truck)
+     *
+     * @param imagePath is the path of image
+     * @return abstract cat object
+     * @throws DAOException is a module exception
+     */
+    AbstractCar getAnyCarByImage(String imagePath) throws DAOException;
 
 }

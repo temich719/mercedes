@@ -38,15 +38,15 @@ public class MakeTestDriveOrderCommand implements ICommand {
         final String email = req.getParameter(EMAIL);
         final String phone = req.getParameter(PHONE);
         final String date = req.getParameter(DATE);
-        final String sel = req.getParameter(DEFINITE_CAR);
-        final String def = req.getParameter(DEFINITE_IMAGE);
+        final String nameOfMark = req.getParameter(NAME_OF_MARK);
         if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
-            if (Objects.nonNull(sel)) {
+            if (!nameOfMark.equals("")) {
                 req.setAttribute(SELECT, "true");
-                req.setAttribute(DEFINITE_IMAGE, def);
+                req.setAttribute(NAME_OF_MARK, nameOfMark);
+            }else {
                 try {
-                    req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(def));
+                    req.setAttribute(ALL_CARS, carService.getAllCars());
                 } catch (ServiceException e) {
                     throw new ControllerException(e);
                 }
@@ -56,11 +56,12 @@ public class MakeTestDriveOrderCommand implements ICommand {
         }
         if (!Validator.validateEmail(email) && inputDataIsRight) {
             req.setAttribute(ERROR, INVALID_EMAIL);
-            if (Objects.nonNull(sel)) {
+            if (!nameOfMark.equals("")) {
                 req.setAttribute(SELECT, "true");
-                req.setAttribute(DEFINITE_IMAGE, def);
+                req.setAttribute(NAME_OF_MARK, nameOfMark);
+            }else {
                 try {
-                    req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(def));
+                    req.setAttribute(ALL_CARS, carService.getAllCars());
                 } catch (ServiceException e) {
                     throw new ControllerException(e);
                 }
@@ -72,11 +73,12 @@ public class MakeTestDriveOrderCommand implements ICommand {
             if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
                 if (!userName.equals(userService.getUserNameByEmail(email)) || !userSurname.equals(userService.getUserSurnameByEmail(email))) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
-                    if (Objects.nonNull(sel)) {
+                    if (!nameOfMark.equals("")) {
                         req.setAttribute(SELECT, "true");
-                        req.setAttribute(DEFINITE_IMAGE, def);
+                        req.setAttribute(NAME_OF_MARK, nameOfMark);
+                    }else {
                         try {
-                            req.setAttribute(DEFINITE_CAR, carService.getCarMarkByImage(def));
+                            req.setAttribute(ALL_CARS, carService.getAllCars());
                         } catch (ServiceException e) {
                             throw new ControllerException(e);
                         }
@@ -90,13 +92,11 @@ public class MakeTestDriveOrderCommand implements ICommand {
         }
         if (inputDataIsRight) {
             String mark;
-            String image;
             try {
-                if (Objects.isNull(req.getParameter(SELECT_NAME))) {
-                    image = req.getParameter(DEFINITE_IMAGE);
-                    mark = carService.getCarMarkByImage(image);
-                } else {
+                if (nameOfMark.equals("")) {
                     mark = req.getParameter(SELECT_NAME);
+                } else {
+                    mark = nameOfMark;
                 }
                 Order order = new Order(userName, userSurname, email, TEST_DRIVE, mark, TEST_DRIVE_PRICE, phone, date, UNREAD);
                 orderService.addOrder(order);

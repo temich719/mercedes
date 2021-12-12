@@ -2,6 +2,7 @@ package controller.command.impl;
 
 import controller.command.ICommand;
 import controller.exception.ControllerException;
+import dao.entity.AbstractCar;
 import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
@@ -23,26 +24,14 @@ public class FormOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to FormOrderCommand");
         final String imagePath = req.getParameter(PICTURE);
-        req.setAttribute(PICTURE, imagePath);
         try {
-            String[] markAndPrice = carService.getMarkAndPriceByImage(imagePath);
-            req.setAttribute(MARK, markAndPrice[0]);
-            if (Objects.isNull(markAndPrice[1])) {
-                req.setAttribute(MONEY, markAndPrice[2]);
-            } else {
-                req.setAttribute(PRICE, markAndPrice[1]);
-            }
-            req.setAttribute(CAR_NAME, markAndPrice[0]);
-
-            if (Objects.isNull(req.getSession().getAttribute(NAME_ACCOUNT))) {
-                req.setAttribute(NAME_ACCOUNT, "");
-                req.setAttribute(SURNAME_ACCOUNT, "");
-                req.setAttribute(EMAIL_ACCOUNT, "");
-            } else {
-                final String nameSurname = req.getSession().getAttribute(NAME_ACCOUNT).toString();
-                String[] strings = nameSurname.split(" ");
-                req.setAttribute(NAME_ACCOUNT, strings[0]);
-                req.setAttribute(SURNAME_ACCOUNT, strings[1]);
+            AbstractCar abstractCar = carService.getAnyCarByImage(imagePath);
+            req.setAttribute(MARK, abstractCar.getNameOfMark());
+            req.setAttribute(PRICE, abstractCar.getPrice());
+            req.setAttribute(PICTURE, imagePath);
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT))){
+                req.setAttribute(NAME_ACCOUNT, req.getSession().getAttribute(ACCOUNT_NAME));
+                req.setAttribute(SURNAME_ACCOUNT, req.getSession().getAttribute(ACCOUNT_SURNAME));
                 req.setAttribute(EMAIL_ACCOUNT, req.getSession().getAttribute(EMAIL_ACCOUNT));
             }
         } catch (ServiceException e) {

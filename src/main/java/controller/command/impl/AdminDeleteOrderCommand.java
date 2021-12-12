@@ -11,6 +11,8 @@ import service.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Objects;
+
 import static controller.ControllerStringsStorage.*;
 
 public class AdminDeleteOrderCommand implements ICommand {
@@ -22,18 +24,17 @@ public class AdminDeleteOrderCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to AdminDeleteOrderCommand");
-        final String name = req.getParameter(NAME);
-        final String surname = req.getParameter(SURNAME);
-        final String service = req.getParameter(SERVICE);
-        final String mark = req.getParameter(MARK);
-        final String price = req.getParameter(PRICE);
-        final String date = req.getParameter(DATE);
-        final String phone = req.getParameter(PHONE);
-        final String email = req.getParameter(EMAIL);
-        final Order order = new Order(name, surname, email, service, mark, price, phone, date, "");
+        final String id = req.getParameter(ID);
+        final String numberOfPage = req.getParameter(PAGE_NUMBER);
         try {
-            orderService.deleteOrder(order);
-            req.setAttribute(ORDERS, orderService.getListOfOrders());
+            orderService.deleteOrder(Integer.parseInt(id));
+            if (numberOfPage.equals("")) {
+                req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(DEFAULT_PAGE_NUMBER));
+            } else {
+                req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
+            }
+            req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());
+            req.setAttribute(PAGE_NUMBER, numberOfPage);
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }

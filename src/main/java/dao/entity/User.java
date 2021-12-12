@@ -2,7 +2,6 @@ package dao.entity;
 
 import java.util.Objects;
 
-// TODO: 06.11.2021 изменить password на char[], добавить equals hashCode toString
 public class User {
 
     private int id;

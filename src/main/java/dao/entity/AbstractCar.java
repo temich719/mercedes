@@ -4,11 +4,19 @@ import java.util.Objects;
 
 public class AbstractCar {
 
+    protected int id;
     protected String nameOfMark;
     protected String price;
     protected String imagePath;
 
-    public AbstractCar(String nameOfMark, String price, String imagePath){
+    public AbstractCar(String nameOfMark, String price, String imagePath) {
+        this.nameOfMark = nameOfMark;
+        this.price = price;
+        this.imagePath = imagePath;
+    }
+
+    public AbstractCar(int id, String nameOfMark, String price, String imagePath) {
+        this.id = id;
         this.nameOfMark = nameOfMark;
         this.price = price;
         this.imagePath = imagePath;
@@ -24,6 +32,10 @@ public class AbstractCar {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override

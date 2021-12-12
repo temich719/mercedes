@@ -43,7 +43,7 @@
                     <li>
                         <form action="FrontController" method="get" class="ft">
                             <input type="hidden" name="command" value="DEFINITE_TEST_DRIVE_COMMAND">
-                            <input type="hidden" name="markToList" value=${requestScope.img}>
+                            <input type="hidden" name="nameOfMark" value="${requestScope.nameOfMark}">
                             <button class="types">
                                 <c:out value="${td}" />
                             </button>
@@ -86,6 +86,7 @@
                     <form action="FrontController" method="get">
                         <input type="hidden" name="command" value="FORM_ORDER_COMMAND">
                         <input type="hidden" name="img" value=${requestScope.img}>
+                        <input type="hidden" name="id" value="${requestScope.id}">
                         <button style="height: 50px;width: 200px;background-color: blue;color: white;border: none;border-radius: 2%;">
                             <c:out value="${makeOrder}" />
                         </button>

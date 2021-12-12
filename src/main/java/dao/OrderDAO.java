@@ -16,14 +16,6 @@ public interface OrderDAO {
     void addOrder(Order order) throws DAOException;
 
     /**
-     * deletes definite order
-     *
-     * @param order is a order
-     * @throws DAOException is module exception
-     */
-    void deleteOrder(Order order) throws DAOException;
-
-    /**
      * deletes orders of user who was deleted
      *
      * @param user is the deleted user
@@ -49,18 +41,6 @@ public interface OrderDAO {
     String getCountOfUnreadOrders(String email) throws DAOException;
 
     /**
-     * marks order as read according to name, surname, email, service, mark
-     *
-     * @param name    is a name
-     * @param surname is a surname
-     * @param email   is an email
-     * @param service is a service
-     * @param mark    is a mark
-     * @throws DAOException is a module exception
-     */
-    void markAsRead(String name, String surname, String email, String service, String mark, String date) throws DAOException;
-
-    /**
      * finds as much order information as can fit on one page
      *
      * @param pageNumber is the number of page that will be illustrated
@@ -76,4 +56,20 @@ public interface OrderDAO {
      * @throws DAOException is a module exception
      */
     ArrayList<String> getCountOfOrdersPages() throws DAOException;
+
+    /**
+     * deletes order from database
+     *
+     * @param id is the order id
+     * @throws DAOException is a module exception
+     */
+    void deleteOrder(int id) throws DAOException;
+
+    /**
+     * changes status of order from 'unread' to 'read'
+     *
+     * @param id is the order id
+     * @throws DAOException is a module exception
+     */
+    void markAsRead(int id) throws DAOException;
 }

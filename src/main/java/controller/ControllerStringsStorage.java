@@ -102,6 +102,7 @@ public class ControllerStringsStorage {
     public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
     public static final String INCORRECT_PASSWORD_INPUT = "The password was entered incorrectly! ";
     public static final String CAR_NAME = "carName";
+    public static final String PAGE_NUMBER = "pageNumber";
     public static final String FORM_OF_ORDER_PAGE = "formOfOrder";
     public static final String PAGE_NAME = "pageName";
     public static final String NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE = "Please fill in all required fields! ";
