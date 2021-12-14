@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,9 +27,10 @@ public class AdminDeleteOrderCommand implements ICommand {
         LOGGER.info("We got to AdminDeleteOrderCommand");
         final String id = req.getParameter(ID);
         final String numberOfPage = req.getParameter(PAGE_NUMBER);
+        Validator.validateInputData(id);
         try {
             orderService.deleteOrder(Integer.parseInt(id));
-            if (numberOfPage.equals("")) {
+            if (Objects.isNull(numberOfPage) || numberOfPage.equals("")) {
                 req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(DEFAULT_PAGE_NUMBER));
             } else {
                 req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));

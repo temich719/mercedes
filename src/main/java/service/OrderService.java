@@ -2,6 +2,7 @@ package service;
 
 import dao.entity.Order;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import service.exception.ServiceException;
 
 import java.util.ArrayList;
@@ -36,10 +37,10 @@ public interface OrderService {
     /**
      * deletes orders of user who was deleted
      *
-     * @param user is the deleted user
+     * @param userDTO is the data of deleted user
      * @throws ServiceException is a module exception
      */
-    void deleteOrdersOfDeletedUser(User user) throws ServiceException;
+    void deleteOrdersOfDeletedUser(UserDTO userDTO) throws ServiceException;
 
     /**
      * finds as much order information as can fit on one page

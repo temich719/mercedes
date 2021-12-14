@@ -39,7 +39,8 @@ public class FrontController extends HttpServlet {
         try {
             forward = handleRequest(request, response);
         } catch (ControllerException e) {
-            e.printStackTrace();
+            LOGGER.error("Something went wrong");
+            request.getRequestDispatcher(WEB_INF + ERRORS + ERROR + JSP).forward(request, response);
         }
         if (Objects.nonNull(forward)) {
             if (forward.equals(INDEX_PAGE)) {

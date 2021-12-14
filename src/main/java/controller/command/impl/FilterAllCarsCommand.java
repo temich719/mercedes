@@ -11,6 +11,7 @@ import service.CarService;
 import service.ServiceFactory;
 import service.cssEditor.CssEditor;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ public class FilterAllCarsCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to FilterAllCarsCommand");
         final String carType = req.getParameter(TYPE);
+        Validator.validateInputData(carType);
         CssEditor.pressedButton(carType, req);
         try {
             if (carType.equals(CAR)) {

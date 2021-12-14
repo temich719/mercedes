@@ -3,6 +3,7 @@ package controller.command.impl;
 import controller.command.ICommand;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ public class ChangeLanguageCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to ChangeLanguageCommand");
         String locale = req.getParameter(LOCALE);
+        Validator.validateInputData(locale);
         req.getSession().setAttribute(LOCALE, locale);
         try {
             resp.sendRedirect(INDEX_PAGE + JSP);

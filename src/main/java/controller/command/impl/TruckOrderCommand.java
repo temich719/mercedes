@@ -17,9 +17,8 @@ public class TruckOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("We got to TruckOrderCommand");
         req.setAttribute(MARK, TRUCK_NAME);
-        req.setAttribute(PICTURE, IMG + "truck.jpg");
-        req.setAttribute(MONEY, TRUCK_PRICE);
-        req.setAttribute(PRICE, "");
+        req.setAttribute(PICTURE, IMG + TRUCK_IMAGE);
+        req.setAttribute(PRICE, TRUCK_PRICE);
         if (Objects.isNull(req.getSession().getAttribute(NAME_ACCOUNT))) {
             req.setAttribute(NAME_ACCOUNT, "");
             req.setAttribute(SURNAME_ACCOUNT, "");

@@ -7,6 +7,8 @@ public class ControllerStringsStorage {
     public static final String WEB_INF = "WEB-INF/";
     public static final String JSP = ".jsp";
     public static final String COMMAND = "command";
+    public static final String CAR_TYPE = "carType";
+    public static final String TRUCK_IMAGE = "truck.jpg";
     public static final String ANTI_INJECTION = "antiInjection";
     public static final String ERROR_COMMAND = "ERROR_COMMAND";
     public static final String EMAIL_ACCOUNT = "emailAccount";

@@ -26,7 +26,7 @@ public class AccountPageCommand implements ICommand {
         LOGGER.info("We got to AccountPageCommand");
         try {
             final String avatarPath = userService.getAvatarPathByEmail(req.getSession().getAttribute(EMAIL_ACCOUNT).toString());
-            if (Objects.isNull(avatarPath)) {
+            if (Objects.isNull(avatarPath) || avatarPath.equals("")) {
                 req.setAttribute(AVATAR_IMAGE, DEFAULT_AVATAR_IMAGE);
             } else {
                 req.setAttribute(AVATAR_IMAGE, IMG + avatarPath);

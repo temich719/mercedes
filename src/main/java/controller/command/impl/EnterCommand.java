@@ -8,6 +8,7 @@ import service.OrderService;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ public class EnterCommand implements ICommand {
         LOGGER.info("We got to EnterCommand");
         final String email = req.getParameter(EMAIL);
         final String password = req.getParameter(PASSWORD);
+        Validator.validateInputData(email, password);
         String returnPageName = JSP_USER + ENTER_PAGE;
         UserDTO userDTO;
         try {

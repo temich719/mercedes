@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ public class AdminAddMinibusCommand implements ICommand {
         final String load = req.getParameter(LOAD);
         final String weight = req.getParameter(WEIGHT);
         try {
+            Validator.validateInputData(mark, price, imagePath, load, weight);
             Minibus minibus = new Minibus(mark, price, imagePath, load, weight);
             carService.addMinibus(minibus);
         } catch (ServiceException e) {

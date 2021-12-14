@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ public class FormOrderCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to FormOrderCommand");
         final String imagePath = req.getParameter(PICTURE);
+        Validator.validateInputData(imagePath);
         try {
             AbstractCar abstractCar = carService.getAnyCarByImage(imagePath);
             req.setAttribute(MARK, abstractCar.getNameOfMark());

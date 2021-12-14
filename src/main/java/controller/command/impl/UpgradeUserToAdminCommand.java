@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +22,10 @@ public class UpgradeUserToAdminCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to UpgradeUserToAdminCommand");
-        final int id = Integer.parseInt(req.getParameter(ID));
+        final String id = req.getParameter(ID);
+        Validator.validateInputData(id);
         try {
-            userService.upgradeUserToAdmin(id);
+            userService.upgradeUserToAdmin(Integer.parseInt(id));
             req.setAttribute(USERS, userService.getListOfUsers());
         } catch (ServiceException e) {
             throw new ControllerException(e);

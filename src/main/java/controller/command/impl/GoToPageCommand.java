@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ public class GoToPageCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to GoToPageCommand");
         final String pageName = req.getParameter(PAGE_NAME);
+        Validator.validateInputData(pageName);
         try {
             switch (pageName) {
                 case JSP_USER + ALL_CARS_PAGE:

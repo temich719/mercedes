@@ -7,6 +7,7 @@ import service.OrderService;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class UploadAvatarCommand implements ICommand {
         LOGGER.info("We got to UploadAvatarCommand");
         final String avatarPath = req.getParameter(AVA);
         final String email = req.getSession().getAttribute(EMAIL_ACCOUNT).toString();
+        Validator.validateInputData(avatarPath, email);
         try {
             userService.addAvatar(avatarPath, email);
             req.setAttribute(ORDER, orderService.getListOfOrders());

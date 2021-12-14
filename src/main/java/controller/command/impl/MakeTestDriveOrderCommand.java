@@ -31,65 +31,15 @@ public class MakeTestDriveOrderCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MakeTestDriveOrderCommand");
-        String page = JSP_USER + THANKS_PAGE;
-        boolean inputDataIsRight = true;
+        String page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
+        boolean inputDataIsRight;
         final String userName = req.getParameter(NAME);
         final String userSurname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
         final String phone = req.getParameter(PHONE);
         final String date = req.getParameter(DATE);
         final String nameOfMark = req.getParameter(NAME_OF_MARK);
-        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
-            req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
-            if (!nameOfMark.equals("")) {
-                req.setAttribute(SELECT, "true");
-                req.setAttribute(NAME_OF_MARK, nameOfMark);
-            }else {
-                try {
-                    req.setAttribute(ALL_CARS, carService.getAllCars());
-                } catch (ServiceException e) {
-                    throw new ControllerException(e);
-                }
-            }
-            inputDataIsRight = false;
-            page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
-        }
-        if (!Validator.validateEmail(email) && inputDataIsRight) {
-            req.setAttribute(ERROR, INVALID_EMAIL);
-            if (!nameOfMark.equals("")) {
-                req.setAttribute(SELECT, "true");
-                req.setAttribute(NAME_OF_MARK, nameOfMark);
-            }else {
-                try {
-                    req.setAttribute(ALL_CARS, carService.getAllCars());
-                } catch (ServiceException e) {
-                    throw new ControllerException(e);
-                }
-            }
-            inputDataIsRight = false;
-            page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
-        }
-        try {
-            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-                if (!userName.equals(userService.getUserNameByEmail(email)) || !userSurname.equals(userService.getUserSurnameByEmail(email))) {
-                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
-                    if (!nameOfMark.equals("")) {
-                        req.setAttribute(SELECT, "true");
-                        req.setAttribute(NAME_OF_MARK, nameOfMark);
-                    }else {
-                        try {
-                            req.setAttribute(ALL_CARS, carService.getAllCars());
-                        } catch (ServiceException e) {
-                            throw new ControllerException(e);
-                        }
-                    }
-                    inputDataIsRight = false;
-                    page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
-                }
-            }
-        } catch (ServiceException e) {
-            throw new ControllerException(e);
-        }
+        inputDataIsRight = isInputDataIsRight(req, userName, userSurname, email, phone, date, nameOfMark);
         if (inputDataIsRight) {
             String mark;
             try {
@@ -105,6 +55,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
                 } catch (IOException | MessagingException e) {
                     LOGGER.error(e.getMessage());
                 }
+                page = JSP_USER + THANKS_PAGE;
                 req.setAttribute(EMAIL, email);
                 req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
             } catch (ServiceException e) {
@@ -112,5 +63,58 @@ public class MakeTestDriveOrderCommand implements ICommand {
             }
         }
         return page;
+    }
+
+    private boolean isInputDataIsRight(HttpServletRequest req, String userName, String userSurname, String email, String phone, String date, String nameOfMark) throws ControllerException {
+        boolean inputDataIsRight = true;
+        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
+            req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
+            if (!nameOfMark.equals("")) {
+                req.setAttribute(SELECT, "true");
+                req.setAttribute(NAME_OF_MARK, nameOfMark);
+            } else {
+                try {
+                    req.setAttribute(ALL_CARS, carService.getAllCars());
+                } catch (ServiceException e) {
+                    throw new ControllerException(e);
+                }
+            }
+            inputDataIsRight = false;
+        }
+        if (!Validator.validateEmail(email) && inputDataIsRight) {
+            req.setAttribute(ERROR, INVALID_EMAIL);
+            if (!nameOfMark.equals("")) {
+                req.setAttribute(SELECT, "true");
+                req.setAttribute(NAME_OF_MARK, nameOfMark);
+            } else {
+                try {
+                    req.setAttribute(ALL_CARS, carService.getAllCars());
+                } catch (ServiceException e) {
+                    throw new ControllerException(e);
+                }
+            }
+            inputDataIsRight = false;
+        }
+        try {
+            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
+                if (!userName.equals(userService.getUserNameByEmail(email)) || !userSurname.equals(userService.getUserSurnameByEmail(email))) {
+                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
+                    if (!nameOfMark.equals("")) {
+                        req.setAttribute(SELECT, "true");
+                        req.setAttribute(NAME_OF_MARK, nameOfMark);
+                    } else {
+                        try {
+                            req.setAttribute(ALL_CARS, carService.getAllCars());
+                        } catch (ServiceException e) {
+                            throw new ControllerException(e);
+                        }
+                    }
+                    inputDataIsRight = false;
+                }
+            }
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+        }
+        return inputDataIsRight;
     }
 }

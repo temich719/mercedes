@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +23,10 @@ public class ViewCarCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to ViewCarCommand");
-        //final String nameOfMark = req.getParameter(NAME_OF_MARK);
         final String id = req.getParameter(ID);
+        Validator.validateInputData(id);
         Car car;
         try {
-            //car = carService.getCarByMark(nameOfMark);
             car = carService.getCarById(Integer.parseInt(id));
         } catch (ServiceException e) {
             throw new ControllerException(e);

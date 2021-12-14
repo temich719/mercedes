@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,10 +28,11 @@ public class MinibusOrderCommand implements ICommand {
         String returnPageName = JSP_USER + FORM_OF_ORDER_PAGE;
         final String imagePath = req.getParameter(PICTURE);
         final String id = req.getParameter(ID);
+        Validator.validateInputData(imagePath, id);
         Minibus minibus;
         try {
             minibus = carService.getMinibusById(Integer.parseInt(id));
-            if (Objects.isNull(minibus)){
+            if (Objects.isNull(minibus)) {
                 returnPageName = JSP_ERRORS;
                 LOGGER.error("Minibus is null");
             }

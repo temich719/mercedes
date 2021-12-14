@@ -7,6 +7,7 @@ import service.OrderService;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class DeleteOrderFromAccountCommand implements ICommand {
         LOGGER.info("We got to DeleteOrderFromAccountCommand");
         final String email = req.getSession().getAttribute(EMAIL_ACCOUNT).toString();
         final String id = req.getParameter(ID);
+        Validator.validateInputData(email, id);
         try {
             orderService.deleteOrder(Integer.parseInt(id));
             req.setAttribute(ORDER, orderService.getListOfOrders());

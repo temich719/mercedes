@@ -28,6 +28,7 @@ public class ForgetPasswordCommand implements ICommand {
         String page = JSP_USER + REGISTRATED_INDEX_PAGE;
         final String newPassword = req.getParameter(NEW_PASSWORD);
         final String email = req.getParameter(EMAIL_UPDATE);
+        Validator.validateInputData(newPassword, email);
         if (!Validator.validatePassword(newPassword)) {
             req.setAttribute(ERR, EASY_PASSWORD_ERROR_MESSAGE);
             page = JSP_USER + FORGET_PASSWORD_PAGE;

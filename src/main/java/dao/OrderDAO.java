@@ -2,6 +2,7 @@ package dao;
 
 import dao.entity.Order;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 
 import java.util.ArrayList;
@@ -18,10 +19,10 @@ public interface OrderDAO {
     /**
      * deletes orders of user who was deleted
      *
-     * @param user is the deleted user
+     * @param userDTO is the data of deleted user
      * @throws DAOException is a module exception
      */
-    void deleteOrdersOfDeletedUser(User user) throws DAOException;
+    void deleteOrdersOfDeletedUser(UserDTO userDTO) throws DAOException;
 
     /**
      * finds all orders

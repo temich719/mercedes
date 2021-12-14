@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,8 @@ public class AdminAddCarCommand implements ICommand {
         final String imagePath = req.getParameter(IMAGE_PATH);
         final String type = req.getParameter(TYPE);
         try {
-            Car car = new Car(mark, price, power, acceleration, consumption, engineVolume, tankVolume, trunkVolume, maxSpeed,imagePath, type);
+            Validator.validateInputData(mark, price, power, acceleration, consumption, engineVolume, tankVolume, trunkVolume, maxSpeed, imagePath, type);
+            Car car = new Car(mark, price, power, acceleration, consumption, engineVolume, tankVolume, trunkVolume, maxSpeed, imagePath, type);
             carService.addCar(car);
         } catch (ServiceException e) {
             throw new ControllerException(e);

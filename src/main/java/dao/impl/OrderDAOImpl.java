@@ -5,6 +5,7 @@ import dao.ConnectionPool;
 import dao.OrderDAO;
 import dao.entity.Order;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 import org.apache.log4j.Logger;
 
@@ -238,15 +239,15 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     }
 
     @Override
-    public void deleteOrdersOfDeletedUser(User user) throws DAOException {
+    public void deleteOrdersOfDeletedUser(UserDTO userDTO) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(DELETE_ORDER_OF_DELETED_USER);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(1, userDTO.getName());
+            preparedStatement.setString(2, userDTO.getSurname());
+            preparedStatement.setString(3, userDTO.getEmail());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(e);

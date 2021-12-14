@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ public class SelectPageAllOrdersCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to SelectPageCommand");
         final String numberOfPage = req.getParameter(NUMBER_OF_PAGE);
+        Validator.validateInputData(numberOfPage);
         try {
             req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
             req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());

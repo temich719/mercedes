@@ -4,6 +4,7 @@ import dao.OrderDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
 import dao.entity.User;
+import dao.entity.UserDTO;
 import dao.exception.DAOException;
 import service.OrderService;
 import service.exception.ServiceException;
@@ -81,9 +82,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrdersOfDeletedUser(User user) throws ServiceException {
+    public void deleteOrdersOfDeletedUser(UserDTO userDTO) throws ServiceException {
         try {
-            orderDAO.deleteOrdersOfDeletedUser(user);
+            orderDAO.deleteOrdersOfDeletedUser(userDTO);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

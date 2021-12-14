@@ -27,17 +27,15 @@ public class SendEmailCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to SendEmailCommand");
-        String page = JSP_USER + CONFIRMATION_OF_NEW_PASSWORD;
+        String page = JSP_USER + CODE_CONFIRM_NEW_PASSWORD;
         final String email = req.getParameter(EMAIL);
+        Validator.validateInputData(email);
+        boolean inputDataRight;
         try {
-            if (!userService.isExistingEmail(email)) {
-                req.setAttribute(ERROR, NOT_EXISTING_EMAIL);
-                page = JSP_USER + CODE_CONFIRM_NEW_PASSWORD;
-            } else if (!Validator.validateEmail(email)) {
-                req.setAttribute(ERROR, WRONG_EMAIL);
-                page = JSP_USER + CODE_CONFIRM_NEW_PASSWORD;
-            } else {
+            inputDataRight = isInputDataRight(req, email);
+            if (inputDataRight){
                 try {
+                    page = JSP_USER + CONFIRMATION_OF_NEW_PASSWORD;
                     String code = CodeConfirmGenerator.generateCode();
                     HttpSession session = req.getSession(true);
                     session.setAttribute(CODE_OF_CONFIRM, code);
@@ -51,5 +49,18 @@ public class SendEmailCommand implements ICommand {
             throw new ControllerException(e);
         }
         return page;
+    }
+
+    private boolean isInputDataRight(HttpServletRequest req, String email) throws ServiceException {
+        boolean inputDataRight = true;
+        if (!userService.isExistingEmail(email)) {
+            req.setAttribute(ERROR, NOT_EXISTING_EMAIL);
+            inputDataRight = false;
+        }
+        if (!Validator.validateEmail(email) && inputDataRight) {
+            req.setAttribute(ERROR, WRONG_EMAIL);
+            inputDataRight = false;
+        }
+        return inputDataRight;
     }
 }

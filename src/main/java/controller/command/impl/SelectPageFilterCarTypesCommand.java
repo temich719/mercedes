@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +23,8 @@ public class SelectPageFilterCarTypesCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to SelectPageFilterCarTypesCommand");
         final String pageNumber = req.getParameter(NUMBER_OF_PAGE);
-        final String carType = req.getParameter("carType");
+        final String carType = req.getParameter(CAR_TYPE);
+        Validator.validateInputData(pageNumber, carType);
         try {
             req.setAttribute(CARS, carService.getCarsInfoForOnePageAccordingToType(pageNumber, carType));
             req.setAttribute(NUMBERS, carService.getCountOfCarPagesAccordingToType(carType));

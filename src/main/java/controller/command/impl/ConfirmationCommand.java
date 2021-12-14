@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class ConfirmationCommand implements ICommand {
         String page = JSP_USER + REGISTRATED_INDEX_PAGE;
         final String code = req.getParameter(CODE);
         final String userInput = req.getParameter(CONFIRMATION);
+        Validator.validateInputData(code, userInput);
         if (!userInput.equals(code)) {
             req.setAttribute(SCRIPT, "true");
             page = JSP_USER + REGISTRATION;
@@ -33,6 +35,7 @@ public class ConfirmationCommand implements ICommand {
             final String password = req.getParameter(PASSWORD);
             final String name = req.getParameter(NAME);
             final String surname = req.getParameter(SURNAME);
+            Validator.validateInputData(email, password, name, surname);
             try {
                 User user = new User(name, surname, REGISTERED, email, password);
                 userService.register(user);

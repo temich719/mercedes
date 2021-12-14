@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ public class AdminChangeInfoCommand implements ICommand {
             final String trunk = req.getParameter(TRUNK_VOLUME);
             final String maxSpeed = req.getParameter(MAX_SPEED);
             final String type = req.getParameter(TYPE);
+            Validator.validateInputData(oldImagePath, imagePath, mark, price, power, acceleration, consumption, engine, tank, trunk, maxSpeed, type);
             Car car = new Car(mark, makePricePrettier(price), power, acceleration, consumption, engine, tank, trunk, maxSpeed, imagePath, type);
             if (!carService.updateCarInfo(car)) {
                 req.setAttribute(MARK, mark);

@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
+import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ public class AdminDeleteMinibusCommand implements ICommand {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to AdminDeleteMinibusCommand");
         final String mark = req.getParameter(SELECT_NAME);
+        Validator.validateInputData(mark);
         try {
             carService.deleteMinibus(mark);
         } catch (ServiceException e) {
