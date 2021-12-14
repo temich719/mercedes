@@ -83,7 +83,6 @@ public class Car extends AbstractCar {
 
         Car car = (Car) o;
 
-        if (!Objects.equals(price, car.price)) return false;
         if (!Objects.equals(power, car.power)) return false;
         if (!Objects.equals(accelerationTillHundred, car.accelerationTillHundred))
             return false;
@@ -98,7 +97,6 @@ public class Car extends AbstractCar {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (power != null ? power.hashCode() : 0);
         result = 31 * result + (accelerationTillHundred != null ? accelerationTillHundred.hashCode() : 0);
         result = 31 * result + (consumption != null ? consumption.hashCode() : 0);
@@ -113,8 +111,7 @@ public class Car extends AbstractCar {
     @Override
     public String toString() {
         return "Car{" +
-                "price='" + price + '\'' +
-                ", power='" + power + '\'' +
+                "power='" + power + '\'' +
                 ", accelerationTillHundred='" + accelerationTillHundred + '\'' +
                 ", consumption='" + consumption + '\'' +
                 ", engineVolume='" + engineVolume + '\'' +
@@ -122,9 +119,6 @@ public class Car extends AbstractCar {
                 ", trunkVolume='" + trunkVolume + '\'' +
                 ", maxSpeed='" + maxSpeed + '\'' +
                 ", type='" + type + '\'' +
-                ", nameOfMark='" + nameOfMark + '\'' +
-                ", price='" + price + '\'' +
-                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 }

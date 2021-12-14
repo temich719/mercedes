@@ -45,6 +45,7 @@ public class AbstractCar {
 
         AbstractCar that = (AbstractCar) o;
 
+        if (id != that.id) return false;
         if (!Objects.equals(nameOfMark, that.nameOfMark)) return false;
         if (!Objects.equals(price, that.price)) return false;
         return Objects.equals(imagePath, that.imagePath);
@@ -52,7 +53,8 @@ public class AbstractCar {
 
     @Override
     public int hashCode() {
-        int result = nameOfMark != null ? nameOfMark.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (nameOfMark != null ? nameOfMark.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (imagePath != null ? imagePath.hashCode() : 0);
         return result;
@@ -61,7 +63,8 @@ public class AbstractCar {
     @Override
     public String toString() {
         return "AbstractCar{" +
-                "nameOfMark='" + nameOfMark + '\'' +
+                "id=" + id +
+                ", nameOfMark='" + nameOfMark + '\'' +
                 ", price='" + price + '\'' +
                 ", imagePath='" + imagePath + '\'' +
                 '}';

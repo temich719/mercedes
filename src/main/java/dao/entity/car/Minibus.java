@@ -54,9 +54,6 @@ public class Minibus extends AbstractCar {
         return "Minibus{" +
                 "fullLoad='" + fullLoad + '\'' +
                 ", curbWeight='" + curbWeight + '\'' +
-                ", nameOfMark='" + nameOfMark + '\'' +
-                ", price='" + price + '\'' +
-                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 }

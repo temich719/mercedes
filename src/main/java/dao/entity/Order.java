@@ -86,6 +86,7 @@ public class Order {
 
         Order order = (Order) o;
 
+        if (id != order.id) return false;
         if (!Objects.equals(name, order.name)) return false;
         if (!Objects.equals(surname, order.surname)) return false;
         if (!Objects.equals(email, order.email)) return false;
@@ -93,12 +94,14 @@ public class Order {
         if (!Objects.equals(mark, order.mark)) return false;
         if (!Objects.equals(price, order.price)) return false;
         if (!Objects.equals(phone, order.phone)) return false;
-        return Objects.equals(date, order.date);
+        if (!Objects.equals(date, order.date)) return false;
+        return Objects.equals(status, order.status);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (service != null ? service.hashCode() : 0);
@@ -106,13 +109,15 @@ public class Order {
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", service='" + service + '\'' +
@@ -120,6 +125,7 @@ public class Order {
                 ", price='" + price + '\'' +
                 ", phone='" + phone + '\'' +
                 ", date='" + date + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
