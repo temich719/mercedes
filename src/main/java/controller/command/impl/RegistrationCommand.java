@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.ServiceFactory;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import static controller.ControllerStringsStorage.*;
 
-public class RegistrationCommand implements ICommand {
+public class RegistrationCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -32,7 +32,7 @@ public class RegistrationCommand implements ICommand {
         final String email = req.getParameter(EMAIL);
         final String password = req.getParameter(PASSWORD);
         Validator.validateInputData(email, password);
-        inputDataIsRight = isInputDataIsRight(req, email, password);
+        inputDataIsRight = isInputDataIsCorrect(req, email, password);
         if (inputDataIsRight) {
             try {
                 String code = CodeConfirmGenerator.generateCode();
@@ -47,7 +47,7 @@ public class RegistrationCommand implements ICommand {
         return page;
     }
 
-    private boolean isInputDataIsRight(HttpServletRequest req, String email, String password) throws ControllerException {
+    private boolean isInputDataIsCorrect(HttpServletRequest req, String email, String password) throws ControllerException {
         boolean inputDataIsRight = true;
         try {
             if (userService.isExistingEmail(email.trim())) {

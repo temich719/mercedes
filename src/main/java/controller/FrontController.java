@@ -1,7 +1,7 @@
 package controller;
 
 import controller.command.CommandFactory;
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 
@@ -29,8 +29,8 @@ public class FrontController extends HttpServlet {
     }
 
     private String handleRequest(HttpServletRequest request, HttpServletResponse response) throws ControllerException {
-        ICommand iCommand = CommandFactory.createCommand(request);
-        return iCommand.execute(request, response);
+        Command command = CommandFactory.createCommand(request);
+        return command.execute(request, response);
     }
 
     private void doExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,6 +48,8 @@ public class FrontController extends HttpServlet {
             } else {
                 request.getRequestDispatcher(WEB_INF + forward + JSP).forward(request, response);
             }
+        } else {
+            LOGGER.info("Redirect response");
         }
     }
 }

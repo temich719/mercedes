@@ -4,6 +4,7 @@ import dao.AbstractDAO;
 import dao.CarDAO;
 import dao.ConnectionPool;
 import dao.entity.AbstractCar;
+import dao.entity.Page;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
@@ -11,6 +12,7 @@ import dao.exception.DAOException;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
 
 public class CarDAOImpl extends AbstractDAO implements CarDAO {
@@ -56,11 +58,11 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     }
 
     @Override
-    public ArrayList<Car> getCars() throws DAOException {
+    public List<Car> getCars() throws DAOException {
         LOGGER.info("Go to car page");
         Connection connection = null;
         Statement statement = null;
-        ArrayList<Car> cars = new ArrayList<>();
+        List<Car> cars = new ArrayList<>();
         try {
             connection = connectionPool.provide();
             statement = connection.createStatement();
@@ -82,11 +84,105 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     }
 
     @Override
-    public ArrayList<Minibus> getMinibuses() throws DAOException {
+    public Page<AbstractCar> getPageOfAllCars(String pageNumber) throws DAOException {
+        Connection connection = null;
+        Statement countStatement = null;
+        ResultSet countSet = null;
+        List<String> pageNumbers = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<AbstractCar> allCars = new ArrayList<>();
+        Page<AbstractCar> page = new Page<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
+        int count;
+        int countOfPages;
+        try {
+            connection = connectionPool.provide();
+            connection.setAutoCommit(false);
+            countStatement = connection.createStatement();
+            countSet = countStatement.executeQuery(SELECT_COUNT_OF_ALL_CARS);
+            countSet.next();
+            count = countSet.getInt(1);
+            countOfPages = (int) Math.ceil((double) count / LIMIT);
+            for (int i = 1; i <= countOfPages; i++) {
+                pageNumbers.add(Integer.toString(i));
+            }
+            if (pageNumbers.size() == 1) {
+                pageNumbers.clear();
+            }
+            preparedStatement = connection.prepareStatement(SELECT_ALL_CARS_INFO_FOR_ONE_PAGE);
+            preparedStatement.setInt(1, LIMIT);
+            preparedStatement.setInt(2, offset);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+                allCars.add(abstractCar);
+            }
+            connection.commit();
+            page.setElements(allCars);
+            page.setCountOfPages(pageNumbers);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, preparedStatement, countSet, countStatement);
+            connectionPool.retrieve(connection);
+        }
+        return page;
+    }
+
+    @Override
+    public Page<AbstractCar> getPageOfCars(String pageNumber) throws DAOException {
+        Connection connection = null;
+        Statement countStatement = null;
+        ResultSet countSet = null;
+        List<String> pageNumbers = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<AbstractCar> cars = new ArrayList<>();
+        Page<AbstractCar> page = new Page<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
+        int count;
+        int countOfPages;
+        try {
+            connection = connectionPool.provide();
+            connection.setAutoCommit(false);
+            countStatement = connection.createStatement();
+            countSet = countStatement.executeQuery(SELECT_COUNT_OF_CARS);
+            countSet.next();
+            count = countSet.getInt(1);
+            countOfPages = (int) Math.ceil((double) count / LIMIT);
+            for (int i = 1; i <= countOfPages; i++) {
+                pageNumbers.add(Integer.toString(i));
+            }
+            if (pageNumbers.size() == 1) {
+                pageNumbers.clear();
+            }
+            preparedStatement = connection.prepareStatement(SELECT_CARS_INFO_FOR_ONE_PAGE);
+            preparedStatement.setInt(1, LIMIT);
+            preparedStatement.setInt(2, offset);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+                cars.add(abstractCar);
+            }
+            connection.commit();
+            page.setElements(cars);
+            page.setCountOfPages(pageNumbers);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, preparedStatement, countSet, countStatement);
+            connectionPool.retrieve(connection);
+        }
+        return page;
+    }
+
+    @Override
+    public List<Minibus> getMinibuses() throws DAOException {
         LOGGER.info("Go to minibus page");
         Connection connection = null;
         Statement statement = null;
-        ArrayList<Minibus> minibuses = new ArrayList<>();
+        List<Minibus> minibuses = new ArrayList<>();
         try {
             connection = connectionPool.provide();
             statement = connection.createStatement();
@@ -105,11 +201,11 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     }
 
     @Override
-    public ArrayList<Truck> getTrucks() throws DAOException {
+    public List<Truck> getTrucks() throws DAOException {
         LOGGER.info("Go to truck page");
         Connection connection = null;
         Statement statement = null;
-        ArrayList<Truck> trucks = new ArrayList<>();
+        List<Truck> trucks = new ArrayList<>();
         try {
             connection = connectionPool.provide();
             statement = connection.createStatement();
@@ -127,9 +223,9 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     }
 
     @Override
-    public ArrayList<AbstractCar> getAllCars() throws DAOException {
+    public List<AbstractCar> getAllCars() throws DAOException {
         LOGGER.info("Go to all cars page");
-        ArrayList<AbstractCar> allCars = new ArrayList<>();
+        List<AbstractCar> allCars = new ArrayList<>();
         Connection connection = null;
         PreparedStatement carStatement = null;
         PreparedStatement minibusStatement = null;
@@ -171,135 +267,80 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     }
 
     @Override
-    public ArrayList<String> getCountOfAllCarPages() throws DAOException {
+    public Page<AbstractCar> getPageOfMinibuses(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        ArrayList<String> pageNumbers = new ArrayList<>();
-        int count;
-        int countOfPages;
-        try {
-            connection = connectionPool.provide();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SELECT_COUNT_OF_ALL_CARS);
-            resultSet.next();
-            count = resultSet.getInt(1);
-            countOfPages = (int) Math.ceil((double) count / LIMIT);
-            for (int i = 1; i <= countOfPages; i++) {
-                pageNumbers.add(Integer.toString(i));
-            }
-            if (pageNumbers.size() == 1) {
-                pageNumbers.clear();
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, statement);
-            connectionPool.retrieve(connection);
-        }
-        return pageNumbers;
-    }
-
-    @Override
-    public ArrayList<String> getCountOfCarPages() throws DAOException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        ArrayList<String> pageNumbers = new ArrayList<>();
-        int count;
-        int countOfPages;
-        try {
-            connection = connectionPool.provide();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SELECT_COUNT_OF_CARS);
-            resultSet.next();
-            count = resultSet.getInt(1);
-            countOfPages = (int) Math.ceil((double) count / LIMIT);
-            for (int i = 1; i <= countOfPages; i++) {
-                pageNumbers.add(Integer.toString(i));
-            }
-            if (pageNumbers.size() == 1) {
-                pageNumbers.clear();
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, statement);
-            connectionPool.retrieve(connection);
-        }
-        return pageNumbers;
-    }
-
-    @Override
-    public ArrayList<String> getCountOfMinibusPages() throws DAOException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        ArrayList<String> pageNumbers = new ArrayList<>();
-        int count;
-        int countOfPages;
-        try {
-            connection = connectionPool.provide();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SELECT_COUNT_OF_MINIBUSES);
-            resultSet.next();
-            count = resultSet.getInt(1);
-            countOfPages = (int) Math.ceil((double) count / LIMIT);
-            for (int i = 1; i <= countOfPages; i++) {
-                pageNumbers.add(Integer.toString(i));
-            }
-            if (pageNumbers.size() == 1) {
-                pageNumbers.clear();
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, statement);
-            connectionPool.retrieve(connection);
-        }
-        return pageNumbers;
-    }
-
-    @Override
-    public ArrayList<String> getCountOfCarPagesAccordingToType(String carType) throws DAOException {
-        Connection connection = null;
+        Statement countStatement = null;
+        ResultSet countSet = null;
+        List<String> pageNumbers = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        ArrayList<String> pageNumbers = new ArrayList<>();
-        int count;
-        int countOfPages;
-        try {
-            connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(SELECT_COUNT_OF_CARS_ACCORDING_TO_TYPE);
-            preparedStatement.setString(1, carType);
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            count = resultSet.getInt(1);
-            countOfPages = (int) Math.ceil((double) count / LIMIT);
-            for (int i = 1; i <= countOfPages; i++) {
-                pageNumbers.add(Integer.toString(i));
-            }
-            if (pageNumbers.size() == 1) {
-                pageNumbers.clear();
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement);
-            connectionPool.retrieve(connection);
-        }
-        return pageNumbers;
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<AbstractCar> cars = new ArrayList<>();
+        List<AbstractCar> minibuses = new ArrayList<>();
         int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
+        int count;
+        int countOfPages;
+        Page<AbstractCar> page = new Page<>();
         try {
             connection = connectionPool.provide();
+            connection.setAutoCommit(false);
+            countStatement = connection.createStatement();
+            countSet = countStatement.executeQuery(SELECT_COUNT_OF_MINIBUSES);
+            countSet.next();
+            count = countSet.getInt(1);
+            countOfPages = (int) Math.ceil((double) count / LIMIT);
+            for (int i = 1; i <= countOfPages; i++) {
+                pageNumbers.add(Integer.toString(i));
+            }
+            if (pageNumbers.size() == 1) {
+                pageNumbers.clear();
+            }
+            preparedStatement = connection.prepareStatement(SELECT_MINIBUSES_INFO_FOR_ONE_PAGE);
+            preparedStatement.setInt(1, LIMIT);
+            preparedStatement.setInt(2, offset);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+                minibuses.add(abstractCar);
+            }
+            connection.commit();
+            page.setElements(minibuses);
+            page.setCountOfPages(pageNumbers);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, preparedStatement, countSet, countStatement);
+            connectionPool.retrieve(connection);
+        }
+        return page;
+    }
+
+    @Override
+    public Page<AbstractCar> getPageOfCarsAccordingToType(String pageNumber, String carType) throws DAOException {
+        Connection connection = null;
+        PreparedStatement countStatement = null;
+        ResultSet countSet = null;
+        List<String> pageNumbers = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<AbstractCar> cars = new ArrayList<>();
+        Page<AbstractCar> page = new Page<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
+        int count;
+        int countOfPages;
+        try {
+            connection = connectionPool.provide();
+            connection.setAutoCommit(false);
+            countStatement = connection.prepareStatement(SELECT_COUNT_OF_CARS_ACCORDING_TO_TYPE);
+            countStatement.setString(1, carType);
+            countSet = countStatement.executeQuery();
+            countSet.next();
+            count = countSet.getInt(1);
+            countOfPages = (int) Math.ceil((double) count / LIMIT);
+            for (int i = 1; i <= countOfPages; i++) {
+                pageNumbers.add(Integer.toString(i));
+            }
+            if (pageNumbers.size() == 1) {
+                pageNumbers.clear();
+            }
             preparedStatement = connection.prepareStatement(SELECT_INFO_OF_CARS_ACCORDING_TO_TYPE);
             preparedStatement.setString(1, carType);
             preparedStatement.setInt(2, LIMIT);
@@ -309,65 +350,16 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
                 AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
                 cars.add(abstractCar);
             }
+            connection.commit();
+            page.setElements(cars);
+            page.setCountOfPages(pageNumbers);
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(resultSet, preparedStatement);
+            close(resultSet, preparedStatement, countSet, countStatement);
             connectionPool.retrieve(connection);
         }
-        return cars;
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<AbstractCar> cars = new ArrayList<>();
-        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
-        try {
-            connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(SELECT_CARS_INFO_FOR_ONE_PAGE);
-            preparedStatement.setInt(1, LIMIT);
-            preparedStatement.setInt(2, offset);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
-                cars.add(abstractCar);
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement);
-            connectionPool.retrieve(connection);
-        }
-        return cars;
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<AbstractCar> minibuses = new ArrayList<>();
-        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
-        try {
-            connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(SELECT_MINIBUSES_INFO_FOR_ONE_PAGE);
-            preparedStatement.setInt(1, LIMIT);
-            preparedStatement.setInt(2, offset);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
-                minibuses.add(abstractCar);
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement);
-            connectionPool.retrieve(connection);
-        }
-        return minibuses;
+        return page;
     }
 
     @Override
@@ -390,32 +382,6 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
             connectionPool.retrieve(connection);
         }
         return minibus;
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<AbstractCar> allCars = new ArrayList<>();
-        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
-        try {
-            connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(SELECT_ALL_CARS_INFO_FOR_ONE_PAGE);
-            preparedStatement.setInt(1, LIMIT);
-            preparedStatement.setInt(2, offset);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                AbstractCar abstractCar = new AbstractCar(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
-                allCars.add(abstractCar);
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement);
-            connectionPool.retrieve(connection);
-        }
-        return allCars;
     }
 
     @Override
@@ -595,7 +561,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            if (!isExistsInCarNames(connection, minibus)) {
+            if (!isExistInCarNames(connection, minibus)) {
                 preparedStatement = connection.prepareStatement(INSERT_CAR_NAME);
                 preparedStatement.setString(1, minibus.getNameOfMark());
                 preparedStatement.executeUpdate();
@@ -623,7 +589,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            if (!isExistsInCarNames(connection, car)) {
+            if (!isExistInCarNames(connection, car)) {
                 preparedStatement = connection.prepareStatement(INSERT_CAR_NAME);
                 preparedStatement.setString(1, car.getNameOfMark());
                 preparedStatement.executeUpdate();
@@ -650,32 +616,32 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         }
     }
 
-    private boolean isExistsInCarNames(Connection connection, Car car) throws SQLException {
+    private boolean isExistInCarNames(Connection connection, Car car) throws SQLException {
         ResultSet resultSet;
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_ALL_CARS);
         resultSet = preparedStatement.executeQuery();
-        boolean isExists = false;
+        boolean isExist = false;
         while (resultSet.next()) {
             if (resultSet.getString(2).equals(car.getNameOfMark())) {
-                isExists = true;
+                isExist = true;
                 break;
             }
         }
-        return isExists;
+        return isExist;
     }
 
-    private boolean isExistsInCarNames(Connection connection, Minibus minibus) throws SQLException {
+    private boolean isExistInCarNames(Connection connection, Minibus minibus) throws SQLException {
         ResultSet resultSet;
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_ALL_CARS);
         resultSet = preparedStatement.executeQuery();
-        boolean isExists = false;
+        boolean isExist = false;
         while (resultSet.next()) {
             if (resultSet.getString(2).equals(minibus.getNameOfMark())) {
-                isExists = true;
+                isExist = true;
                 break;
             }
         }
-        return isExists;
+        return isExist;
     }
 
 }

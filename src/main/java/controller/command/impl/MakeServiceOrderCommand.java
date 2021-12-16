@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.Order;
 import org.apache.log4j.Logger;
@@ -19,7 +19,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class MakeServiceOrderCommand implements ICommand {
+public class MakeServiceOrderCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(MakeServiceOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -37,7 +37,7 @@ public class MakeServiceOrderCommand implements ICommand {
         final String phone = req.getParameter(PHONE);
         final String date = req.getParameter(DATE);
         final String select = req.getParameter(SELECT);
-        inputDataIsRight = isInputDataIsRight(req, userName, userSurname, email, phone, date, select);
+        inputDataIsRight = isInputDataIsCorrect(req, userName, userSurname, email, phone, date, select);
         if (inputDataIsRight) {
             final String mark;
             if (Objects.isNull(req.getParameter(SELECT_NAME))) {
@@ -63,9 +63,9 @@ public class MakeServiceOrderCommand implements ICommand {
         return page;
     }
 
-    private boolean isInputDataIsRight(HttpServletRequest req, String userName, String userSurname, String email, String phone, String date, String select) throws ControllerException {
+    private boolean isInputDataIsCorrect(HttpServletRequest req, String userName, String userSurname, String email, String phone, String date, String select) throws ControllerException {
         boolean inputDataIsRight = true;
-        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
+        if (userName.isEmpty() || userSurname.isEmpty() || email.isEmpty() || phone.isEmpty() || date.isEmpty()) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
             req.setAttribute(SELECT, select);
             inputDataIsRight = false;

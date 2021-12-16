@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CarDAOImplTest {
 
@@ -22,35 +23,36 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Car> cars = Mockito.mock(ArrayList.class);
+        //List<Car> cars = Mockito.mock(ArrayList.class);
         CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
+        List<Car> expectedCars = new ArrayList<>();
 
         Mockito.when(daoFactory.getCarDAO()).thenReturn(carDAOImpl);
         Mockito.when(connectionPool.provide()).thenReturn(connection);
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(SELECT_FROM_CARS)).thenReturn(resultSet);
-        Mockito.when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-        Mockito.when(resultSet.getString(2)).thenReturn(null);
-        Mockito.when(resultSet.getString(3)).thenReturn(null);
-        Mockito.when(resultSet.getString(4)).thenReturn(null);
-        Mockito.when(resultSet.getString(5)).thenReturn(null);
-        Mockito.when(resultSet.getString(6)).thenReturn(null);
-        Mockito.when(resultSet.getString(7)).thenReturn(null);
-        Mockito.when(resultSet.getString(8)).thenReturn(null);
-        Mockito.when(resultSet.getString(9)).thenReturn(null);
-        Mockito.when(resultSet.getString(10)).thenReturn(null);
-        Mockito.when(resultSet.getString(11)).thenReturn(null);
-        Mockito.when(resultSet.getString(12)).thenReturn(null);
-        Mockito.when(cars.add(new Car(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
+        Mockito.when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+        Mockito.when(resultSet.getString(2)).thenReturn("mercedes", "renault");
+        Mockito.when(resultSet.getString(3)).thenReturn("10$", "2$");
+        Mockito.when(resultSet.getString(4)).thenReturn("120", "10");
+        Mockito.when(resultSet.getString(5)).thenReturn("a1", "b1");
+        Mockito.when(resultSet.getString(6)).thenReturn("a2", "b2");
+        Mockito.when(resultSet.getString(7)).thenReturn("a3", "b3");
+        Mockito.when(resultSet.getString(8)).thenReturn("a4", "b4");
+        Mockito.when(resultSet.getString(9)).thenReturn("a5", "b5");
+        Mockito.when(resultSet.getString(10)).thenReturn("a6", "b6");
+        Mockito.when(resultSet.getString(11)).thenReturn("a7", "b7");
+        Mockito.when(resultSet.getString(12)).thenReturn("a8", "b8");
+        /*Mockito.when(cars.add(new Car(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
                 resultSet.getString(5), resultSet.getString(6), resultSet.getString(7),
                 resultSet.getString(8), resultSet.getString(9), resultSet.getString(10),
-                resultSet.getString(11), resultSet.getString(12)))).thenReturn(Boolean.TRUE, Boolean.FALSE);
+                resultSet.getString(11), resultSet.getString(12)))).thenReturn(Boolean.TRUE, Boolean.FALSE);*/
         Mockito.doNothing().when(connectionPool).retrieve(connection);
 
         CarDAO carDAO = new CarDAOImpl(connectionPool);
-        carDAO.getCars();
+        List<Car> actualCars = carDAO.getCars();
 
         Mockito.verify(connectionPool).provide();
         Mockito.verify(connection).createStatement();
@@ -76,7 +78,7 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Car> cars = Mockito.mock(ArrayList.class);
+        List<Car> cars = Mockito.mock(ArrayList.class);
         CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -130,7 +132,7 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Minibus> minibuses = Mockito.mock(ArrayList.class);
+        List<Minibus> minibuses = Mockito.mock(ArrayList.class);
         CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -170,7 +172,7 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Minibus> minibuses = Mockito.mock(ArrayList.class);
+        List<Minibus> minibuses = Mockito.mock(ArrayList.class);
         CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -210,7 +212,7 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Truck> trucks = Mockito.mock(ArrayList.class);
+        List<Truck> trucks = Mockito.mock(ArrayList.class);
         CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -241,7 +243,7 @@ public class CarDAOImplTest {
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);
-        ArrayList<Truck> trucks = Mockito.mock(ArrayList.class);
+        List<Truck> trucks = Mockito.mock(ArrayList.class);
         CarDAOImpl carDAOImpl = Mockito.mock(CarDAOImpl.class);
         Statement statement = Mockito.mock(Statement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -268,10 +270,10 @@ public class CarDAOImplTest {
 
     @Test
     public void testGetAllCars()throws DAOException, SQLException{
-        ArrayList<AbstractCar> abstractCars = Mockito.mock(ArrayList.class);
-        ArrayList<Car> cars = Mockito.mock(ArrayList.class);
-        ArrayList<Minibus> minibuses = Mockito.mock(ArrayList.class);
-        ArrayList<Truck> trucks = Mockito.mock(ArrayList.class);
+        List<AbstractCar> abstractCars = Mockito.mock(List.class);
+        List<Car> cars = Mockito.mock(ArrayList.class);
+        List<Minibus> minibuses = Mockito.mock(ArrayList.class);
+        List<Truck> trucks = Mockito.mock(ArrayList.class);
         DaoFactory daoFactory = Mockito.mock(DaoFactory.class);
         Connection connection = Mockito.mock(Connection.class);
         ConnectionPool connectionPool = Mockito.mock(ConnectionPool.class);

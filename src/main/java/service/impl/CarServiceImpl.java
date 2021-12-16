@@ -3,6 +3,7 @@ package service.impl;
 import dao.CarDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.AbstractCar;
+import dao.entity.Page;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
@@ -10,7 +11,7 @@ import dao.exception.DAOException;
 import service.CarService;
 import service.exception.ServiceException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CarServiceImpl implements CarService {
 
@@ -20,54 +21,27 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ArrayList<String> getCountOfAllCarPages() throws ServiceException {
+    public Page<AbstractCar> getPageOfAllCars(String pageNumber) throws ServiceException {
         try {
-            return carDAO.getCountOfAllCarPages();
+            return carDAO.getPageOfAllCars(pageNumber);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public ArrayList<String> getCountOfCarPages() throws ServiceException {
+    public Page<AbstractCar> getPageOfCars(String pageNumber) throws ServiceException {
         try {
-            return carDAO.getCountOfCarPages();
+            return carDAO.getPageOfCars(pageNumber);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public ArrayList<String> getCountOfCarPagesAccordingToType(String carType) throws ServiceException {
+    public Page<AbstractCar> getPageOfMinibuses(String pageNumber) throws ServiceException {
         try {
-            return carDAO.getCountOfCarPagesAccordingToType(carType);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws ServiceException {
-        try {
-            return carDAO.getCarsInfoForOnePageAccordingToType(pageNumber, carType);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<String> getCountOfMinibusPages() throws ServiceException {
-        try {
-            return carDAO.getCountOfMinibusPages();
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws ServiceException {
-        try {
-            return carDAO.getCarsInfoForOnePage(pageNumber);
+            return carDAO.getPageOfMinibuses(pageNumber);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -83,25 +57,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException {
-        try {
-            return carDAO.getMinibusesInfoForOnePage(pageNumber);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws ServiceException {
-        try {
-            return carDAO.getAllCarsInfoForOnePage(pageNumber);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<Car> getCars() throws ServiceException {
+    public List<Car> getCars() throws ServiceException {
         try {
             return carDAO.getCars();
         } catch (DAOException e) {
@@ -110,7 +66,16 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ArrayList<Truck> getTrucks() throws ServiceException {
+    public Page<AbstractCar> getPageOfCarsAccordingToType(String pageNumber, String carType) throws ServiceException {
+        try {
+            return carDAO.getPageOfCarsAccordingToType(pageNumber, carType);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Truck> getTrucks() throws ServiceException {
         try {
             return carDAO.getTrucks();
         } catch (DAOException e) {
@@ -119,7 +84,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ArrayList<AbstractCar> getAllCars() throws ServiceException {
+    public List<AbstractCar> getAllCars() throws ServiceException {
         try {
             return carDAO.getAllCars();
         } catch (DAOException e) {
@@ -128,7 +93,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ArrayList<Minibus> getMinibuses() throws ServiceException {
+    public List<Minibus> getMinibuses() throws ServiceException {
         try {
             return carDAO.getMinibuses();
         } catch (DAOException e) {

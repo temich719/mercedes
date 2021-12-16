@@ -3,13 +3,12 @@ package service.impl;
 import dao.OrderDAO;
 import dao.daoFactory.DaoFactory;
 import dao.entity.Order;
-import dao.entity.User;
-import dao.entity.UserDTO;
+import dao.entity.Page;
 import dao.exception.DAOException;
 import service.OrderService;
 import service.exception.ServiceException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -22,15 +21,6 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(int id) throws ServiceException {
         try {
             orderDAO.deleteOrder(id);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<String> getCountOfOrdersPages() throws ServiceException {
-        try {
-            return orderDAO.getCountOfOrdersPages();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -55,16 +45,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ArrayList<Order> getOrderInfoForOnePage(String pageNumber) throws ServiceException {
+    public Page<Order> getPageOfOrders(String pageNumber) throws ServiceException {
         try {
-            return orderDAO.getOrderInfoForOnePage(pageNumber);
+            return orderDAO.getPageOfOrders(pageNumber);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public ArrayList<Order> getListOfOrders() throws ServiceException {
+    public List<Order> getListOfOrders() throws ServiceException {
         try {
             return orderDAO.getListOfOrders();
         } catch (DAOException e) {
@@ -76,15 +66,6 @@ public class OrderServiceImpl implements OrderService {
     public void markAdRead(int id) throws ServiceException {
         try {
             orderDAO.markAsRead(id);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public void deleteOrdersOfDeletedUser(UserDTO userDTO) throws ServiceException {
-        try {
-            orderDAO.deleteOrdersOfDeletedUser(userDTO);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

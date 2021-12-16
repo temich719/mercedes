@@ -1,10 +1,11 @@
 package dao;
 
+import dao.entity.Page;
 import dao.entity.User;
 import dao.entity.UserDTO;
 import dao.exception.DAOException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface UserDAO {
     /**
@@ -48,7 +49,7 @@ public interface UserDAO {
      * @return list of registrated users
      * @throws DAOException is a module exception
      */
-    ArrayList<UserDTO> getListOfUsers() throws DAOException;
+    List<UserDTO> getListOfUsers() throws DAOException;
 
     /**
      * deletes user
@@ -86,23 +87,6 @@ public interface UserDAO {
     void upgradeUserToAdmin(int userId) throws DAOException;
 
     /**
-     * calculates how much pages do we need to illustrate it in UI
-     *
-     * @return list of strings that has the size equals to amount of pages
-     * @throws DAOException is a module exception
-     */
-    ArrayList<String> getCountOfUserPages() throws DAOException;
-
-    /**
-     * finds as much user information as can fit on one page
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @return list of objects that contains user information
-     * @throws DAOException is a module exception
-     */
-    ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws DAOException;
-
-    /**
      * finds user name according to his email
      *
      * @param email is the user's email
@@ -128,4 +112,13 @@ public interface UserDAO {
      * @throws DAOException is a module exception
      */
     String getUserAccessTypeByEmail(String email) throws DAOException;
+
+    /**
+     * finds data of user and page that we need to illustrate
+     *
+     * @param pageNumber is the number of page
+     * @return object that contains data about page whose number is pageNumber
+     * @throws DAOException is a module exception
+     */
+    Page<UserDTO> getPageOfUsers(String pageNumber) throws DAOException;
 }

@@ -7,12 +7,14 @@ import dao.entity.*;
 import dao.exception.DAOException;
 
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
 
 import static dao.DAOFinalsStorage.*;
 
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
+    private static final String DELETE_ORDER_OF_DELETED_USER = "delete from orders where user_name = ? && user_surname = ? && email = ?;";
     private static final String SELECT_FROM_NAMES = "select * from names;";
     private static final String SELECT_FROM_SURNAMES = "select * from surnames;";
     private static final String SELECT_FROM_ACCESS_TYPES = "select * from access_types;";
@@ -186,19 +188,25 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     }
 
     @Override
-    public ArrayList<String> getCountOfUserPages() throws DAOException {
+    public Page<UserDTO> getPageOfUsers(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement statement = null;
+        Statement countStatement = null;
+        ResultSet countSet = null;
+        List<String> pageNumbers = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        ArrayList<String> pageNumbers = new ArrayList<>();
+        List<UserDTO> users = new ArrayList<>();
+        Page<UserDTO> page = new Page<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
         int count;
         int countOfPages;
         try {
             connection = connectionPool.provide();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SELECT_COUNT_OF_USERS);
-            resultSet.next();
-            count = resultSet.getInt(1);
+            connection.setAutoCommit(false);
+            countStatement = connection.createStatement();
+            countSet = countStatement.executeQuery(SELECT_COUNT_OF_USERS);
+            countSet.next();
+            count = countSet.getInt(1);
             countOfPages = (int) Math.ceil((double) count / LIMIT);
             for (int i = 1; i <= countOfPages; i++) {
                 pageNumbers.add(Integer.toString(i));
@@ -206,24 +214,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             if (pageNumbers.size() == 1) {
                 pageNumbers.clear();
             }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, statement);
-            connectionPool.retrieve(connection);
-        }
-        return pageNumbers;
-    }
-
-    @Override
-    public ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<UserDTO> users = new ArrayList<>();
-        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
-        try {
-            connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(SELECT_USER_INFO_FOR_ONE_PAGE);
             preparedStatement.setInt(1, LIMIT);
             preparedStatement.setInt(2, offset);
@@ -232,13 +222,16 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 UserDTO userDTO = new UserDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(5), resultSet.getString(4));
                 users.add(userDTO);
             }
+            connection.commit();
+            page.setElements(users);
+            page.setCountOfPages(pageNumbers);
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(resultSet, preparedStatement);
+            close(resultSet, preparedStatement, countSet, countStatement);
             connectionPool.retrieve(connection);
         }
-        return users;
+        return page;
     }
 
     @Override
@@ -246,14 +239,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        boolean isExists = false;
+        boolean isExist = false;
         try {
             connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(SELECT_USER_EMAILS);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 if (email.equals(resultSet.getString(1))) {
-                    isExists = true;
+                    isExist = true;
                     break;
                 }
             }
@@ -263,7 +256,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             close(resultSet, preparedStatement);
             connectionPool.retrieve(connection);
         }
-        return isExists;
+        return isExist;
     }
 
     @Override
@@ -289,10 +282,10 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     }
 
     @Override
-    public ArrayList<UserDTO> getListOfUsers() throws DAOException {
+    public List<UserDTO> getListOfUsers() throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
-        ArrayList<UserDTO> users = new ArrayList<>();
+        List<UserDTO> users = new ArrayList<>();
         try {
             connection = connectionPool.provide();
             Statement statement = connection.createStatement();
@@ -354,19 +347,27 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     @Override
     public void deleteUser(UserDTO userDTO) throws DAOException {
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
+        PreparedStatement userStatement = null;
+        PreparedStatement orderStatement = null;
         try {
             connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(DELETE_USER);
-            preparedStatement.setString(1, userDTO.getName());
-            preparedStatement.setString(2, userDTO.getSurname());
-            preparedStatement.setString(3, userDTO.getEmail());
-            preparedStatement.setString(4, userDTO.getAccessType());
-            preparedStatement.executeUpdate();
+            connection.setAutoCommit(false);
+            userStatement = connection.prepareStatement(DELETE_USER);
+            userStatement.setString(1, userDTO.getName());
+            userStatement.setString(2, userDTO.getSurname());
+            userStatement.setString(3, userDTO.getEmail());
+            userStatement.setString(4, userDTO.getAccessType());
+            userStatement.executeUpdate();
+            orderStatement = connection.prepareStatement(DELETE_ORDER_OF_DELETED_USER);
+            orderStatement.setString(1, userDTO.getName());
+            orderStatement.setString(2, userDTO.getSurname());
+            orderStatement.setString(3, userDTO.getEmail());
+            orderStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(preparedStatement);
+            close(userStatement, orderStatement);
             connectionPool.retrieve(connection);
         }
     }

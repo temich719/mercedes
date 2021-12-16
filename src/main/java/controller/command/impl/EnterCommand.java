@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.UserDTO;
 import org.apache.log4j.Logger;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class EnterCommand implements ICommand {
+public class EnterCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(EnterCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

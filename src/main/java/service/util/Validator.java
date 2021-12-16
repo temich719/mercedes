@@ -21,7 +21,7 @@ public class Validator {
 
     public static void validateInputData(String...strings) throws ControllerException{
         for (String s:strings) {
-            if (Objects.isNull(s) || s.equals("")){
+            if (Objects.isNull(s) || s.isEmpty()){
                 throw new ControllerException("Invalid input data");
             }
         }

@@ -1,7 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
+import dao.entity.AbstractCar;
+import dao.entity.Page;
 import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class SelectPageAllCarsCommand implements ICommand {
+public class SelectPageAllCarsCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(SelectPageAllCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -25,8 +27,9 @@ public class SelectPageAllCarsCommand implements ICommand {
         final String pageNumber = req.getParameter(NUMBER_OF_PAGE);
         Validator.validateInputData(pageNumber);
         try {
-            req.setAttribute(ALL_CARS, carService.getAllCarsInfoForOnePage(pageNumber));
-            req.setAttribute(NUMBERS, carService.getCountOfAllCarPages());
+            Page<AbstractCar> page = carService.getPageOfAllCars(pageNumber);
+            req.setAttribute(ALL_CARS, page.getElements());
+            req.setAttribute(NUMBERS, page.getCountOfPages());
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }

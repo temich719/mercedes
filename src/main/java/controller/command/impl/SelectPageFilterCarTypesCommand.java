@@ -1,7 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
+import dao.entity.AbstractCar;
+import dao.entity.Page;
 import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class SelectPageFilterCarTypesCommand implements ICommand {
+public class SelectPageFilterCarTypesCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(SelectPageFilterCarTypesCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -26,8 +28,9 @@ public class SelectPageFilterCarTypesCommand implements ICommand {
         final String carType = req.getParameter(CAR_TYPE);
         Validator.validateInputData(pageNumber, carType);
         try {
-            req.setAttribute(CARS, carService.getCarsInfoForOnePageAccordingToType(pageNumber, carType));
-            req.setAttribute(NUMBERS, carService.getCountOfCarPagesAccordingToType(carType));
+            Page<AbstractCar> page = carService.getPageOfCarsAccordingToType(pageNumber, carType);
+            req.setAttribute(CARS, page.getElements());
+            req.setAttribute(NUMBERS, page.getCountOfPages());
             req.setAttribute(INDICATOR, "true");
             req.setAttribute(CHOICE, carType);
             req.setAttribute(FLAG, "true");

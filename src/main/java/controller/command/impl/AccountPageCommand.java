@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.OrderService;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AccountPageCommand implements ICommand {
+public class AccountPageCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(AccountPageCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -26,7 +26,7 @@ public class AccountPageCommand implements ICommand {
         LOGGER.info("We got to AccountPageCommand");
         try {
             final String avatarPath = userService.getAvatarPathByEmail(req.getSession().getAttribute(EMAIL_ACCOUNT).toString());
-            if (Objects.isNull(avatarPath) || avatarPath.equals("")) {
+            if (Objects.isNull(avatarPath) || avatarPath.isEmpty()) {
                 req.setAttribute(AVATAR_IMAGE, DEFAULT_AVATAR_IMAGE);
             } else {
                 req.setAttribute(AVATAR_IMAGE, IMG + avatarPath);

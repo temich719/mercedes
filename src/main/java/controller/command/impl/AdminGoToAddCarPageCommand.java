@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminGoToAddCarPageCommand implements ICommand {
+public class AdminGoToAddCarPageCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(AdminGoToAddCarPageCommand.class);
 

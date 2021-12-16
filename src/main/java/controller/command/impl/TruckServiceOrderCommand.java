@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.util.Validator;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class TruckServiceOrderCommand implements ICommand {
+public class TruckServiceOrderCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(TruckServiceOrderCommand.class);
 

@@ -1,8 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.Order;
+import dao.entity.Page;
 import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
@@ -16,7 +17,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminDeleteOrderCommand implements ICommand {
+public class AdminDeleteOrderCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(AdminDeleteOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -28,14 +29,16 @@ public class AdminDeleteOrderCommand implements ICommand {
         final String id = req.getParameter(ID);
         final String numberOfPage = req.getParameter(PAGE_NUMBER);
         Validator.validateInputData(id);
+        Page<Order> page;
         try {
             orderService.deleteOrder(Integer.parseInt(id));
-            if (Objects.isNull(numberOfPage) || numberOfPage.equals("")) {
-                req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(DEFAULT_PAGE_NUMBER));
+            if (Objects.isNull(numberOfPage) || numberOfPage.isEmpty()) {
+                page = orderService.getPageOfOrders(DEFAULT_PAGE_NUMBER);
             } else {
-                req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
+                page = orderService.getPageOfOrders(numberOfPage);
             }
-            req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());
+            req.setAttribute(ORDERS, page.getElements());
+            req.setAttribute(NUMBERS, page.getCountOfPages());
             req.setAttribute(PAGE_NUMBER, numberOfPage);
         } catch (ServiceException e) {
             throw new ControllerException(e);

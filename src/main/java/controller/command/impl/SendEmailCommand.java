@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.ServiceFactory;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import static controller.ControllerStringsStorage.*;
 
-public class SendEmailCommand implements ICommand {
+public class SendEmailCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(SendEmailCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

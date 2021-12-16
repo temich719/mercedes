@@ -2,7 +2,7 @@ package controller.command;
 
 import controller.command.impl.*;
 
-public enum Commands {
+public enum CommandEnum {
     ENTER_COMMAND(new EnterCommand()),
     REGISTRATION_COMMAND(new RegistrationCommand()),
     CONFIRM_COMMAND(new ConfirmationCommand()),
@@ -53,13 +53,13 @@ public enum Commands {
     USERS_NUMBER_OF_PAGE_COMMAND(new SelectPageAllUsersCommand()),
     FIRST_STEP_COMMAND(new FirstStepCommand());
 
-    ICommand iCommand;
+    Command command;
 
-    Commands(ICommand iCommand){
-        this.iCommand = iCommand;
+    CommandEnum(Command command){
+        this.command = command;
     }
 
-    public ICommand getCommand(){
-        return iCommand;
+    public Command getCommand(){
+        return command;
     }
 }

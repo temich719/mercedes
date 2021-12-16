@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.AbstractCar;
 import dao.entity.Order;
@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class MakeOrderCommand implements ICommand {
+public class MakeOrderCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(MakeOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -41,7 +41,7 @@ public class MakeOrderCommand implements ICommand {
         final String imagePath = req.getParameter(PICTURE);
         try {
             AbstractCar abstractCar = carService.getAnyCarByImage(imagePath);
-            inputDataIsRight = isInputDataIsRight(req, name, surname, email, phone, imagePath, abstractCar);
+            inputDataIsRight = isInputDataIsCorrect(req, name, surname, email, phone, imagePath, abstractCar);
             if (inputDataIsRight) {
                 Order order = new Order(name, surname, email, CAR_BUYING, abstractCar.getNameOfMark(), abstractCar.getPrice(), phone, null, UNREAD);
                 orderService.addOrder(order);
@@ -56,9 +56,9 @@ public class MakeOrderCommand implements ICommand {
         return page;
     }
 
-    private boolean isInputDataIsRight(HttpServletRequest req, String name, String surname, String email, String phone, String imagePath, AbstractCar abstractCar) throws ServiceException {
+    private boolean isInputDataIsCorrect(HttpServletRequest req, String name, String surname, String email, String phone, String imagePath, AbstractCar abstractCar) throws ServiceException {
         boolean inputDataIsRight = true;
-        if (name.equals("") || surname.equals("") || email.equals("") || phone.equals("")) {
+        if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || phone.isEmpty()) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
             req.setAttribute(PICTURE, imagePath);
             req.setAttribute(PRICE, abstractCar.getPrice());

@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +9,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class BackFromAllCarsCommand implements ICommand {
+public class BackFromAllCarsCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(BackFromAllCarsCommand.class);
 

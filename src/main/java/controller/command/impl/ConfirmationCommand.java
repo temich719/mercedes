@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.User;
 import org.apache.log4j.Logger;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class ConfirmationCommand implements ICommand {
+public class ConfirmationCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(ConfirmationCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

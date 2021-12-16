@@ -1,10 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.AbstractCar;
-import dao.entity.car.Car;
-import dao.entity.car.Minibus;
+import dao.entity.Page;
 import dao.entity.car.Truck;
 import org.apache.log4j.Logger;
 import service.CarService;
@@ -15,11 +14,11 @@ import service.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.List;
 
 import static controller.ControllerStringsStorage.*;
 
-public class FilterAllCarsCommand implements ICommand {
+public class FilterAllCarsCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(FilterAllCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -31,19 +30,20 @@ public class FilterAllCarsCommand implements ICommand {
         final String carType = req.getParameter(TYPE);
         Validator.validateInputData(carType);
         CssEditor.pressedButton(carType, req);
+        Page<AbstractCar> page;
         try {
             if (carType.equals(CAR)) {
-                ArrayList<AbstractCar> cars = carService.getCarsInfoForOnePage(DEFAULT_PAGE_NUMBER);
-                req.setAttribute(NUMBERS, carService.getCountOfCarPages());
-                req.setAttribute(FILTERED, cars);
+                page = carService.getPageOfCars(DEFAULT_PAGE_NUMBER);
+                req.setAttribute(NUMBERS, page.getCountOfPages());
+                req.setAttribute(FILTERED, page.getElements());
                 req.setAttribute(TYPE_OF_CARS_ON_THIS_PAGE, CARS);
             } else if (carType.equals(MINIBUS)) {
-                ArrayList<AbstractCar> minibuses = carService.getMinibusesInfoForOnePage(DEFAULT_PAGE_NUMBER);
-                req.setAttribute(NUMBERS, carService.getCountOfMinibusPages());
-                req.setAttribute(FILTERED, minibuses);
+                page = carService.getPageOfMinibuses(DEFAULT_PAGE_NUMBER);
+                req.setAttribute(NUMBERS, page.getCountOfPages());
+                req.setAttribute(FILTERED, page.getElements());
                 req.setAttribute(TYPE_OF_CARS_ON_THIS_PAGE, MINIBUSES);
             } else {
-                ArrayList<Truck> trucks = carService.getTrucks();
+                List<Truck> trucks = carService.getTrucks();
                 req.setAttribute(FILTERED, trucks);
             }
         } catch (ServiceException e) {

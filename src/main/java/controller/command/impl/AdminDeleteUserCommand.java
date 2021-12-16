@@ -1,10 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.UserDTO;
 import org.apache.log4j.Logger;
-import service.OrderService;
 import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
@@ -15,12 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminDeleteUserCommand implements ICommand {
+public class AdminDeleteUserCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(AdminDeleteUserCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
-    private final OrderService orderService = serviceFactory.getOrderService();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
@@ -30,10 +28,12 @@ public class AdminDeleteUserCommand implements ICommand {
         final String email = req.getParameter(EMAIL);
         final String accessType = req.getParameter(ACCESS_TYPE);
         Validator.validateInputData(name, surname, email, accessType);
+        if (email.equals(req.getSession().getAttribute(EMAIL_ACCOUNT))){
+            throw new ControllerException("Attempt to delete yourself");
+        }
         final UserDTO userDTO = new UserDTO(name, surname, email, accessType);
         try {
             userService.deleteUser(userDTO);
-            orderService.deleteOrdersOfDeletedUser(userDTO);
             req.setAttribute(USERS, userService.getListOfUsers());
         } catch (ServiceException e) {
             throw new ControllerException(e);

@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.car.Minibus;
 import org.apache.log4j.Logger;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminAddMinibusCommand implements ICommand {
+public class AdminAddMinibusCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(AdminAddMinibusCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

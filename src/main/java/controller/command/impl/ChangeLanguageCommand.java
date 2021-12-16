@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.util.Validator;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static controller.ControllerStringsStorage.*;
 
-public class ChangeLanguageCommand implements ICommand {
+public class ChangeLanguageCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(ChangeLanguageCommand.class);
 

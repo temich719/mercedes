@@ -1,22 +1,31 @@
 package controller.command;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
 public class CommandFactory {
 
+    private static final Logger LOGGER = Logger.getLogger(CommandFactory.class);
+
     private CommandFactory() {
     }
 
-    public static ICommand createCommand(HttpServletRequest request) {
-        String command = request.getParameter(COMMAND);
-        ICommand iCommand;
-        if (command != null && !command.equals("")) {
-            iCommand = Commands.valueOf(command).getCommand();
-        } else {
-            iCommand = Commands.valueOf(ERROR_COMMAND).getCommand();
+    public static Command createCommand(HttpServletRequest request) {
+        String commandParameter = request.getParameter(COMMAND);
+        Command command = CommandEnum.ERROR_COMMAND.getCommand();
+        if (Objects.nonNull(command) && !commandParameter.isEmpty()) {
+            try {
+                CommandEnum currentCommand = CommandEnum.valueOf(commandParameter);
+                command = currentCommand.getCommand();
+            } catch (IllegalArgumentException e) {
+                LOGGER.error("Illegal parameters");
+            }
         }
-        return iCommand;
+        return command;
     }
 }

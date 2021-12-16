@@ -1,11 +1,10 @@
 package service;
 
 import dao.entity.Order;
-import dao.entity.User;
-import dao.entity.UserDTO;
+import dao.entity.Page;
 import service.exception.ServiceException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface OrderService {
 
@@ -32,32 +31,7 @@ public interface OrderService {
      * @return list of orders
      * @throws ServiceException is a module exception
      */
-    ArrayList<Order> getListOfOrders() throws ServiceException;
-
-    /**
-     * deletes orders of user who was deleted
-     *
-     * @param userDTO is the data of deleted user
-     * @throws ServiceException is a module exception
-     */
-    void deleteOrdersOfDeletedUser(UserDTO userDTO) throws ServiceException;
-
-    /**
-     * finds as much order information as can fit on one page
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @return list of objects that contains order information
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<Order> getOrderInfoForOnePage(String pageNumber) throws ServiceException;
-
-    /**
-     * calculates how much pages do we need to illustrate it in UI
-     *
-     * @return list of strings that has the size equals to amount of pages
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<String> getCountOfOrdersPages() throws ServiceException;
+    List<Order> getListOfOrders() throws ServiceException;
 
     /**
      * deletes order from database
@@ -74,4 +48,13 @@ public interface OrderService {
      * @throws ServiceException is a module exception
      */
     void markAdRead(int id) throws ServiceException;
+
+    /**
+     * finds data of order and page that we need to illustrate
+     *
+     * @param pageNumber is the number of page
+     * @return object that contains data about page whose number is pageNumber
+     * @throws ServiceException is a module exception
+     */
+    Page<Order> getPageOfOrders(String pageNumber) throws ServiceException;
 }

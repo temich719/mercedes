@@ -19,12 +19,14 @@ public class AntiInjectionFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, String[]> parameters = servletRequest.getParameterMap();
-        for (String[] v: parameters.values()){
+        for (String[] v : parameters.values()) {
             stringBuilder.append(v[0]);
         }
-        if (stringBuilder.toString().trim().matches(DOES_NOT_CONTAIN))
+        if (stringBuilder.toString().trim().matches(DOES_NOT_CONTAIN)) {
             filterChain.doFilter(servletRequest, servletResponse);
-        else servletRequest.getRequestDispatcher(WEB_INF + ERRORS + ANTI_INJECTION + JSP).forward(servletRequest, servletResponse);
+        } else {
+            servletRequest.getRequestDispatcher(WEB_INF + ERRORS + ANTI_INJECTION + JSP).forward(servletRequest, servletResponse);
+        }
     }
 
     @Override

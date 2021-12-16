@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.ServiceFactory;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class UpgradeUserToAdminCommand implements ICommand {
+public class UpgradeUserToAdminCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(UpgradeUserToAdminCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

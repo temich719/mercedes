@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.AbstractCar;
 import org.apache.log4j.Logger;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class FormOrderCommand implements ICommand {
+public class FormOrderCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(FormOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.OrderService;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import static controller.ControllerStringsStorage.*;
 
-public class ForgetPasswordCommand implements ICommand {
+public class ForgetPasswordCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(ForgetPasswordCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

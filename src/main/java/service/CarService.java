@@ -1,12 +1,13 @@
 package service;
 
 import dao.entity.AbstractCar;
+import dao.entity.Page;
 import dao.entity.car.Car;
 import dao.entity.car.Minibus;
 import dao.entity.car.Truck;
 import service.exception.ServiceException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface CarService {
 
@@ -16,7 +17,7 @@ public interface CarService {
      * @return list of cars
      * @throws ServiceException is a module exception
      */
-    ArrayList<Car> getCars() throws ServiceException;
+    List<Car> getCars() throws ServiceException;
 
     /**
      * returns trucks from dao
@@ -24,7 +25,7 @@ public interface CarService {
      * @return list of trucks
      * @throws ServiceException is a module exception
      */
-    ArrayList<Truck> getTrucks() throws ServiceException;
+    List<Truck> getTrucks() throws ServiceException;
 
     /**
      * returns minibuses from dao
@@ -32,7 +33,7 @@ public interface CarService {
      * @return list of minibuses
      * @throws ServiceException is a module exception
      */
-    ArrayList<Minibus> getMinibuses() throws ServiceException;
+    List<Minibus> getMinibuses() throws ServiceException;
 
     /**
      * adds new car
@@ -90,77 +91,7 @@ public interface CarService {
      * @return list of all cars
      * @throws ServiceException is module exception
      */
-    ArrayList<AbstractCar> getAllCars() throws ServiceException;
-
-    /**
-     * calculates how much pages do we need to illustrate content including all car types on UI
-     *
-     * @return list of strings that has the size equals to amount of pages
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<String> getCountOfAllCarPages() throws ServiceException;
-
-    /**
-     * finds as much car information(including all car types) as can fit on one page
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @return list of objects that contains car information(including all car types)
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<AbstractCar> getAllCarsInfoForOnePage(String pageNumber) throws ServiceException;
-
-    /**
-     * calculates how much pages do we need to illustrate car content on UI
-     *
-     * @return list of strings that has the size equals to amount of pages
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<String> getCountOfCarPages() throws ServiceException;
-
-    /**
-     * calculates how much pages do we need to illustrate minibus content on UI
-     *
-     * @return list of strings that has the size equals to amount of pages
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<String> getCountOfMinibusPages() throws ServiceException;
-
-    /**
-     * finds as much car information as can fit on one page
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @return list of objects that contains car information
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<AbstractCar> getCarsInfoForOnePage(String pageNumber) throws ServiceException;
-
-    /**
-     * finds as much minibus information as can fit on one page
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @return list of objects that contains minibus information
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<AbstractCar> getMinibusesInfoForOnePage(String pageNumber) throws ServiceException;
-
-    /**
-     * calculates how much pages do we need to illustrate car content on UI according to given car type
-     *
-     * @param carType is given car type
-     * @return list of strings that has the size equals to amount of pages
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<String> getCountOfCarPagesAccordingToType(String carType) throws ServiceException;
-
-    /**
-     * finds as much car information as can fit on one page according to given car type
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @param carType    is given car type
-     * @return list of objects that contains car information according to given car type
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<AbstractCar> getCarsInfoForOnePageAccordingToType(String pageNumber, String carType) throws ServiceException;
+    List<AbstractCar> getAllCars() throws ServiceException;
 
     /**
      * finds minibus according to id
@@ -188,4 +119,41 @@ public interface CarService {
      * @throws ServiceException is a module exception
      */
     AbstractCar getAnyCarByImage(String imagePath) throws ServiceException;
+
+    /**
+     * finds data of all cars and page that we need to illustrate
+     *
+     * @param pageNumber is the number of page
+     * @return object that contains data about page whose number is pageNumber
+     * @throws ServiceException is a module exception
+     */
+    Page<AbstractCar> getPageOfAllCars(String pageNumber) throws ServiceException;
+
+    /**
+     * finds data of cars and page that we need to illustrate
+     *
+     * @param pageNumber is the number of page
+     * @return object that contains data about page whose number is pageNumber
+     * @throws ServiceException is a module exception
+     */
+    Page<AbstractCar> getPageOfCars(String pageNumber) throws ServiceException;
+
+    /**
+     * finds data of minibuses and page that we need to illustrate
+     *
+     * @param pageNumber is the number of page
+     * @return object that contains data about page whose number is pageNumber
+     * @throws ServiceException is a module exception
+     */
+    Page<AbstractCar> getPageOfMinibuses(String pageNumber) throws ServiceException;
+
+    /**
+     * finds data of cars and page that we need to illustrate according to car type
+     *
+     * @param pageNumber is the number of page
+     * @param carType    is given car type
+     * @return object that contains data about page whose number is pageNumber and type is carType
+     * @throws ServiceException is a module exception
+     */
+    Page<AbstractCar> getPageOfCarsAccordingToType(String pageNumber, String carType) throws ServiceException;
 }

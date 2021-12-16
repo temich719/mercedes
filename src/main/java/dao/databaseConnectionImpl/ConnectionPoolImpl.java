@@ -16,7 +16,7 @@ import java.util.concurrent.BlockingQueue;
 
 import static dao.DAOFinalsStorage.*;
 
-public class ConnectionPoolImpl implements ConnectionPool{
+public class ConnectionPoolImpl implements ConnectionPool {
 
     private final static Logger LOGGER = Logger.getLogger(ConnectionPoolImpl.class);
     private final String DRIVER;
@@ -50,7 +50,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
     @Override
     public Connection provide() throws DAOException {
         Connection newConnection;
-        try{
+        try {
             newConnection = availableConnections.take();
             takenConnections.add(newConnection);
         } catch (InterruptedException e) {
@@ -75,13 +75,12 @@ public class ConnectionPoolImpl implements ConnectionPool{
         LOGGER.info("ConnectionPool.takenConnections.size() is " + takenConnections.size());
     }
 
-    private Connection getConnection(String url, String user, String password) throws DAOException{
+    private Connection getConnection(String url, String user, String password) throws DAOException {
         Connection connection;
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             LOGGER.error("Could not connect to database");
-            shutdownTomcat();
             throw new DAOException("Connection to database failed", e);
         }
         return connection;
@@ -95,23 +94,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
                 LOGGER.info("MySQL driver is loaded");
             } catch (ClassNotFoundException e) {
                 LOGGER.error("MySQL driver is not loaded");
-                shutdownTomcat();
                 throw new DAOException("MySQL driver is not loaded", e);
             }
         }
     }
 
-    private static void shutdownTomcat() throws DAOException{
-        try {
-            Socket socket = new Socket("localhost", 8080);
-            if (socket.isConnected()) {
-                PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                pw.println("SHUTDOWN");
-                pw.close();
-                socket.close();
-            }
-        } catch (IOException e) {
-            throw new DAOException("Can NOT stop TOMCAT", e);
-        }
-    }
 }

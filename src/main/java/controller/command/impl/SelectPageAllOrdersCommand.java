@@ -1,7 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
+import dao.entity.Order;
+import dao.entity.Page;
 import org.apache.log4j.Logger;
 import service.OrderService;
 import service.ServiceFactory;
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class SelectPageAllOrdersCommand implements ICommand {
+public class SelectPageAllOrdersCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(SelectPageAllOrdersCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -25,8 +27,9 @@ public class SelectPageAllOrdersCommand implements ICommand {
         final String numberOfPage = req.getParameter(NUMBER_OF_PAGE);
         Validator.validateInputData(numberOfPage);
         try {
-            req.setAttribute(ORDERS, orderService.getOrderInfoForOnePage(numberOfPage));
-            req.setAttribute(NUMBERS, orderService.getCountOfOrdersPages());
+            Page<Order> page = orderService.getPageOfOrders(numberOfPage);
+            req.setAttribute(ORDERS, page.getElements());
+            req.setAttribute(NUMBERS, page.getCountOfPages());
             req.setAttribute(PAGE_NUMBER, numberOfPage);
         } catch (ServiceException e) {
             throw new ControllerException(e);

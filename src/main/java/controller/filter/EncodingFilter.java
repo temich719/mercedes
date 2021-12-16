@@ -14,7 +14,9 @@ public class EncodingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         String encoding = filterConfig.getInitParameter(ControllerStringsStorage.ENCODING);
-        if (encoding != null)ENCODING = encoding;
+        if (encoding != null) {
+            ENCODING = encoding;
+        }
     }
 
     @Override

@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.OrderService;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class UploadAvatarCommand implements ICommand {
+public class UploadAvatarCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(UploadAvatarCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

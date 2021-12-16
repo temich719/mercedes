@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.car.Minibus;
 import org.apache.log4j.Logger;
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class MinibusOrderCommand implements ICommand {
+public class MinibusOrderCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(MinibusOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -40,7 +40,7 @@ public class MinibusOrderCommand implements ICommand {
             throw new ControllerException(e);
         }
         req.setAttribute(MARK, minibus.getNameOfMark());
-        req.setAttribute(MONEY, minibus.getPrice());
+        req.setAttribute(PRICE, minibus.getPrice());
         req.setAttribute(PICTURE, imagePath);
         return returnPageName;
     }

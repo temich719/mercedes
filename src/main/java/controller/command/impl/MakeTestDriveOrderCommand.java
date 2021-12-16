@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import dao.entity.Order;
 import org.apache.log4j.Logger;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import static controller.ControllerStringsStorage.*;
 
-public class MakeTestDriveOrderCommand implements ICommand {
+public class MakeTestDriveOrderCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(MakeTestDriveOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -39,11 +39,11 @@ public class MakeTestDriveOrderCommand implements ICommand {
         final String phone = req.getParameter(PHONE);
         final String date = req.getParameter(DATE);
         final String nameOfMark = req.getParameter(NAME_OF_MARK);
-        inputDataIsRight = isInputDataIsRight(req, userName, userSurname, email, phone, date, nameOfMark);
+        inputDataIsRight = isInputDataIsCorrect(req, userName, userSurname, email, phone, date, nameOfMark);
         if (inputDataIsRight) {
             String mark;
             try {
-                if (nameOfMark.equals("")) {
+                if (nameOfMark.isEmpty()) {
                     mark = req.getParameter(SELECT_NAME);
                 } else {
                     mark = nameOfMark;
@@ -65,11 +65,11 @@ public class MakeTestDriveOrderCommand implements ICommand {
         return page;
     }
 
-    private boolean isInputDataIsRight(HttpServletRequest req, String userName, String userSurname, String email, String phone, String date, String nameOfMark) throws ControllerException {
+    private boolean isInputDataIsCorrect(HttpServletRequest req, String userName, String userSurname, String email, String phone, String date, String nameOfMark) throws ControllerException {
         boolean inputDataIsRight = true;
-        if (userName.equals("") || userSurname.equals("") || email.equals("") || phone.equals("") || date.equals("")) {
+        if (userName.isEmpty() || userSurname.isEmpty() || email.isEmpty() || phone.isEmpty() || date.isEmpty()) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
-            if (!nameOfMark.equals("")) {
+            if (!nameOfMark.isEmpty()) {
                 req.setAttribute(SELECT, "true");
                 req.setAttribute(NAME_OF_MARK, nameOfMark);
             } else {
@@ -83,7 +83,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
         }
         if (!Validator.validateEmail(email) && inputDataIsRight) {
             req.setAttribute(ERROR, INVALID_EMAIL);
-            if (!nameOfMark.equals("")) {
+            if (!nameOfMark.isEmpty()) {
                 req.setAttribute(SELECT, "true");
                 req.setAttribute(NAME_OF_MARK, nameOfMark);
             } else {
@@ -99,7 +99,7 @@ public class MakeTestDriveOrderCommand implements ICommand {
             if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
                 if (!userName.equals(userService.getUserNameByEmail(email)) || !userSurname.equals(userService.getUserSurnameByEmail(email))) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
-                    if (!nameOfMark.equals("")) {
+                    if (!nameOfMark.isEmpty()) {
                         req.setAttribute(SELECT, "true");
                         req.setAttribute(NAME_OF_MARK, nameOfMark);
                     } else {

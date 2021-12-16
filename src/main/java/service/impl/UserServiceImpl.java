@@ -2,13 +2,14 @@ package service.impl;
 
 import dao.UserDAO;
 import dao.daoFactory.DaoFactory;
+import dao.entity.Page;
 import dao.entity.User;
 import dao.entity.UserDTO;
 import dao.exception.DAOException;
 import service.UserService;
 import service.exception.ServiceException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
@@ -99,9 +100,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ArrayList<UserDTO> getListOfUsers() throws ServiceException {
+    public List<UserDTO> getListOfUsers() throws ServiceException {
         try {
             return userDAO.getListOfUsers();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Page<UserDTO> getPageOfUsers(String pageNumber) throws ServiceException {
+        try {
+            return userDAO.getPageOfUsers(pageNumber);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -111,24 +121,6 @@ public class UserServiceImpl implements UserService {
     public void upgradeUserToAdmin(int userId) throws ServiceException {
         try {
             userDAO.upgradeUserToAdmin(userId);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<String> getCountOfUserPages() throws ServiceException {
-        try {
-            return userDAO.getCountOfUserPages();
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws ServiceException {
-        try {
-            return userDAO.getUsersInfoForOnePage(pageNumber);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

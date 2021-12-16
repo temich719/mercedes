@@ -1,10 +1,11 @@
 package service;
 
+import dao.entity.Page;
 import dao.entity.User;
 import dao.entity.UserDTO;
 import service.exception.ServiceException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface UserService {
     /**
@@ -57,7 +58,7 @@ public interface UserService {
      * @return list of registered users
      * @throws ServiceException is a module exception
      */
-    ArrayList<UserDTO> getListOfUsers() throws ServiceException;
+    List<UserDTO> getListOfUsers() throws ServiceException;
 
     /**
      * deletes user
@@ -86,23 +87,6 @@ public interface UserService {
     void upgradeUserToAdmin(int userId) throws ServiceException;
 
     /**
-     * calculates how much pages do we need to illustrate it in UI
-     *
-     * @return list of strings that has the size equals to amount of pages
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<String> getCountOfUserPages() throws ServiceException;
-
-    /**
-     * finds as much user information as can fit on one page
-     *
-     * @param pageNumber is the number of page that will be illustrated
-     * @return list of objects that contains user information
-     * @throws ServiceException is a module exception
-     */
-    ArrayList<UserDTO> getUsersInfoForOnePage(String pageNumber) throws ServiceException;
-
-    /**
      * finds user name according to his email
      *
      * @param email is the user's email
@@ -128,4 +112,13 @@ public interface UserService {
      * @throws ServiceException is a module exception
      */
     String getUserAccessTypeByEmail(String email) throws ServiceException;
+
+    /**
+     * finds data of user and page that we need to illustrate
+     *
+     * @param pageNumber is the number of page
+     * @return object that contains data about page whose number is pageNumber
+     * @throws ServiceException is a module exception
+     */
+    Page<UserDTO> getPageOfUsers(String pageNumber) throws ServiceException;
 }

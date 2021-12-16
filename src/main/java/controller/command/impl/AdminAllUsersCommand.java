@@ -1,6 +1,6 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
 import org.apache.log4j.Logger;
 import service.ServiceFactory;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class AdminAllUsersCommand implements ICommand {
+public class AdminAllUsersCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(AdminAllUsersCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();

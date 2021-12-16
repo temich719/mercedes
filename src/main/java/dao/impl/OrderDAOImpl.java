@@ -4,13 +4,14 @@ import dao.AbstractDAO;
 import dao.ConnectionPool;
 import dao.OrderDAO;
 import dao.entity.Order;
-import dao.entity.User;
+import dao.entity.Page;
 import dao.entity.UserDTO;
 import dao.exception.DAOException;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -45,12 +46,12 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     }
 
     @Override
-    public ArrayList<Order> getListOfOrders() throws DAOException {
+    public List<Order> getListOfOrders() throws DAOException {
         LOGGER.info("List of orders");
         Connection connection = null;
         ResultSet resultSet = null;
         Statement statement = null;
-        ArrayList<Order> orders = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         try {
             connection = connectionPool.provide();
             statement = connection.createStatement();
@@ -72,19 +73,25 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     }
 
     @Override
-    public ArrayList<String> getCountOfOrdersPages() throws DAOException {
+    public Page<Order> getPageOfOrders(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement statement = null;
+        Statement countStatement = null;
+        ResultSet countSet = null;
+        List<String> pageNumbers = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        ArrayList<String> pageNumbers = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
+        Page<Order> page = new Page<>();
+        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
         int count;
         int countOfPages;
         try {
             connection = connectionPool.provide();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SELECT_COUNT_OF_ORDERS);
-            resultSet.next();
-            count = resultSet.getInt(1);
+            connection.setAutoCommit(false);
+            countStatement = connection.createStatement();
+            countSet = countStatement.executeQuery(SELECT_COUNT_OF_ORDERS);
+            countSet.next();
+            count = countSet.getInt(1);
             countOfPages = (int) Math.ceil((double) count / LIMIT);
             for (int i = 1; i <= countOfPages; i++) {
                 pageNumbers.add(Integer.toString(i));
@@ -92,24 +99,6 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             if (pageNumbers.size() == 1) {
                 pageNumbers.clear();
             }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(resultSet, statement);
-            connectionPool.retrieve(connection);
-        }
-        return pageNumbers;
-    }
-
-    @Override
-    public ArrayList<Order> getOrderInfoForOnePage(String pageNumber) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<Order> orders = new ArrayList<>();
-        int offset = (Integer.parseInt(pageNumber) - 1) * LIMIT;
-        try {
-            connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(SELECT_INFO_FOR_ONE_ORDER_PAGE);
             preparedStatement.setInt(1, LIMIT);
             preparedStatement.setInt(2, offset);
@@ -121,13 +110,16 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
                         resultSet.getString(10));
                 orders.add(order);
             }
+            connection.commit();
+            page.setElements(orders);
+            page.setCountOfPages(pageNumbers);
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(resultSet, preparedStatement);
+            close(resultSet, preparedStatement, countSet, countStatement);
             connectionPool.retrieve(connection);
         }
-        return orders;
+        return page;
     }
 
     @Override
@@ -234,25 +226,6 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             throw new DAOException("Error in DAO method", e);
         } finally {
             close(insertStatement, surnameStatement, nameStatement);
-            connectionPool.retrieve(connection);
-        }
-    }
-
-    @Override
-    public void deleteOrdersOfDeletedUser(UserDTO userDTO) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = connectionPool.provide();
-            preparedStatement = connection.prepareStatement(DELETE_ORDER_OF_DELETED_USER);
-            preparedStatement.setString(1, userDTO.getName());
-            preparedStatement.setString(2, userDTO.getSurname());
-            preparedStatement.setString(3, userDTO.getEmail());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
     }

@@ -1,7 +1,9 @@
 package controller.command.impl;
 
-import controller.command.ICommand;
+import controller.command.Command;
 import controller.exception.ControllerException;
+import dao.entity.AbstractCar;
+import dao.entity.Page;
 import org.apache.log4j.Logger;
 import service.CarService;
 import service.ServiceFactory;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static controller.ControllerStringsStorage.*;
 
-public class SelectCarTypeCommand implements ICommand {
+public class SelectCarTypeCommand implements Command {
 
     private final static Logger LOGGER = Logger.getLogger(SelectCarTypeCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
@@ -27,8 +29,9 @@ public class SelectCarTypeCommand implements ICommand {
         Validator.validateInputData(carType);
         CssEditor.pressedButton(carType, req);
         try {
-            req.setAttribute(CARS, carService.getCarsInfoForOnePageAccordingToType(DEFAULT_PAGE_NUMBER, carType));
-            req.setAttribute(NUMBERS, carService.getCountOfCarPagesAccordingToType(carType));
+            Page<AbstractCar> page = carService.getPageOfCarsAccordingToType(DEFAULT_PAGE_NUMBER, carType);
+            req.setAttribute(CARS, page.getElements());
+            req.setAttribute(NUMBERS, page.getCountOfPages());
             req.setAttribute(INDICATOR, "true");
             req.setAttribute(CHOICE, carType);
         } catch (ServiceException e) {
