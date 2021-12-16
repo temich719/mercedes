@@ -4,4 +4,5 @@
 
 3.Администратор - добавление и удаление товара или изменение описания товара, имеет доступ к списку пользователей, может повысить пользователя до администратора, имеет доступ к списку заказов.
 
-![Image alt](https://github.com/{temich719}/{mercedes}/{master}/{src/main/webapp/img}/back.jpg)
+![Image alt](src/main/webapp/img/table1.png)
+![Image alt](src/main/webapp/img/table2.png)
