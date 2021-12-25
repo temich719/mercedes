@@ -61,12 +61,12 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     public List<Car> getCars() throws DAOException {
         LOGGER.info("Go to car page");
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         List<Car> cars = new ArrayList<>();
         try {
             connection = connectionPool.provide();
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_FROM_CARS);
+            preparedStatement = connection.prepareStatement(SELECT_FROM_CARS);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Car car = new Car(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
                         resultSet.getString(5), resultSet.getString(6), resultSet.getString(7),
@@ -77,7 +77,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         } catch (SQLException e) {
             throw new DAOException("DAO exception", e);
         } finally {
-            close(statement);
+            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
         return cars;
@@ -86,7 +86,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public Page<AbstractCar> getPageOfAllCars(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement countStatement = null;
+        PreparedStatement countStatement = null;
         ResultSet countSet = null;
         List<String> pageNumbers = new ArrayList<>();
         PreparedStatement preparedStatement = null;
@@ -99,8 +99,8 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            countStatement = connection.createStatement();
-            countSet = countStatement.executeQuery(SELECT_COUNT_OF_ALL_CARS);
+            countStatement = connection.prepareStatement(SELECT_COUNT_OF_ALL_CARS);
+            countSet = countStatement.executeQuery();
             countSet.next();
             count = countSet.getInt(1);
             countOfPages = (int) Math.ceil((double) count / LIMIT);
@@ -133,7 +133,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public Page<AbstractCar> getPageOfCars(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement countStatement = null;
+        PreparedStatement countStatement = null;
         ResultSet countSet = null;
         List<String> pageNumbers = new ArrayList<>();
         PreparedStatement preparedStatement = null;
@@ -146,8 +146,8 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            countStatement = connection.createStatement();
-            countSet = countStatement.executeQuery(SELECT_COUNT_OF_CARS);
+            countStatement = connection.prepareStatement(SELECT_COUNT_OF_CARS);
+            countSet = countStatement.executeQuery();
             countSet.next();
             count = countSet.getInt(1);
             countOfPages = (int) Math.ceil((double) count / LIMIT);
@@ -181,12 +181,12 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     public List<Minibus> getMinibuses() throws DAOException {
         LOGGER.info("Go to minibus page");
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         List<Minibus> minibuses = new ArrayList<>();
         try {
             connection = connectionPool.provide();
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_FROM_MINIBUSES);
+            preparedStatement = connection.prepareStatement(SELECT_FROM_MINIBUSES);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 minibuses.add(new Minibus(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
                         resultSet.getString(4), resultSet.getString(5), resultSet.getString(6)));
@@ -194,7 +194,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         } catch (SQLException e) {
             throw new DAOException("DAO exception", e);
         } finally {
-            close(statement);
+            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
         return minibuses;
@@ -204,19 +204,19 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     public List<Truck> getTrucks() throws DAOException {
         LOGGER.info("Go to truck page");
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         List<Truck> trucks = new ArrayList<>();
         try {
             connection = connectionPool.provide();
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_FROM_TRUCKS);
+            preparedStatement = connection.prepareStatement(SELECT_FROM_TRUCKS);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 trucks.add(new Truck(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)));
             }
         } catch (SQLException e) {
             throw new DAOException("DAO exception", e);
         } finally {
-            close(statement);
+            close(preparedStatement);
             connectionPool.retrieve(connection);
         }
         return trucks;
@@ -269,7 +269,7 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
     @Override
     public Page<AbstractCar> getPageOfMinibuses(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement countStatement = null;
+        PreparedStatement countStatement = null;
         ResultSet countSet = null;
         List<String> pageNumbers = new ArrayList<>();
         PreparedStatement preparedStatement = null;
@@ -282,8 +282,8 @@ public class CarDAOImpl extends AbstractDAO implements CarDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            countStatement = connection.createStatement();
-            countSet = countStatement.executeQuery(SELECT_COUNT_OF_MINIBUSES);
+            countStatement = connection.prepareStatement(SELECT_COUNT_OF_MINIBUSES);
+            countSet = countStatement.executeQuery();
             countSet.next();
             count = countSet.getInt(1);
             countOfPages = (int) Math.ceil((double) count / LIMIT);

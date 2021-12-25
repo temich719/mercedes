@@ -190,7 +190,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     @Override
     public Page<UserDTO> getPageOfUsers(String pageNumber) throws DAOException {
         Connection connection = null;
-        Statement countStatement = null;
+        PreparedStatement countStatement = null;
         ResultSet countSet = null;
         List<String> pageNumbers = new ArrayList<>();
         PreparedStatement preparedStatement = null;
@@ -203,8 +203,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         try {
             connection = connectionPool.provide();
             connection.setAutoCommit(false);
-            countStatement = connection.createStatement();
-            countSet = countStatement.executeQuery(SELECT_COUNT_OF_USERS);
+            countStatement = connection.prepareStatement(SELECT_COUNT_OF_USERS);
+            countSet = countStatement.executeQuery();
             countSet.next();
             count = countSet.getInt(1);
             countOfPages = (int) Math.ceil((double) count / LIMIT);
@@ -263,10 +263,10 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public String getAvatarPathByEmail(String email) throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
         String result;
         try {
             connection = connectionPool.provide();
-            PreparedStatement preparedStatement;
             preparedStatement = connection.prepareStatement(GET_AVATAR_BY_IMAGE);
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
@@ -275,7 +275,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         } finally {
-            close(resultSet);
+            close(resultSet, preparedStatement);
             connectionPool.retrieve(connection);
         }
         return result;
@@ -285,11 +285,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public List<UserDTO> getListOfUsers() throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
         List<UserDTO> users = new ArrayList<>();
         try {
             connection = connectionPool.provide();
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(SELECT_FROM_USERS);
+            preparedStatement = connection.prepareStatement(SELECT_FROM_USERS);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 UserDTO userDTO = new UserDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
                         resultSet.getString(4), resultSet.getString(5));
@@ -298,7 +299,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException("Error in DAO method", e);
         } finally {
-            close(resultSet);
+            close(resultSet, preparedStatement);
             connectionPool.retrieve(connection);
         }
         return users;
