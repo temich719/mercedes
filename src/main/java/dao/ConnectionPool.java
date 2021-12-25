@@ -9,6 +9,7 @@ public interface ConnectionPool {
 
     /**
      * <p>Provides with an existing free connection from pool</p>
+     *
      * @return Connection from pool
      * @throws DAOException module Exception
      */
@@ -16,6 +17,7 @@ public interface ConnectionPool {
 
     /**
      * <p>Returns connection back the pool</p>
+     *
      * @param connection of java.sql.Connection
      * @throws DAOException module Exception
      */

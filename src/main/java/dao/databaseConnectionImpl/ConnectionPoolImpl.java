@@ -5,9 +5,6 @@ import dao.DataBaseConfigReader;
 import dao.exception.DAOException;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,7 +18,6 @@ public class ConnectionPoolImpl implements ConnectionPool {
     private final static Logger LOGGER = Logger.getLogger(ConnectionPoolImpl.class);
     private final String DRIVER;
     private static boolean driverIsLoaded = false;
-    private final int connections = 50;
 
     private final BlockingQueue<Connection> availableConnections;
     private final BlockingQueue<Connection> takenConnections;
@@ -32,7 +28,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
         String url = databaseConfigReader.get(DB_URL);
         String user = databaseConfigReader.get(DB_LOGIN);
         String password = databaseConfigReader.get(DB_PASSWORD);
-        int amountOfConnections = connections;
+        int amountOfConnections = 50;
         this.availableConnections = new ArrayBlockingQueue<>(amountOfConnections);
         this.takenConnections = new ArrayBlockingQueue<>(amountOfConnections);
 

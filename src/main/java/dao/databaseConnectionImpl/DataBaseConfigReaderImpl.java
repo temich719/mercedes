@@ -3,7 +3,6 @@ package dao.databaseConnectionImpl;
 import dao.DataBaseConfigReader;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -16,13 +15,8 @@ public class DataBaseConfigReaderImpl implements DataBaseConfigReader {
 
     private void load() {
         properties = new Properties();
-        FileInputStream in = null;
         try {
-            in = new FileInputStream("C:\\Projects\\Servlet\\src\\main\\resources\\databaseConfig.properties");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
+            FileInputStream in = new FileInputStream("C:\\Projects\\Servlet\\src\\main\\resources\\databaseConfig.properties");
             properties.load(in);
             in.close();
         } catch (IOException e) {
