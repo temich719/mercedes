@@ -32,10 +32,10 @@
         <fmt:message bundle="${loc}" key="local.exampleSurname" var="exSurname" />
     </head>
 
-    <body>
+    <body style="background-color: black;">
         <div id="mainDiv">
-            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;"><b><c:out value="${serv}" /></b></span>
-            <div style="width: 50%;position: absolute;border: 1px solid grey;height: 80%;margin-left: 23%;margin-top: 7%;">
+            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;color:white;"><b><c:out value="${serv}" /></b></span>
+            <div style="width: 50%;position: absolute;border: 1px solid grey;height: 80%;margin-left: 23%;margin-top: 7%;background-color: white;">
                 <div style="position: absolute;margin-left: 50%;margin-top: 13%;">
                    <!-- <img src="images/hatchback.png" alt="" style=" width: 657px;width: 345px; padding-top: 4px;padding-left: 5px;">-->
                 </div>
