@@ -45,10 +45,10 @@
                 <span style="color:white;position:absolute;  margin-top: 7%;margin-left:28%;font-size: 30px;"> <c:out value="${history}" /> </span>
             </div>
             <div>
-                <table style="position: absolute;margin-top: 12%;margin-left: 35%;border:3px solid white;border-right:none;">
+                <table style="position: absolute;margin-top: 12%;margin-left: 35%;border:none">
                     <tr>
                         <th style="width: 200px;height:50px;text-align: center;border: 1px solid white;font-size: 20px;">
-                            <span style="color: white;"><c:out value="${serv}" /></span>
+                            <span style="color: white;"><c:out value="${service}" /></span>
                         </th>
                         <th style="width: 200px;height:50px;text-align: center;border: 1px solid white;font-size: 20px;">
                             <span style="color: white;"> <c:out value="${mark}" /> </span>
@@ -96,19 +96,9 @@
                         </c:choose>
                             <th style="width: 75px;height:50px;text-align: center;font-size: 20px;">
                                 <form action="FrontController" method="get">
-                                    <!--<input type="hidden" name="service" value="${order.getService()}">
-                                    <input type="hidden" name="mark" value="${order.getMark()}">
-                                    <input type="hidden" name="date" value="${order.getDate()}">-->
                                     <input type="hidden" name="id" value="${order.getId()}">
                                     <input type="hidden" name="command" value="MARK_AS_READ_COMMAND">
                                     <button class="but" data-title="${asRead}"><span>✅</span></button>
-                                </form>
-                            </th>
-                            <th style="width: 30px;height:50px;text-align: center;font-size: 20px;">
-                                <form action="FrontController" method="get">
-                                <input type="hidden" name="id" value="${order.getId()}">
-                                    <input type="hidden" name="command" value="DELETE_ORDER_FROM_ACCOUNT_COMMAND">
-                                    <button class="but" data-title="${delete}"><span>❌</span></button>
                                 </form>
                             </th>
                         </tr>

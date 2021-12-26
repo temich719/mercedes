@@ -25,7 +25,6 @@ public enum CommandEnum {
     UPLOAD_AVATAR_COMMAND(new UploadAvatarCommand()),
     ACCOUNT_PAGE_COMMAND(new AccountPageCommand()),
     MARK_AS_READ_COMMAND(new MarkAsReadCommand()),
-    DELETE_ORDER_FROM_ACCOUNT_COMMAND(new DeleteOrderFromAccountCommand()),
     CHANGE_LANGUAGE_COMMAND(new ChangeLanguageCommand()),
     ADMIN_GET_ALL_USERS_COMMAND(new AdminAllUsersCommand()),
     ADMIN_GET_ORDERS_COMMAND(new AdminAllOrdersCommand()),
