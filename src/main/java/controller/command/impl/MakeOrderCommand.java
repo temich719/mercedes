@@ -72,13 +72,25 @@ public class MakeOrderCommand implements Command {
             req.setAttribute(MARK, abstractCar.getNameOfMark());
             inputDataIsRight = false;
         }
+        String checkName = userService.getUserNameByEmail(email);
+        String checkSurname = userService.getUserSurnameByEmail(email);
         if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-            if (!name.equals(userService.getUserNameByEmail(email)) || !surname.equals(userService.getUserSurnameByEmail(email))) {
+            if (!req.getSession().getAttribute(ACCOUNT_NAME).equals(checkName) || !req.getSession().getAttribute(ACCOUNT_SURNAME).equals(checkSurname)) {
                 req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                 req.setAttribute(PICTURE, imagePath);
                 req.setAttribute(PRICE, abstractCar.getPrice());
                 req.setAttribute(MARK, abstractCar.getNameOfMark());
                 inputDataIsRight = false;
+            }
+        } else if (inputDataIsRight) {
+            if (Objects.nonNull(checkName) && Objects.nonNull(checkSurname)) {
+                if (!name.equals(checkName) || !surname.equals(checkSurname)) {
+                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
+                    req.setAttribute(PICTURE, imagePath);
+                    req.setAttribute(PRICE, abstractCar.getPrice());
+                    req.setAttribute(MARK, abstractCar.getNameOfMark());
+                    inputDataIsRight = false;
+                }
             }
         }
         return inputDataIsRight;

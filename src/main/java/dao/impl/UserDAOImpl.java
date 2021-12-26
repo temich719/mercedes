@@ -148,14 +148,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String name;
+        String name = null;
         try {
             connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(GET_NAME_BY_EMAIL);
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            name = resultSet.getString(1);
+            if (resultSet.next()){
+                name = resultSet.getString(1);
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -170,14 +171,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String surname;
+        String surname = null;
         try {
             connection = connectionPool.provide();
             preparedStatement = connection.prepareStatement(GET_SURNAME_BY_EMAIL);
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            surname = resultSet.getString(1);
+            if (resultSet.next()){
+                surname = resultSet.getString(1);
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

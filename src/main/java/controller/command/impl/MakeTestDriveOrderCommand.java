@@ -96,8 +96,10 @@ public class MakeTestDriveOrderCommand implements Command {
             inputDataIsRight = false;
         }
         try {
+            String checkName = userService.getUserNameByEmail(email);
+            String checkSurname = userService.getUserSurnameByEmail(email);
             if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-                if (!userName.equals(userService.getUserNameByEmail(email)) || !userSurname.equals(userService.getUserSurnameByEmail(email))) {
+                if (!req.getSession().getAttribute(ACCOUNT_NAME).equals(checkName) || !req.getSession().getAttribute(ACCOUNT_SURNAME).equals(checkSurname)) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     if (!nameOfMark.isEmpty()) {
                         req.setAttribute(SELECT, "true");
@@ -110,6 +112,23 @@ public class MakeTestDriveOrderCommand implements Command {
                         }
                     }
                     inputDataIsRight = false;
+                }
+            } else if (inputDataIsRight) {
+                if (Objects.nonNull(checkName) && Objects.nonNull(checkSurname)) {
+                    if (!userName.equals(checkName) || !userSurname.equals(checkSurname)) {
+                        req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
+                        if (!nameOfMark.isEmpty()) {
+                            req.setAttribute(SELECT, "true");
+                            req.setAttribute(NAME_OF_MARK, nameOfMark);
+                        } else {
+                            try {
+                                req.setAttribute(ALL_CARS, carService.getAllCars());
+                            } catch (ServiceException e) {
+                                throw new ControllerException(e);
+                            }
+                        }
+                        inputDataIsRight = false;
+                    }
                 }
             }
         } catch (ServiceException e) {
