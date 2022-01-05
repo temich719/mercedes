@@ -8,6 +8,7 @@ import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ public class AdminChangeInfoCommand implements Command {
     private static final Logger LOGGER = Logger.getLogger(AdminChangeInfoCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
@@ -37,28 +39,59 @@ public class AdminChangeInfoCommand implements Command {
             final String trunk = req.getParameter(TRUNK_VOLUME);
             final String maxSpeed = req.getParameter(MAX_SPEED);
             final String type = req.getParameter(TYPE);
-            Validator.validateInputData(oldImagePath, imagePath, mark, price, power, acceleration, consumption, engine, tank, trunk, maxSpeed, type);
-            Car car = new Car(mark, makePricePrettier(price), power, acceleration, consumption, engine, tank, trunk, maxSpeed, imagePath, type);
-            if (!carService.updateCarInfo(car)) {
-                req.setAttribute(MARK, mark);
-                req.setAttribute(PRICE, price);
-                req.setAttribute(POWER, power);
-                req.setAttribute(ACCELERATION, acceleration);
-                req.setAttribute(CONSUMPTION, consumption);
-                req.setAttribute(ENGINE_VOLUME, engine);
-                req.setAttribute(TANK_VOLUME, tank);
-                req.setAttribute(TRUNK_VOLUME, trunk);
-                req.setAttribute(MAX_SPEED, maxSpeed);
-                req.setAttribute(TYPE, type);
-                req.setAttribute(IMAGE_PATH, imagePath);
-                req.setAttribute(OLD_IMAGE_PATH, oldImagePath);
-                req.setAttribute(ERROR, WRONG_CAR_TYPE);
-                returnPageName = JSP_ADMIN + ADMIN_CAR_DESCRIPTION_PAGE;
+            boolean dataIsValid = validateData(req, oldImagePath, imagePath, mark, price, power, acceleration, consumption, engine, tank, trunk, maxSpeed, type);
+            if (dataIsValid) {
+                Car car = new Car(mark, makePricePrettier(price), power, acceleration, consumption, engine, tank, trunk, maxSpeed, imagePath, type);
+                if (!carService.updateCarInfo(car)) {
+                    returnPageName = setInitialValues(req, oldImagePath, imagePath, mark, price, power, acceleration, consumption, engine, tank, trunk, maxSpeed, type);
+                    req.setAttribute(ERROR, IS_NOT_ALLOWED_CAR_TYPE_TO_BE_ADDED);
+                }
+            }
+            else {
+                returnPageName = setInitialValues(req, oldImagePath, imagePath, mark, price, power, acceleration, consumption, engine, tank, trunk, maxSpeed, type);
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
         return returnPageName;
+    }
+
+    private String setInitialValues(HttpServletRequest req, String oldImagePath, String imagePath, String mark, String price, String power, String acceleration, String consumption, String engine, String tank, String trunk, String maxSpeed, String type) {
+        req.setAttribute(MARK, mark);
+        req.setAttribute(PRICE, price);
+        req.setAttribute(POWER, power);
+        req.setAttribute(ACCELERATION, acceleration);
+        req.setAttribute(CONSUMPTION, consumption);
+        req.setAttribute(ENGINE_VOLUME, engine);
+        req.setAttribute(TANK_VOLUME, tank);
+        req.setAttribute(TRUNK_VOLUME, trunk);
+        req.setAttribute(MAX_SPEED, maxSpeed);
+        req.setAttribute(TYPE, type);
+        req.setAttribute(IMAGE_PATH, imagePath);
+        req.setAttribute(OLD_IMAGE_PATH, oldImagePath);
+        return JSP_ADMIN + ADMIN_CAR_DESCRIPTION_PAGE;
+    }
+
+    private boolean validateData(HttpServletRequest req, String oldImagePath, String imagePath, String mark, String price, String power, String acceleration, String consumption, String engine, String tank, String trunk, String maxSpeed, String type) throws ServiceException {
+        boolean isCorrect = true;
+        validator.validateInputData(oldImagePath, imagePath, mark, price, power, acceleration, consumption, engine, tank, trunk, maxSpeed, type);
+        if (!validator.validatePrice(price.replaceAll("\\s", ""))) {
+            req.setAttribute(ERROR, INVALID_PRICE);
+            isCorrect = false;
+        }
+        else if (!validator.validateImagePath(imagePath)){
+            req.setAttribute(ERROR, WRONG_IMAGE_PATH_FORMAT);
+            isCorrect = false;
+        }
+        else if (!validator.isNonNegativeDigit(power, acceleration, consumption, engine, tank, trunk, maxSpeed)){
+            req.setAttribute(ERROR, NEGATIVE_NUMBER_OR_NOT_NUMBER);
+            isCorrect = false;
+        }
+        else if (!validator.isPermissibleCarType(type)){
+            req.setAttribute(ERROR, IS_NOT_ALLOWED_CAR_TYPE_TO_BE_ADDED);
+            isCorrect = false;
+        }
+        return isCorrect;
     }
 
     private String makePricePrettier(String price) {

@@ -9,6 +9,7 @@ import service.OrderService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,15 +23,16 @@ public class AdminDeleteOrderCommand implements Command {
     private static final Logger LOGGER = Logger.getLogger(AdminDeleteOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final OrderService orderService = serviceFactory.getOrderService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to AdminDeleteOrderCommand");
         final String id = req.getParameter(ID);
         final String numberOfPage = req.getParameter(PAGE_NUMBER);
-        Validator.validateInputData(id);
         Page<Order> page;
         try {
+            validator.validateInputData(id);
             orderService.deleteOrder(Integer.parseInt(id));
             if (Objects.isNull(numberOfPage) || numberOfPage.isEmpty()) {
                 page = orderService.getPageOfOrders(DEFAULT_PAGE_NUMBER);

@@ -11,6 +11,7 @@ import service.ServiceFactory;
 import service.cssEditor.CssEditor;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,15 +24,16 @@ public class FilterAllCarsCommand implements Command {
     private final static Logger LOGGER = Logger.getLogger(FilterAllCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to FilterAllCarsCommand");
         final String carType = req.getParameter(TYPE);
-        Validator.validateInputData(carType);
-        CssEditor.pressedButton(carType, req);
-        Page<AbstractCar> page;
         try {
+            validator.validateInputData(carType);
+            CssEditor.pressedButton(carType, req);
+            Page<AbstractCar> page;
             if (carType.equals(CAR)) {
                 page = carService.getPageOfCars(DEFAULT_PAGE_NUMBER);
                 req.setAttribute(NUMBERS, page.getCountOfPages());

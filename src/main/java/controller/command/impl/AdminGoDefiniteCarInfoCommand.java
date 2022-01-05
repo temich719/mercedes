@@ -8,6 +8,7 @@ import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,13 +20,14 @@ public class AdminGoDefiniteCarInfoCommand implements Command {
     private static final Logger LOGGER = Logger.getLogger(AdminGoDefiniteCarInfoCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to AdminGoDefiniteCarInfoCommand");
         try {
             final String selectedMark = req.getParameter(SELECT_NAME);
-            Validator.validateInputData(selectedMark);
+            validator.validateInputData(selectedMark);
             final Car car = carService.getCarByMark(selectedMark);
             req.setAttribute(MARK, car.getNameOfMark());
             req.setAttribute(PRICE, car.getPrice().replaceAll("\\s", ""));

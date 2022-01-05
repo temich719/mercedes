@@ -8,6 +8,7 @@ import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +21,14 @@ public class FormOrderCommand implements Command {
     private final static Logger LOGGER = Logger.getLogger(FormOrderCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to FormOrderCommand");
         final String imagePath = req.getParameter(PICTURE);
-        Validator.validateInputData(imagePath);
         try {
+            validator.validateInputData(imagePath);
             AbstractCar abstractCar = carService.getAnyCarByImage(imagePath);
             req.setAttribute(MARK, abstractCar.getNameOfMark());
             req.setAttribute(PRICE, abstractCar.getPrice());

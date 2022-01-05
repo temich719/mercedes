@@ -39,7 +39,8 @@ public class FrontController extends HttpServlet {
         try {
             forward = handleRequest(request, response);
         } catch (ControllerException e) {
-            LOGGER.error("Something went wrong");
+            LOGGER.error("Something went wrong:" + e.getMessage());
+            request.setAttribute(ERROR, e.getMessage());
             request.getRequestDispatcher(WEB_INF + ERRORS + ERROR + JSP).forward(request, response);
         }
         if (Objects.nonNull(forward)) {

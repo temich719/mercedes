@@ -8,6 +8,7 @@ import service.UserService;
 import service.exception.ServiceException;
 import service.util.CodeConfirmGenerator;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 import service.email.Mail;
 
 import javax.mail.MessagingException;
@@ -23,17 +24,18 @@ public class SendEmailCommand implements Command {
     private final static Logger LOGGER = Logger.getLogger(SendEmailCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to SendEmailCommand");
         String page = JSP_USER + CODE_CONFIRM_NEW_PASSWORD;
         final String email = req.getParameter(EMAIL);
-        Validator.validateInputData(email);
-        boolean inputDataRight;
+        boolean inputDataCorrect;
         try {
-            inputDataRight = isInputDataRight(req, email);
-            if (inputDataRight){
+            validator.validateInputData(email);
+            inputDataCorrect = isInputDataCorrect(req, email);
+            if (inputDataCorrect){
                 try {
                     page = JSP_USER + CONFIRMATION_OF_NEW_PASSWORD;
                     String code = CodeConfirmGenerator.generateCode();
@@ -51,13 +53,13 @@ public class SendEmailCommand implements Command {
         return page;
     }
 
-    private boolean isInputDataRight(HttpServletRequest req, String email) throws ServiceException {
+    private boolean isInputDataCorrect(HttpServletRequest req, String email) throws ServiceException {
         boolean inputDataRight = true;
         if (!userService.isExistingEmail(email)) {
             req.setAttribute(ERROR, NOT_EXISTING_EMAIL);
             inputDataRight = false;
         }
-        if (!Validator.validateEmail(email) && inputDataRight) {
+        if (!validator.validateEmail(email) && inputDataRight) {
             req.setAttribute(ERROR, WRONG_EMAIL);
             inputDataRight = false;
         }

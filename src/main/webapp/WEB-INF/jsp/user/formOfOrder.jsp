@@ -21,10 +21,10 @@
         <fmt:message bundle="${loc}" key="local.exampleSurname" var="exSurname" />
     </head>
 
-    <body style="background-color: black;">
+    <body style="background-color:black;">
         <div id="mainDiv">
-            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;color:white"><b><c:out value="${makeOrder}" /></b></span>
-            <div style="width: 50%;position: absolute;border: 1px solid grey;height: 80%;margin-left: 23%;margin-top: 7%;background-color: white;">
+            <span style="font-size: 30px;position: absolute;margin-top: 2%;margin-left: 23%;color:white;"><b><c:out value="${makeOrder}" /></b></span>
+            <div style="width: 50%;position: absolute;border: 1px solid grey;height: 80%;margin-left: 23%;margin-top: 7%;background-color:white;">
                 <span style="position: absolute;margin-left: 63%;margin-top: 10%;font-size: 25px;width:70%;">${requestScope.mark}</span>
                 <div style="position: absolute;margin-left: 50%;margin-top: 13%;">
                    <img src="${requestScope.img}" alt="car" style=" width: 657px;width: 345px; padding-top: 4px;padding-left: 5px;">

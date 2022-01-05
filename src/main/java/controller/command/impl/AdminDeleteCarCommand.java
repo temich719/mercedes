@@ -7,6 +7,7 @@ import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +19,14 @@ public class AdminDeleteCarCommand implements Command {
     private static final Logger LOGGER = Logger.getLogger(AdminDeleteCarCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to AdminDeleteCarCommand");
         final String mark = req.getParameter(SELECT_NAME);
-        Validator.validateInputData(mark);
         try {
+            validator.validateInputData(mark);
             carService.deleteCar(mark);
         } catch (ServiceException e) {
             throw new ControllerException(e);

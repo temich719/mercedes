@@ -11,6 +11,7 @@ import service.UserService;
 import service.email.Mail;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,20 +28,21 @@ public class MakeTestDriveOrderCommand implements Command {
     private final CarService carService = serviceFactory.getCarService();
     private final OrderService orderService = serviceFactory.getOrderService();
     private final UserService userService = serviceFactory.getUserService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MakeTestDriveOrderCommand");
         String page = JSP_USER + TEST_DRIVE_ORDER_PAGE;
-        boolean inputDataIsRight;
+        boolean inputDataIsCorrect;
         final String userName = req.getParameter(NAME);
         final String userSurname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
         final String phone = req.getParameter(PHONE);
         final String date = req.getParameter(DATE);
         final String nameOfMark = req.getParameter(NAME_OF_MARK);
-        inputDataIsRight = isInputDataIsCorrect(req, userName, userSurname, email, phone, date, nameOfMark);
-        if (inputDataIsRight) {
+        inputDataIsCorrect = isInputDataIsCorrect(req, userName, userSurname, email, phone, date, nameOfMark);
+        if (inputDataIsCorrect) {
             String mark;
             try {
                 if (nameOfMark.isEmpty()) {
@@ -66,74 +68,60 @@ public class MakeTestDriveOrderCommand implements Command {
     }
 
     private boolean isInputDataIsCorrect(HttpServletRequest req, String userName, String userSurname, String email, String phone, String date, String nameOfMark) throws ControllerException {
-        boolean inputDataIsRight = true;
+        boolean inputDataIsCorrect = true;
         if (userName.isEmpty() || userSurname.isEmpty() || email.isEmpty() || phone.isEmpty() || date.isEmpty()) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
-            if (!nameOfMark.isEmpty()) {
-                req.setAttribute(SELECT, "true");
-                req.setAttribute(NAME_OF_MARK, nameOfMark);
-            } else {
-                try {
-                    req.setAttribute(ALL_CARS, carService.getAllCars());
-                } catch (ServiceException e) {
-                    throw new ControllerException(e);
-                }
-            }
-            inputDataIsRight = false;
-        }
-        if (!Validator.validateEmail(email) && inputDataIsRight) {
+            checkNameOfMarkOnEmptyCondition(nameOfMark, req);
+            inputDataIsCorrect = false;
+        } else if (!validator.validateEmail(email)) {
             req.setAttribute(ERROR, INVALID_EMAIL);
-            if (!nameOfMark.isEmpty()) {
-                req.setAttribute(SELECT, "true");
-                req.setAttribute(NAME_OF_MARK, nameOfMark);
-            } else {
-                try {
-                    req.setAttribute(ALL_CARS, carService.getAllCars());
-                } catch (ServiceException e) {
-                    throw new ControllerException(e);
+            checkNameOfMarkOnEmptyCondition(nameOfMark, req);
+            inputDataIsCorrect = false;
+        } else if (!validator.validatePhoneNumber(phone)) {
+            req.setAttribute(ERROR, INVALID_PHONE_NUMBER);
+            checkNameOfMarkOnEmptyCondition(nameOfMark, req);
+            inputDataIsCorrect = false;
+        } else {
+            try {
+                if (!validator.validateDate(date)) {
+                    req.setAttribute(ERROR, INVALID_DATE);
+                    checkNameOfMarkOnEmptyCondition(nameOfMark, req);
+                    inputDataIsCorrect = false;
                 }
-            }
-            inputDataIsRight = false;
-        }
-        try {
-            String checkName = userService.getUserNameByEmail(email);
-            String checkSurname = userService.getUserSurnameByEmail(email);
-            if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
-                if (!req.getSession().getAttribute(ACCOUNT_NAME).equals(checkName) || !req.getSession().getAttribute(ACCOUNT_SURNAME).equals(checkSurname)) {
-                    req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
-                    if (!nameOfMark.isEmpty()) {
-                        req.setAttribute(SELECT, "true");
-                        req.setAttribute(NAME_OF_MARK, nameOfMark);
-                    } else {
-                        try {
-                            req.setAttribute(ALL_CARS, carService.getAllCars());
-                        } catch (ServiceException e) {
-                            throw new ControllerException(e);
-                        }
-                    }
-                    inputDataIsRight = false;
-                }
-            } else if (inputDataIsRight) {
-                if (Objects.nonNull(checkName) && Objects.nonNull(checkSurname)) {
-                    if (!userName.equals(checkName) || !userSurname.equals(checkSurname)) {
+                String checkName = userService.getUserNameByEmail(email);
+                String checkSurname = userService.getUserSurnameByEmail(email);
+                if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsCorrect) {
+                    if (!req.getSession().getAttribute(ACCOUNT_NAME).equals(checkName) || !req.getSession().getAttribute(ACCOUNT_SURNAME).equals(checkSurname)) {
                         req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
-                        if (!nameOfMark.isEmpty()) {
-                            req.setAttribute(SELECT, "true");
-                            req.setAttribute(NAME_OF_MARK, nameOfMark);
-                        } else {
-                            try {
-                                req.setAttribute(ALL_CARS, carService.getAllCars());
-                            } catch (ServiceException e) {
-                                throw new ControllerException(e);
-                            }
+                        checkNameOfMarkOnEmptyCondition(nameOfMark, req);
+                        inputDataIsCorrect = false;
+                    }
+                } else if (inputDataIsCorrect) {
+                    if (Objects.nonNull(checkName) && Objects.nonNull(checkSurname)) {
+                        if (!userName.equals(checkName) || !userSurname.equals(checkSurname)) {
+                            req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
+                            checkNameOfMarkOnEmptyCondition(nameOfMark, req);
+                            inputDataIsCorrect = false;
                         }
-                        inputDataIsRight = false;
                     }
                 }
+            } catch (ServiceException e) {
+                throw new ControllerException(e);
             }
-        } catch (ServiceException e) {
-            throw new ControllerException(e);
         }
-        return inputDataIsRight;
+        return inputDataIsCorrect;
+    }
+
+    private void checkNameOfMarkOnEmptyCondition(String nameOfMark, HttpServletRequest req) throws ControllerException {
+        if (!nameOfMark.isEmpty()) {
+            req.setAttribute(SELECT, "true");
+            req.setAttribute(NAME_OF_MARK, nameOfMark);
+        } else {
+            try {
+                req.setAttribute(ALL_CARS, carService.getAllCars());
+            } catch (ServiceException e) {
+                throw new ControllerException(e);
+            }
+        }
     }
 }

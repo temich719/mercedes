@@ -9,6 +9,7 @@ import service.ServiceFactory;
 import service.UserService;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,17 +24,17 @@ public class EnterCommand implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
     private final OrderService orderService = serviceFactory.getOrderService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to EnterCommand");
         final String email = req.getParameter(EMAIL);
         final String password = req.getParameter(PASSWORD);
-        Validator.validateInputData(email, password);
         String returnPageName = JSP_USER + ENTER_PAGE;
-        UserDTO userDTO;
         try {
-            userDTO = userService.enter(email, password);
+            validator.validateInputData(email, password);
+            UserDTO userDTO = userService.enter(email, password);
             if (Objects.nonNull(userDTO)) {
                 HttpSession session = req.getSession(true);
                 session.setAttribute(NAME_ACCOUNT, userDTO.getName() + " " + userDTO.getSurname());

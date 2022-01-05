@@ -12,5 +12,9 @@
         <h1>
             ERROR!
         </h1>
+        <br>
+        <h3>
+            <span style="color:red;">${requestScope.error}</span>
+        </h3>
     </body>
 </html>

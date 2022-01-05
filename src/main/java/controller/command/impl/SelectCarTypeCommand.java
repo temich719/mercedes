@@ -10,6 +10,7 @@ import service.ServiceFactory;
 import service.cssEditor.CssEditor;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,14 +22,15 @@ public class SelectCarTypeCommand implements Command {
     private final static Logger LOGGER = Logger.getLogger(SelectCarTypeCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to SelectCarTypeCommand");
         final String carType = req.getParameter(CAR_BUTTON);
-        Validator.validateInputData(carType);
-        CssEditor.pressedButton(carType, req);
         try {
+            validator.validateInputData(carType);
+            CssEditor.pressedButton(carType, req);
             Page<AbstractCar> page = carService.getPageOfCarsAccordingToType(DEFAULT_PAGE_NUMBER, carType);
             req.setAttribute(CARS, page.getElements());
             req.setAttribute(NUMBERS, page.getCountOfPages());

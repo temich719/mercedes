@@ -7,6 +7,9 @@
     <head>
         <title>Add Product</title>
         <meta charset="UTF-8">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.backFromAccount" var="toMain" />
     </head>
     <body>
         <h1 style="margin-left:37%;">Добавление товаров</h1>
@@ -43,6 +46,9 @@
                     Добавить малотоннажную машину
                 </button>
             </form>
+            <div>
+                <span style="color:red;">${requestScope.error}</span>
+            </div>
         </div>
     </body>
 </html>

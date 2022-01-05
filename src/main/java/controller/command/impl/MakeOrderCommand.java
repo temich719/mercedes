@@ -12,6 +12,7 @@ import service.UserService;
 import service.email.Mail;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +29,13 @@ public class MakeOrderCommand implements Command {
     private final CarService carService = serviceFactory.getCarService();
     private final OrderService orderService = serviceFactory.getOrderService();
     private final UserService userService = serviceFactory.getUserService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to MakeOrderCommand");
         String page = JSP_USER + FORM_OF_ORDER_PAGE;
-        boolean inputDataIsRight;
+        boolean inputDataIsCorrect;
         final String name = req.getParameter(NAME);
         final String surname = req.getParameter(SURNAME);
         final String email = req.getParameter(EMAIL);
@@ -41,8 +43,8 @@ public class MakeOrderCommand implements Command {
         final String imagePath = req.getParameter(PICTURE);
         try {
             AbstractCar abstractCar = carService.getAnyCarByImage(imagePath);
-            inputDataIsRight = isInputDataIsCorrect(req, name, surname, email, phone, imagePath, abstractCar);
-            if (inputDataIsRight) {
+            inputDataIsCorrect = isInputDataIsCorrect(req, name, surname, email, phone, imagePath, abstractCar);
+            if (inputDataIsCorrect) {
                 Order order = new Order(name, surname, email, CAR_BUYING, abstractCar.getNameOfMark(), abstractCar.getPrice(), phone, null, UNREAD);
                 orderService.addOrder(order);
                 sendMessage(email, abstractCar.getNameOfMark(), abstractCar.getPrice(), req);
@@ -57,43 +59,50 @@ public class MakeOrderCommand implements Command {
     }
 
     private boolean isInputDataIsCorrect(HttpServletRequest req, String name, String surname, String email, String phone, String imagePath, AbstractCar abstractCar) throws ServiceException {
-        boolean inputDataIsRight = true;
+        boolean inputDataIsCorrect = true;
         if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || phone.isEmpty()) {
             req.setAttribute(ERROR, NOT_ALL_REQUIRED_FIELDS_FILLED_MESSAGE);
             req.setAttribute(PICTURE, imagePath);
             req.setAttribute(PRICE, abstractCar.getPrice());
             req.setAttribute(MARK, abstractCar.getNameOfMark());
-            inputDataIsRight = false;
+            inputDataIsCorrect = false;
         }
-        if (!Validator.validateEmail(email) && inputDataIsRight) {
+        if (!validator.validateEmail(email) && inputDataIsCorrect) {
             req.setAttribute(ERROR, INVALID_EMAIL);
             req.setAttribute(PICTURE, imagePath);
             req.setAttribute(PRICE, abstractCar.getPrice());
             req.setAttribute(MARK, abstractCar.getNameOfMark());
-            inputDataIsRight = false;
+            inputDataIsCorrect = false;
+        }
+        if (!validator.validatePhoneNumber(phone) && inputDataIsCorrect){
+            req.setAttribute(ERROR, INVALID_PHONE_NUMBER);
+            req.setAttribute(PICTURE, imagePath);
+            req.setAttribute(PRICE, abstractCar.getPrice());
+            req.setAttribute(MARK, abstractCar.getNameOfMark());
+            inputDataIsCorrect = false;
         }
         String checkName = userService.getUserNameByEmail(email);
         String checkSurname = userService.getUserSurnameByEmail(email);
-        if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsRight) {
+        if (Objects.nonNull(req.getSession().getAttribute(NAME_ACCOUNT)) && inputDataIsCorrect) {
             if (!req.getSession().getAttribute(ACCOUNT_NAME).equals(checkName) || !req.getSession().getAttribute(ACCOUNT_SURNAME).equals(checkSurname)) {
                 req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                 req.setAttribute(PICTURE, imagePath);
                 req.setAttribute(PRICE, abstractCar.getPrice());
                 req.setAttribute(MARK, abstractCar.getNameOfMark());
-                inputDataIsRight = false;
+                inputDataIsCorrect = false;
             }
-        } else if (inputDataIsRight) {
+        } else if (inputDataIsCorrect) {
             if (Objects.nonNull(checkName) && Objects.nonNull(checkSurname)) {
                 if (!name.equals(checkName) || !surname.equals(checkSurname)) {
                     req.setAttribute(ERROR, NAME_OR_SURNAME_DOES_NOT_MATCH_USER_EMAIL_MESSAGE);
                     req.setAttribute(PICTURE, imagePath);
                     req.setAttribute(PRICE, abstractCar.getPrice());
                     req.setAttribute(MARK, abstractCar.getNameOfMark());
-                    inputDataIsRight = false;
+                    inputDataIsCorrect = false;
                 }
             }
         }
-        return inputDataIsRight;
+        return inputDataIsCorrect;
     }
 
     private void sendMessage(String email, String mark, String price, HttpServletRequest req) {

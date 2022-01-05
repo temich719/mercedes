@@ -9,6 +9,7 @@ import service.CarService;
 import service.ServiceFactory;
 import service.exception.ServiceException;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +21,14 @@ public class SelectPageAllCarsCommand implements Command {
     private static final Logger LOGGER = Logger.getLogger(SelectPageAllCarsCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final CarService carService = serviceFactory.getCarService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to SelectPageAllCarsCommand");
         final String pageNumber = req.getParameter(NUMBER_OF_PAGE);
-        Validator.validateInputData(pageNumber);
         try {
+            validator.validateInputData(pageNumber);
             Page<AbstractCar> page = carService.getPageOfAllCars(pageNumber);
             req.setAttribute(ALL_CARS, page.getElements());
             req.setAttribute(NUMBERS, page.getCountOfPages());

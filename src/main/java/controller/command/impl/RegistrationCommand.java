@@ -8,6 +8,7 @@ import service.UserService;
 import service.exception.ServiceException;
 import service.util.CodeConfirmGenerator;
 import service.util.Validator;
+import service.util.impl.ValidatorImpl;
 import service.email.Mail;
 
 import javax.mail.MessagingException;
@@ -23,17 +24,22 @@ public class RegistrationCommand implements Command {
     private final static Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
     private final ServiceFactory serviceFactory = ServiceFactory.getINSTANCE();
     private final UserService userService = serviceFactory.getUserService();
+    private final Validator validator = ValidatorImpl.getINSTANCE();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ControllerException {
         LOGGER.info("We got to RegistrationCommand");
         String page = JSP_USER + REGISTRATION_PAGE;
-        boolean inputDataIsRight;
+        boolean inputDataIsCorrect;
         final String email = req.getParameter(EMAIL);
         final String password = req.getParameter(PASSWORD);
-        Validator.validateInputData(email, password);
-        inputDataIsRight = isInputDataIsCorrect(req, email, password);
-        if (inputDataIsRight) {
+        try {
+            validator.validateInputData(email, password);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+        }
+        inputDataIsCorrect = isInputDataIsCorrect(req, email, password);
+        if (inputDataIsCorrect) {
             try {
                 String code = CodeConfirmGenerator.generateCode();
                 HttpSession session = req.getSession(true);
@@ -48,27 +54,27 @@ public class RegistrationCommand implements Command {
     }
 
     private boolean isInputDataIsCorrect(HttpServletRequest req, String email, String password) throws ControllerException {
-        boolean inputDataIsRight = true;
+        boolean inputDataIsCorrect = true;
         try {
             if (userService.isExistingEmail(email.trim())) {
                 req.setAttribute(ERROR, EMAIL_ALREADY_EXISTS);
-                inputDataIsRight = false;
+                inputDataIsCorrect = false;
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
         }
-        if (Validator.validateEmail(email.trim()) && inputDataIsRight) {
-            if (Validator.validatePassword(password)) {
+        if (validator.validateEmail(email.trim()) && inputDataIsCorrect) {
+            if (validator.validatePassword(password)) {
                 req.getSession().setAttribute(EMAIL, email);
                 req.getSession().setAttribute(PASSWORD, password);
             } else {
                 req.setAttribute(ERR, PASSWORD_REQUIREMENTS);
-                inputDataIsRight = false;
+                inputDataIsCorrect = false;
             }
-        } else if (inputDataIsRight) {
+        } else if (inputDataIsCorrect) {
             req.setAttribute(ERROR, INVALID_EMAIL);
-            inputDataIsRight = false;
+            inputDataIsCorrect = false;
         }
-        return inputDataIsRight;
+        return inputDataIsCorrect;
     }
 }

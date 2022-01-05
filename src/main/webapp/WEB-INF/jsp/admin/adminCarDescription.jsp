@@ -10,6 +10,7 @@
     </head>
     <body>
         <h1>Характеристики машины</h1>
+        <p style="color: red;">${requestScope.error}</p>
         <div>
             <form action="FrontController" method="get">
                 <input type="hidden" name="command" value="CHANGE_INFO_COMMAND">
@@ -59,7 +60,6 @@
                     <h3>Тип</h3>
                     <input type="text" name="type" value=${requestScope.type}>
                 </div>
-                <p style="color: red;">${requestScope.error}</p>
                 <button style="position:absolute;border:none;margin-top:15%;margin-left:-50%;width:300px;height:50px;background:orange;color:white;">Изменить</button>
             </form>
         </div>
