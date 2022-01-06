@@ -7,35 +7,45 @@
     <head>
         <title>All orders page</title>
         <meta charset="UTF-8">
-          <link rel="stylesheet" href="css/adminAllOrders.css" type="text/css">
+        <link rel="stylesheet" href="css/adminAllOrders.css" type="text/css">
+        <fmt:setLocale value="${sessionScope.locale}" />
+        <fmt:setBundle basename="localization.local" var="loc" />
+        <fmt:message bundle="${loc}" key="local.ordersList" var="ordersList" />
+        <fmt:message bundle="${loc}" key="local.name" var="name" />
+        <fmt:message bundle="${loc}" key="local.surname" var="surname" />
+        <fmt:message bundle="${loc}" key="local.serv" var="serv" />
+        <fmt:message bundle="${loc}" key="local.mark" var="mark" />
+        <fmt:message bundle="${loc}" key="local.price" var="price" />
+        <fmt:message bundle="${loc}" key="local.phone" var="phone" />
+        <fmt:message bundle="${loc}" key="local.date" var="date" />
     </head>
     <body>
-        <h1 style="margin-left:40%;margin-top:3%;">Список заказов</h1>
+        <h1 style="margin-left:40%;margin-top:3%;"><c:out value="${ordersList}" /></h1>
         <table style="margin-left:1%;margin-top:2%;">
             <tr>
                 <th style="width: 170px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Имя</span>
+                    <span style="font-size:30px;"><c:out value="${name}" /></span>
                 </th>
                 <th style="width: 170px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Фамилия</span>
+                    <span style="font-size:30px;"><c:out value="${surname}" /></span>
                 </th>
                 <th style="width: 170px;height:50px;text-align: center;">
                     <span style="font-size:30px;">Email</span>
                 </th>
                 <th style="width: 170px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Услуга</span>
+                    <span style="font-size:30px;"><c:out value="${serv}" /></span>
                 </th>
                 <th style="width: 300px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Марка машины</span>
+                    <span style="font-size:30px;"><c:out value="${mark}" /></span>
                 </th>
                 <th style="width: 170px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Цена</span>
+                    <span style="font-size:30px;"><c:out value="${price}" /></span>
                 </th>
                 <th style="width: 170px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Телефон</span>
+                    <span style="font-size:30px;"><c:out value="${phone}" /></span>
                 </th>
                 <th style="width: 170px;height:50px;text-align: center;">
-                    <span style="font-size:30px;">Дата</span>
+                    <span style="font-size:30px;"><c:out value="${date}" /></span>
                 </th>
             </tr>
             <c:forEach var="order" items="${requestScope.orders}" >
