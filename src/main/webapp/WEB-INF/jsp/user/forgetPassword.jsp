@@ -19,7 +19,7 @@
 
 <body style="background-image: url(img/back.jpg);">
     <div id="mainDiv">
-        <form method="get" action="FrontController">
+        <form method="post" action="FrontController">
             <br><br><br>
             <h1><c:out value="${changePassword}" /></h1>
             <p><c:out value="${newPassword}" /></p>

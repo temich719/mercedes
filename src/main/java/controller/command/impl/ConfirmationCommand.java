@@ -42,6 +42,8 @@ public class ConfirmationCommand implements Command {
                 User user = new User(name, surname, REGISTERED, email, password);
                 userService.register(user);
                 req.getSession().setAttribute(NAME_ACCOUNT, name + " " + surname);
+                req.getSession().setAttribute(ACCOUNT_NAME, name);
+                req.getSession().setAttribute(ACCOUNT_SURNAME, surname);
                 req.getSession().setAttribute(EMAIL_ACCOUNT, email);
             }
         } catch (ServiceException e) {

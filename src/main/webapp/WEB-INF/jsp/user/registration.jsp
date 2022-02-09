@@ -22,7 +22,7 @@
 
 <body style="background-image: url(img/back.jpg);">
     <div id="mainDiv">
-        <form method="get" action="FrontController">
+        <form method="post" action="FrontController">
             <br><br><br><br>
             <h1><c:out value="${registration}" /> </h1>
             <br><br>

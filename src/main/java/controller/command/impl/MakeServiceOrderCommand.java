@@ -57,11 +57,15 @@ public class MakeServiceOrderCommand implements Command {
                 } catch (IOException | MessagingException e) {
                     LOGGER.error(e.getMessage());
                 }
-                page = JSP_USER + THANKS_PAGE;
-                req.setAttribute(EMAIL, email);
                 req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
+                page = THANKS_PAGE + JSP;
+                resp.sendRedirect(page);
+                return null;
             } catch (ServiceException e) {
                 throw new ControllerException(e);
+            }
+            catch (IOException e){
+                LOGGER.error("Can't redirect to thanks page");
             }
         }
         return page;

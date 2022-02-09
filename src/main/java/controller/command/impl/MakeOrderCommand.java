@@ -50,10 +50,15 @@ public class MakeOrderCommand implements Command {
                 sendMessage(email, abstractCar.getNameOfMark(), abstractCar.getPrice(), req);
                 req.setAttribute(EMAIL, email);
                 req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
-                page = JSP_USER + THANKS_PAGE;
+                page = THANKS_PAGE + JSP;
+                resp.sendRedirect(page);
+                return null;
             }
         } catch (ServiceException e) {
             throw new ControllerException(e);
+        }
+        catch (IOException e){
+            LOGGER.error("Can't redirect to thanks page");
         }
         return page;
     }

@@ -31,7 +31,7 @@
                 </div>
                 <!--<span style="position: absolute;margin-left: 70%;margin-top: 38%;font-size: 25px;width:70%;">${requestScope.price}</span>-->
                 <span style="position: absolute;margin-left: 70%;margin-top: 50%;font-size: 25px;width:70%;">${requestScope.price}</span>
-                <form action="FrontController" method="get">
+                <form action="FrontController" method="post">
                     <input type="hidden" name="command" value="MAKE_ORDER_COMMAND">
                     <input type="hidden" name="img" value="${requestScope.img}">
                     <input type="hidden" name="price" value="${requestScope.price}">

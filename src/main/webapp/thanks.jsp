@@ -23,7 +23,7 @@
                 </b>
             </span>
             <span id="mail">
-                <c:out value="${onEmail}" /> <span style="color: deepskyblue;">${requestScope.email}</span> <c:out value="${details}" />
+                <c:out value="${onEmail}" /> <span style="color: deepskyblue;">${sessionScope.emailAccount}</span> <c:out value="${details}" />
             </span>
             <form action="FrontController" method="get">
                 <input type="hidden" name="command" value="BACK_FROM_ALL_CARS_COMMAND">

@@ -13,6 +13,8 @@ import service.util.impl.ValidatorImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Objects;
+
 import static controller.ControllerStringsStorage.*;
 
 public class MarkAsReadCommand implements Command {
@@ -32,7 +34,13 @@ public class MarkAsReadCommand implements Command {
             validator.validateInputData(email, id);
             orderService.markAdRead(Integer.parseInt(id));
             req.setAttribute(ORDER, orderService.getListOfOrders());
-            req.setAttribute(AVATAR_IMAGE, IMG + userService.getAvatarPathByEmail(email));
+            String avatarImage = userService.getAvatarPathByEmail(email);
+            if (Objects.isNull(avatarImage)) {
+                avatarImage = DEFAULT_AVATAR_IMAGE;
+            } else {
+                avatarImage = IMG + avatarImage;
+            }
+            req.setAttribute(AVATAR_IMAGE, avatarImage);
             req.getSession().setAttribute(COUNT, orderService.getCountOfUnreadOrders(email));
         } catch (ServiceException e) {
             throw new ControllerException(e);

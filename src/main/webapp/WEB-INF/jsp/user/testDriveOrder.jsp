@@ -40,7 +40,7 @@
                 <div style="position: absolute;margin-left: 50%;margin-top: 13%;">
                    <!-- <img src="images/hatchback.png" alt="" style=" width: 657px;width: 345px; padding-top: 4px;padding-left: 5px;">-->
                 </div>
-                <form action="FrontController" method="get">
+                <form action="FrontController" method="post">
                     <input type="hidden" name="command" value="MAKE_TEST_DRIVE_ORDER_COMMAND">
                     <input type="hidden" name="nameOfMark" value="${requestScope.nameOfMark}">
                     <input type="hidden" name="mark" value=${select}>

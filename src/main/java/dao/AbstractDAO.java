@@ -2,10 +2,7 @@ package dao;
 
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Objects;
 
 public abstract class AbstractDAO {
@@ -20,8 +17,8 @@ public abstract class AbstractDAO {
 
     protected boolean isAlreadyExistsInDatabase(String parameter, String query, Connection connection) throws SQLException {
         boolean isAlreadyExists = false;
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             if (resultSet.getString(2).equals(parameter)){
                 isAlreadyExists = true;
